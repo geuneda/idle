@@ -3,8 +3,8 @@ using IdleRPG.Core;
 namespace IdleRPG.Battle
 {
     /// <summary>
-    /// 적 유닛의 런타임 상태 모델.
-    /// <see cref="EnemyConfig"/>로부터 생성되며, 스테이지 난이도에 따른 배율을 적용한다.
+    /// 적의 런타임 상태를 관리하는 POCO 모델.
+    /// <see cref="EnemyConfig"/>와 스테이지 배율을 기반으로 초기화된다.
     /// </summary>
     public class EnemyModel
     {
@@ -20,18 +20,27 @@ namespace IdleRPG.Battle
         /// <summary>방어력</summary>
         public BigNumber Defense;
 
+        /// <summary>이동 속도 (초당 유닛)</summary>
+        public float MoveSpeed;
+
+        /// <summary>공격 사거리</summary>
+        public float AttackRange;
+
+        /// <summary>공격 속도 (초당 공격 횟수)</summary>
+        public float AttackSpeed;
+
         /// <summary>보스 여부</summary>
         public bool IsBoss;
 
-        /// <summary>원본 <see cref="EnemyConfig"/>의 식별자</summary>
+        /// <summary>설정 데이터의 고유 식별자</summary>
         public int ConfigId;
 
         /// <summary>
-        /// 설정 데이터와 난이도 배율을 기반으로 적 모델을 생성한다.
+        /// <see cref="EnemyConfig"/>와 스테이지 배율을 적용하여 적 모델을 생성한다.
         /// </summary>
         /// <param name="config">적 기본 스탯 설정</param>
-        /// <param name="hpMultiplier">체력 배율 (스테이지 난이도에 따라 결정)</param>
-        /// <param name="attackMultiplier">공격력 배율 (스테이지 난이도에 따라 결정)</param>
+        /// <param name="hpMultiplier">스테이지별 체력 배율</param>
+        /// <param name="attackMultiplier">스테이지별 공격력 배율</param>
         public EnemyModel(EnemyConfig config, BigNumber hpMultiplier, BigNumber attackMultiplier)
         {
             ConfigId = config.Id;
@@ -40,15 +49,18 @@ namespace IdleRPG.Battle
             CurrentHp = MaxHp;
             Attack = config.BaseAttack * attackMultiplier;
             Defense = config.BaseDefense;
+            MoveSpeed = config.MoveSpeed;
+            AttackRange = config.AttackRange;
+            AttackSpeed = config.AttackSpeed;
         }
 
-        /// <summary>적이 생존 중인지 여부</summary>
+        /// <summary>적이 생존 상태인지 여부</summary>
         public bool IsAlive => CurrentHp > BigNumber.Zero;
 
         /// <summary>
-        /// 적에게 피해를 입힌다. 방어력만큼 피해를 감소시키며, 최소 1의 피해를 보장한다.
+        /// 피해를 받아 체력을 감소시킨다. 방어력만큼 피해가 경감되며 최소 1의 피해를 받는다.
         /// </summary>
-        /// <param name="damage">입히려는 피해량</param>
+        /// <param name="damage">받은 피해량</param>
         public void TakeDamage(BigNumber damage)
         {
             BigNumber reduced = damage - Defense;

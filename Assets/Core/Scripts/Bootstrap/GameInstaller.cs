@@ -1,4 +1,6 @@
 using Geuneda.Services;
+using IdleRPG.Battle;
+using IdleRPG.Hero;
 using IdleRPG.Stage;
 using UnityEngine;
 
@@ -8,9 +10,8 @@ namespace IdleRPG.Core
     /// 게임 진입점. 프레임워크 서비스와 게임 고유 서비스를 <see cref="MainInstaller"/>에 등록한다.
     /// </summary>
     /// <remarks>
-    /// <para>씬의 루트 오브젝트에 부착하여 사용한다. Awake에서 DontDestroyOnLoad를 설정한다.</para>
-    /// <para>서비스 등록 순서는 의존성 방향을 따른다:
-    /// MessageBroker → Tick → Data → Time → 게임 서비스</para>
+    /// <para>씬에 배치되며 <c>DontDestroyOnLoad</c>로 앱 생명주기 동안 유지된다.</para>
+    /// <para>서비스 초기화 순서: 프레임워크 → 게임 고유 서비스 (Stage → Hero → Battle)</para>
     /// </remarks>
     public class GameInstaller : MonoBehaviour
     {
@@ -21,7 +22,7 @@ namespace IdleRPG.Core
         }
 
         /// <summary>
-        /// 프레임워크 서비스를 생성하고 <see cref="MainInstaller"/>에 바인딩한다.
+        /// 프레임워크 핵심 서비스를 <see cref="MainInstaller"/>에 바인딩한다.
         /// </summary>
         private void InitializeServices()
         {
@@ -29,6 +30,8 @@ namespace IdleRPG.Core
             MainInstaller.Bind<IMessageBrokerService>(messageBroker);
 
             MainInstaller.Bind<ITickService>(new TickService());
+            MainInstaller.Bind<ICoroutineService>(new CoroutineService());
+            MainInstaller.Bind<IPoolService>(new PoolService());
             MainInstaller.Bind<IDataService>(new DataService());
 
             var timeService = new TimeService();
@@ -39,15 +42,45 @@ namespace IdleRPG.Core
         }
 
         /// <summary>
-        /// 게임 고유 서비스를 생성하고 <see cref="MainInstaller"/>에 바인딩한다.
+        /// 게임 고유 서비스(Stage, Hero, Battle)를 생성하고 <see cref="MainInstaller"/>에 바인딩한다.
         /// </summary>
-        /// <param name="messageBroker">이벤트 발행에 사용할 메시지 브로커 인스턴스</param>
+        /// <param name="messageBroker">이벤트 통신용 메시지 브로커</param>
         private void InitializeGameServices(IMessageBrokerService messageBroker)
         {
             var stageConfig = new StageConfig();
             var stageModel = new StageModel();
             var stageService = new StageService(stageConfig, stageModel, messageBroker);
             MainInstaller.Bind<IStageService>(stageService);
+
+            var heroConfig = new HeroConfig();
+            var heroModel = new HeroModel(heroConfig);
+
+            var normalEnemy = new EnemyConfig
+            {
+                Id = 1,
+                BaseHp = 30,
+                BaseAttack = 5,
+                MoveSpeed = 2f,
+                AttackRange = 1.2f,
+                AttackSpeed = 1f,
+                IsBoss = false
+            };
+
+            var bossEnemy = new EnemyConfig
+            {
+                Id = 100,
+                BaseHp = 200,
+                BaseAttack = 15,
+                MoveSpeed = 1.5f,
+                AttackRange = 1.5f,
+                AttackSpeed = 0.8f,
+                IsBoss = true
+            };
+
+            var battleService = new BattleService(
+                stageService, stageConfig, heroModel,
+                normalEnemy, bossEnemy, messageBroker);
+            MainInstaller.Bind<IBattleService>(battleService);
         }
 
         private void OnDestroy()

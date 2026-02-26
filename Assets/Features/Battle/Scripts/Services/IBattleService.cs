@@ -1,0 +1,68 @@
+using IdleRPG.Core;
+using IdleRPG.Hero;
+
+namespace IdleRPG.Battle
+{
+    /// <summary>
+    /// 전투 로직을 제공하는 서비스 인터페이스.
+    /// 전투 시작/종료, 데미지 계산, 적 처치 처리, 스테이지 배율 조회를 담당한다.
+    /// </summary>
+    /// <remarks>
+    /// <see cref="Geuneda.Services.MainInstaller"/>에 바인딩하여 사용한다.
+    /// </remarks>
+    public interface IBattleService
+    {
+        /// <summary>전투 런타임 상태 모델</summary>
+        BattleModel Model { get; }
+
+        /// <summary>영웅 런타임 상태 모델</summary>
+        HeroModel HeroModel { get; }
+
+        /// <summary>일반 적 설정 데이터</summary>
+        EnemyConfig NormalEnemyConfig { get; }
+
+        /// <summary>보스 적 설정 데이터</summary>
+        EnemyConfig BossEnemyConfig { get; }
+
+        /// <summary>
+        /// 전투를 시작한다. 영웅을 완전 회복하고 웨이브를 개시한다.
+        /// </summary>
+        void StartBattle();
+
+        /// <summary>
+        /// 적이 사망했을 때 호출한다. 모든 적이 처치되면 다음 웨이브를 진행한다.
+        /// </summary>
+        /// <param name="enemyIndex">사망한 적의 인덱스</param>
+        /// <param name="isBoss">보스 여부</param>
+        void OnEnemyDied(int enemyIndex, bool isBoss);
+
+        /// <summary>
+        /// 영웅이 사망했을 때 호출한다. 전투를 종료하고 보스 웨이브 실패를 처리한다.
+        /// </summary>
+        void OnHeroDied();
+
+        /// <summary>
+        /// 영웅의 공격 데미지를 계산한다. 치명타 확률에 따라 추가 피해가 적용된다.
+        /// </summary>
+        /// <returns>계산된 데미지</returns>
+        BigNumber CalculateHeroDamage();
+
+        /// <summary>
+        /// 현재 스테이지의 적 체력 배율을 반환한다.
+        /// </summary>
+        /// <returns>체력 배율</returns>
+        BigNumber GetCurrentHpMultiplier();
+
+        /// <summary>
+        /// 현재 스테이지의 적 공격력 배율을 반환한다.
+        /// </summary>
+        /// <returns>공격력 배율</returns>
+        BigNumber GetCurrentAttackMultiplier();
+
+        /// <summary>
+        /// 현재 웨이브의 적 출현 수를 반환한다.
+        /// </summary>
+        /// <returns>적 출현 수</returns>
+        int GetCurrentWaveEnemyCount();
+    }
+}

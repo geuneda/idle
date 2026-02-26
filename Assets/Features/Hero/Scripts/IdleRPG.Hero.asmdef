@@ -3,7 +3,8 @@
     "rootNamespace": "IdleRPG.Hero",
     "references": [
         "IdleRPG.Core",
-        "Geuneda.GameData"
+        "Geuneda.GameData",
+        "Geuneda.Services"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
