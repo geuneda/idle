@@ -1,0 +1,19 @@
+{
+    "name": "IdleRPG.Battle",
+    "rootNamespace": "IdleRPG.Battle",
+    "references": [
+        "IdleRPG.Core",
+        "IdleRPG.Hero",
+        "Geuneda.GameData",
+        "Geuneda.Services"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

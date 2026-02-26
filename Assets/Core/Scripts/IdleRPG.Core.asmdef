@@ -1,0 +1,19 @@
+{
+    "name": "IdleRPG.Core",
+    "rootNamespace": "IdleRPG.Core",
+    "references": [
+        "Geuneda.GameData",
+        "Geuneda.Services"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Newtonsoft.Json.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,5 +1,106 @@
 {
   "dependencies": {
+    "com.boxqkrtm.ide.cursor": {
+      "version": "https://github.com/boxqkrtm/com.unity.ide.cursor.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.test-framework": "1.1.9"
+      },
+      "hash": "fd8ff1fb700caf062eb5cce364c1d0a85f99ebe6"
+    },
+    "com.cysharp.unitask": {
+      "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "a9e27c03d411d2fca01cc7410c24c97cd77cb539"
+    },
+    "com.geuneda.assetsimporter": {
+      "version": "https://github.com/geuneda/geuneda-assetsimporter.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.addressables": "1.21.20",
+        "com.geuneda.gamedata": "1.0.0",
+        "com.cysharp.unitask": "2.5.10"
+      },
+      "hash": "5d12621b41cde8a602148ed832d9227aa7eaa0c0"
+    },
+    "com.geuneda.gamedata": {
+      "version": "https://github.com/geuneda/geuneda-gamedata.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "3.2.1",
+        "com.cysharp.unitask": "2.5.10",
+        "com.unity.textmeshpro": "3.0.6"
+      },
+      "hash": "ea5baf08d07891873d03db9b84c4a08e229939c6"
+    },
+    "com.geuneda.googlesheetimporter": {
+      "version": "https://github.com/geuneda/geuneda-googlesheetimporter.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "2.0.0",
+        "com.geuneda.gamedata": "1.0.0"
+      },
+      "hash": "2dac8fa12a7e7eb5c0d77b0d5b02c580cd931135"
+    },
+    "com.geuneda.inputextensions": {
+      "version": "https://github.com/geuneda/geuneda-inputextensions.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.inputsystem": "1.0.0-preview.4"
+      },
+      "hash": "d59bf1f4695d6646bd8466ef000fcf62e2898f75"
+    },
+    "com.geuneda.nativeui": {
+      "version": "https://github.com/geuneda/geuneda-nativeui.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "f22682655018136f3fcdeeff64f892987658db67"
+    },
+    "com.geuneda.notificationservice": {
+      "version": "https://github.com/geuneda/geuneda-notificationservice.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.mobile.notifications": "1.3.0"
+      },
+      "hash": "48d5e574d6944af1e2a6f1ed9b02a3e8743b4046"
+    },
+    "com.geuneda.services": {
+      "version": "https://github.com/geuneda/geuneda-services.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.geuneda.gamedata": "1.0.0"
+      },
+      "hash": "748c41e3852ef219f0ab268c4a485890e09893a0"
+    },
+    "com.geuneda.statechart": {
+      "version": "https://github.com/geuneda/geuneda-statechart.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.cysharp.unitask": "2.5.10"
+      },
+      "hash": "ca25652b876eaff29bbd12a9a14d2d86dc6be59b"
+    },
+    "com.geuneda.uiservice": {
+      "version": "https://github.com/geuneda/geuneda-uiservice.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.addressables": "2.6.0",
+        "com.cysharp.unitask": "2.5.10"
+      },
+      "hash": "39b605f48ed37467301d50b07ce4cfd41b5228f6"
+    },
     "com.unity.2d.animation": {
       "version": "13.0.4",
       "depth": 0,
@@ -99,6 +200,22 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.addressables": {
+      "version": "2.7.6",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.profiling.core": "1.0.2",
+        "com.unity.test-framework": "1.4.5",
+        "com.unity.modules.assetbundle": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0",
+        "com.unity.modules.imageconversion": "1.0.0",
+        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.scriptablebuildpipeline": "2.5.0",
+        "com.unity.modules.unitywebrequestassetbundle": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.burst": {
       "version": "1.8.28",
       "depth": 2,
@@ -169,6 +286,15 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.mobile.notifications": {
+      "version": "2.3.2",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.androidjni": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.multiplayer.center": {
       "version": "1.0.1",
       "depth": 0,
@@ -180,6 +306,20 @@
     "com.unity.nuget.mono-cecil": {
       "version": "1.11.6",
       "depth": 2,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "3.2.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.profiling.core": {
+      "version": "1.0.3",
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -216,6 +356,16 @@
         "com.unity.render-pipelines.core": "17.0.3"
       }
     },
+    "com.unity.scriptablebuildpipeline": {
+      "version": "2.6.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.test-framework": "1.4.5",
+        "com.unity.modules.assetbundle": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.searcher": {
       "version": "4.9.4",
       "depth": 2,
@@ -251,6 +401,14 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "com.unity.textmeshpro": {
+      "version": "5.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.ugui": "2.0.0"
+      }
     },
     "com.unity.timeline": {
       "version": "1.8.10",
