@@ -142,6 +142,27 @@ MainInstaller를 통한 등록 순서 (의존성 방향):
 8. UiService (UI 관리)
 9. 게임 고유 서비스 (BattleService, StageService 등)
 
+## 코드 문서화 규칙
+
+모든 public/protected 멤버에 XML 문서 주석(`/// <summary>`)을 작성한다.
+
+### 필수 문서화 대상
+- 클래스, 구조체, 인터페이스, 열거형 선언
+- public/protected 메서드 (매개변수 `<param>`, 반환값 `<returns>` 포함)
+- public/protected 프로퍼티, 필드
+- 이벤트, 델리게이트
+
+### 작성 규칙
+- 한국어로 작성
+- `<summary>`는 한 줄로 간결하게. 필요 시 `<remarks>`로 보충
+- `<param name="">`, `<returns>`, `<exception cref="">` 적극 활용
+- `<see cref=""/>`, `<seealso cref=""/>` 로 관련 타입/메서드 참조
+- private 멤버는 로직이 복잡한 경우에만 선택적으로 문서화
+
+### 금지
+- 코드를 그대로 반복하는 무의미한 주석 (예: `/// <summary>값을 가져옵니다</summary>` on `GetValue()`)
+- 영어/한국어 혼용 (한국어로 통일)
+
 ## 프로젝트 고유 규칙
 
 - 시간 계산은 반드시 TimeService 기준. 시간 조작 방지

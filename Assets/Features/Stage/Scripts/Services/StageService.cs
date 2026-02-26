@@ -3,13 +3,28 @@ using IdleRPG.Core;
 
 namespace IdleRPG.Stage
 {
+    /// <summary>
+    /// <see cref="IStageService"/>의 구현체. 스테이지/웨이브 진행 로직을 관리한다.
+    /// </summary>
+    /// <remarks>
+    /// <para>스테이지 흐름: 웨이브 0~3(일반) → 웨이브 4(보스) → 다음 스테이지</para>
+    /// <para>챕터 내 모든 스테이지 클리어 시 다음 챕터로 진행한다.</para>
+    /// <para>보스 실패 시 자동 도전이 해제되고 일반 웨이브를 무한 반복한다.</para>
+    /// </remarks>
     public class StageService : IStageService
     {
         private readonly StageConfig _config;
         private readonly IMessageBrokerService _messageBroker;
 
+        /// <inheritdoc />
         public StageModel Model { get; }
 
+        /// <summary>
+        /// <see cref="StageService"/>를 생성한다.
+        /// </summary>
+        /// <param name="config">스테이지 구조 설정</param>
+        /// <param name="model">스테이지 진행 상태 모델</param>
+        /// <param name="messageBroker">이벤트 발행용 메시지 브로커</param>
         public StageService(StageConfig config, StageModel model, IMessageBrokerService messageBroker)
         {
             _config = config;
@@ -17,6 +32,7 @@ namespace IdleRPG.Stage
             Model = model;
         }
 
+        /// <inheritdoc />
         public void StartWave()
         {
             _messageBroker.Publish(new WaveStartedMessage
@@ -28,6 +44,7 @@ namespace IdleRPG.Stage
             });
         }
 
+        /// <inheritdoc />
         public void CompleteWave()
         {
             int chapter = Model.CurrentChapter.Value;
@@ -59,6 +76,7 @@ namespace IdleRPG.Stage
             }
         }
 
+        /// <inheritdoc />
         public void FailWave()
         {
             if (!IsBossWave()) return;
@@ -81,6 +99,7 @@ namespace IdleRPG.Stage
             });
         }
 
+        /// <inheritdoc />
         public void ToggleBossAutoChallenge(bool enabled)
         {
             Model.IsBossAutoChallenge.Value = enabled;
@@ -91,21 +110,29 @@ namespace IdleRPG.Stage
             });
         }
 
+        /// <inheritdoc />
         public bool IsBossWave()
         {
             return IsBossWave(Model.CurrentWave.Value);
         }
 
+        /// <inheritdoc />
         public bool IsBossWave(int waveIndex)
         {
             return waveIndex == _config.BossWaveIndex;
         }
 
+        /// <inheritdoc />
         public string GetStageDisplayName()
         {
             return $"{Model.CurrentChapter.Value}-{Model.CurrentStage.Value}";
         }
 
+        /// <summary>
+        /// 현재 스테이지를 클리어하고 다음 스테이지 또는 챕터로 진행한다.
+        /// </summary>
+        /// <param name="chapter">클리어한 챕터 번호</param>
+        /// <param name="stage">클리어한 스테이지 번호</param>
         private void AdvanceStage(int chapter, int stage)
         {
             _messageBroker.Publish(new StageClearedMessage
@@ -135,6 +162,9 @@ namespace IdleRPG.Stage
             UpdateHighestProgress();
         }
 
+        /// <summary>
+        /// 현재 진행 상태가 최고 기록보다 높으면 갱신한다.
+        /// </summary>
         private void UpdateHighestProgress()
         {
             int chapter = Model.CurrentChapter.Value;
