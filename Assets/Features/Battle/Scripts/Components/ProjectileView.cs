@@ -1,4 +1,5 @@
 using Geuneda.Services;
+using IdleRPG.Core;
 using UnityEngine;
 
 namespace IdleRPG.Battle
@@ -12,14 +13,17 @@ namespace IdleRPG.Battle
         private ProjectileData _data;
         private bool _active;
         private IPoolService _poolService;
+        private IMessageBrokerService _messageBroker;
 
         /// <summary>
-        /// 풀 서비스 참조를 설정한다. 스폰 후 반드시 호출해야 한다.
+        /// 풀 서비스 및 메시지 브로커 참조를 설정한다. 스폰 후 반드시 호출해야 한다.
         /// </summary>
         /// <param name="poolService">오브젝트 풀 서비스</param>
-        public void Init(IPoolService poolService)
+        /// <param name="messageBroker">메시지 브로커 서비스</param>
+        public void Init(IPoolService poolService, IMessageBrokerService messageBroker)
         {
             _poolService = poolService;
+            _messageBroker = messageBroker;
         }
 
         /// <summary>
@@ -58,6 +62,13 @@ namespace IdleRPG.Battle
             if (distance < 0.3f)
             {
                 _data.Target.Model.TakeDamage(_data.Damage);
+
+                _messageBroker?.Publish(new EnemyDamagedMessage
+                {
+                    EnemyIndex = _data.Target.Index,
+                    Damage = _data.Damage,
+                    IsCritical = _data.IsCritical
+                });
 
                 if (!_data.Target.Model.IsAlive)
                 {

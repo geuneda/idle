@@ -44,8 +44,9 @@ namespace IdleRPG.Battle
         /// <summary>
         /// 영웅의 공격 데미지를 계산한다. 치명타 확률에 따라 추가 피해가 적용된다.
         /// </summary>
+        /// <param name="isCritical">치명타 발생 여부</param>
         /// <returns>계산된 데미지</returns>
-        BigNumber CalculateHeroDamage();
+        BigNumber CalculateHeroDamage(out bool isCritical);
 
         /// <summary>
         /// 현재 스테이지의 적 체력 배율을 반환한다.

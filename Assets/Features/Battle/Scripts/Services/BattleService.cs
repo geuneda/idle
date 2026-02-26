@@ -101,14 +101,14 @@ namespace IdleRPG.Battle
         }
 
         /// <inheritdoc />
-        public BigNumber CalculateHeroDamage()
+        public BigNumber CalculateHeroDamage(out bool isCritical)
         {
             BigNumber baseDamage = HeroModel.Attack.Value;
             float critRate = HeroModel.CritRate.Value;
             float critDamage = HeroModel.CritDamage.Value;
 
-            bool isCrit = _random.NextDouble() < critRate;
-            if (isCrit)
+            isCritical = _random.NextDouble() < critRate;
+            if (isCritical)
             {
                 baseDamage = baseDamage * (double)critDamage;
             }

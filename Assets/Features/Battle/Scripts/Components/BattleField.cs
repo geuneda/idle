@@ -125,6 +125,12 @@ namespace IdleRPG.Battle
                 enemy.transform.position = new Vector3(spawnX, spawnY, 0f);
 
                 _activeEnemies.Add(enemy);
+
+                _messageBroker.Publish(new EnemySpawnedMessage
+                {
+                    EnemyIndex = i,
+                    IsBoss = isBossWave
+                });
             }
         }
 
@@ -183,18 +189,18 @@ namespace IdleRPG.Battle
             EnemyView target = FindNearestAliveEnemy();
             if (target == null) return;
 
-            BigNumber damage = _battleService.CalculateHeroDamage();
+            BigNumber damage = _battleService.CalculateHeroDamage(out bool isCritical);
 
             var data = new ProjectileData
             {
                 Target = target,
                 Damage = damage,
-                IsCritical = false,
+                IsCritical = isCritical,
                 Speed = _battleService.HeroModel.ProjectileSpeed
             };
 
             var proj = _poolService.Spawn<ProjectileView, ProjectileData>(data);
-            proj.Init(_poolService);
+            proj.Init(_poolService, _messageBroker);
 
             Vector3 spawnPos = _heroView.ProjectileSpawnPoint != null
                 ? _heroView.ProjectileSpawnPoint.position
