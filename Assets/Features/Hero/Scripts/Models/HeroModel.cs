@@ -33,6 +33,9 @@ namespace IdleRPG.Hero
         /// <summary>치명타 피해 배율</summary>
         public ObservableField<float> CritDamage { get; }
 
+        /// <summary>공격 사거리</summary>
+        public float AttackRange { get; }
+
         /// <summary>투사체 이동 속도</summary>
         public float ProjectileSpeed { get; }
 
@@ -53,6 +56,7 @@ namespace IdleRPG.Hero
             AttackSpeed = new ObservableField<float>(config.BaseAttackSpeed);
             CritRate = new ObservableField<float>(config.BaseCritRate);
             CritDamage = new ObservableField<float>(config.BaseCritDamage);
+            AttackRange = config.AttackRange;
             ProjectileSpeed = config.ProjectileSpeed;
             Level = new ObservableField<int>(1);
         }

@@ -30,6 +30,9 @@ namespace IdleRPG.Hero
         /// <summary>기본 치명타 피해 배율</summary>
         public float BaseCritDamage = 1.5f;
 
+        /// <summary>공격 사거리 (이 범위 내 적이 있어야 공격 시작)</summary>
+        public float AttackRange = 6f;
+
         /// <summary>투사체 이동 속도</summary>
         public float ProjectileSpeed = 10f;
     }

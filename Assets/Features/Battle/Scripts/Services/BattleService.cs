@@ -97,11 +97,7 @@ namespace IdleRPG.Battle
         {
             Model.IsBattleActive.Value = false;
             _messageBroker.Publish(new HeroDiedMessage());
-
-            if (_stageService.IsBossWave())
-            {
-                _stageService.FailWave();
-            }
+            _stageService.FailWave();
         }
 
         /// <inheritdoc />

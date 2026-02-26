@@ -79,24 +79,27 @@ namespace IdleRPG.Stage
         /// <inheritdoc />
         public void FailWave()
         {
-            if (!IsBossWave()) return;
-
             int chapter = Model.CurrentChapter.Value;
             int stage = Model.CurrentStage.Value;
+            bool wasBossWave = IsBossWave();
 
             Model.CurrentWave.Value = 0;
-            Model.IsBossAutoChallenge.Value = false;
 
-            _messageBroker.Publish(new BossChallengeFailedMessage
+            if (wasBossWave)
             {
-                Chapter = chapter,
-                Stage = stage
-            });
+                Model.IsBossAutoChallenge.Value = false;
 
-            _messageBroker.Publish(new BossAutoChallengeChangedMessage
-            {
-                IsEnabled = false
-            });
+                _messageBroker.Publish(new BossChallengeFailedMessage
+                {
+                    Chapter = chapter,
+                    Stage = stage
+                });
+
+                _messageBroker.Publish(new BossAutoChallengeChangedMessage
+                {
+                    IsEnabled = false
+                });
+            }
         }
 
         /// <inheritdoc />

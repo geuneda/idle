@@ -35,7 +35,8 @@ namespace IdleRPG.Battle
         private readonly Dictionary<EnemyView, float> _deathTimers = new Dictionary<EnemyView, float>();
 
         private float _heroAttackTimer;
-        private float _heroHpRegenTimer;
+        private float _restartTimer = -1f;
+        private const float RestartDelay = 2f;
         private bool _initialized;
 
         private void Start()
@@ -71,9 +72,23 @@ namespace IdleRPG.Battle
 
         private void Update()
         {
-            if (!_initialized || !_battleService.Model.IsBattleActive.Value) return;
+            if (!_initialized) return;
 
             float dt = Time.deltaTime;
+
+            if (_restartTimer > 0f)
+            {
+                _restartTimer -= dt;
+                UpdateDyingEnemies(dt);
+                if (_restartTimer <= 0f)
+                {
+                    _restartTimer = -1f;
+                    _battleService.StartBattle();
+                }
+                return;
+            }
+
+            if (!_battleService.Model.IsBattleActive.Value) return;
 
             UpdateHeroAttack(dt);
             UpdateHeroRegen(dt);
@@ -120,13 +135,16 @@ namespace IdleRPG.Battle
         private void UpdateHeroAttack(float dt)
         {
             if (_heroView.CurrentState == HeroState.Death) return;
-            if (_activeEnemies.Count == 0)
+
+            EnemyView nearestInRange = FindNearestAliveEnemyInRange();
+            if (nearestInRange == null)
             {
                 _heroView.SetState(HeroState.Idle);
+                _heroAttackTimer = 0f;
                 return;
             }
 
-            _heroView.SetState(HeroState.Idle);
+            _heroView.SetState(HeroState.Attack);
             float attackSpeed = _battleService.HeroModel.AttackSpeed.Value;
             if (attackSpeed <= 0f) return;
 
@@ -232,6 +250,7 @@ namespace IdleRPG.Battle
             {
                 _heroView.SetState(HeroState.Death);
                 _battleService.OnHeroDied();
+                _restartTimer = RestartDelay;
             }
         }
 
@@ -277,10 +296,28 @@ namespace IdleRPG.Battle
             }
         }
 
-        /// <summary>
-        /// 활성 적 중 영웅에게 가장 가까운 생존 적을 찾아 반환한다.
-        /// </summary>
-        /// <returns>가장 가까운 생존 적. 없으면 null</returns>
+        private EnemyView FindNearestAliveEnemyInRange()
+        {
+            float range = _battleService.HeroModel.AttackRange;
+            EnemyView nearest = null;
+            float nearestDist = float.MaxValue;
+            Vector3 heroPos = _heroView.transform.position;
+
+            foreach (var enemy in _activeEnemies)
+            {
+                if (enemy.Model == null || !enemy.Model.IsAlive) continue;
+
+                float dist = Vector3.Distance(heroPos, enemy.transform.position);
+                if (dist <= range && dist < nearestDist)
+                {
+                    nearestDist = dist;
+                    nearest = enemy;
+                }
+            }
+
+            return nearest;
+        }
+
         private EnemyView FindNearestAliveEnemy()
         {
             EnemyView nearest = null;
