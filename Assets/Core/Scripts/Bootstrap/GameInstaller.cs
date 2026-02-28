@@ -26,6 +26,7 @@ namespace IdleRPG.Core
         private SaveService _saveService;
         private IUiServiceInit _uiService;
         private AppFlowStatechart _appFlowStatechart;
+        private bool _initialUiOpened;
 
         private void Awake()
         {
@@ -55,7 +56,7 @@ namespace IdleRPG.Core
             {
                 OnBootstrapEnter = () => DevLog.Log("[AppFlow] Bootstrap 시작"),
                 OnLoadingEnter = () => DevLog.Log("[AppFlow] Loading 시작"),
-                LoadingTask = () => UniTask.CompletedTask,
+                LoadingTask = async () => await UniTask.Yield(),
                 OnLoadingExit = () => DevLog.Log("[AppFlow] Loading 완료"),
                 HasOfflineReward = () => false,
                 IsFirstPlay = () => false,
@@ -79,6 +80,9 @@ namespace IdleRPG.Core
         private async UniTaskVoid OpenInitialUiAndPublishReadyAsync(
             IMessageBrokerService messageBroker)
         {
+            if (_initialUiOpened) return;
+            _initialUiOpened = true;
+
             try
             {
                 await OpenInitialUiAsync();
