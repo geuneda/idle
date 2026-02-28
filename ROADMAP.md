@@ -39,13 +39,19 @@
 
 ### 2-1. 영웅 성장 서비스
 
-- [ ] `GrowthConfig` 설정 데이터 (스탯별 레벨업 비용 곡선, 스탯 증가량)
-- [ ] `HeroGrowthModel` 구현 (스탯별 현재 레벨, 다음 비용)
-- [ ] `IHeroGrowthService` / `HeroGrowthService` 구현
-- [ ] HeroStatType별 레벨업 로직 (비용 차감 → 스탯 증가)
-- [ ] 레벨업 시 HeroModel의 ObservableField 갱신
-- [ ] GameInstaller에 HeroGrowthService 바인딩
-- [ ] asmdef 생성 (IdleRPG.Growth)
+- [x] `GrowthConfig` + `StatGrowthEntry` 설정 데이터 (스탯별 성장/비용 곡선 파라미터)
+- [x] `StatGrowthFormula` 순수 함수 (스탯 값/비용 계산, HP 재생 연동)
+- [x] `HeroGrowthModel` 구현 (ObservableDictionary 기반 스탯별 레벨 관리)
+- [x] `CombatPowerCalculator` 전투력 계산 (DPS * 크리티컬 * 멀티샷 + HP 보정)
+- [x] `IHeroGrowthService` / `HeroGrowthService` 구현
+- [x] HeroStatType 확장 (DoubleShot, TripleShot, AdvancedAttack, EnemyBonusDamage)
+- [x] HeroModel에 확장 스탯 4개 추가 + SetBigNumberStat/SetFloatStat 메서드
+- [x] 레벨업 시 HeroModel의 ObservableField 갱신 + 전투력 재계산
+- [x] 스탯 체인 언락 시스템 (AttackSpeed→DoubleShot→TripleShot→AdvancedAttack→EnemyBonusDamage)
+- [x] BattleService/BattleField 연동 (이중/삼중 사격, 고급공격 데미지 배율)
+- [x] GameInstaller에 HeroGrowthService 바인딩
+- [x] asmdef 생성 (IdleRPG.Growth)
+- [x] `StatLevelUpMessage`, `CombatPowerChangedMessage` 이벤트 정의
 
 ---
 

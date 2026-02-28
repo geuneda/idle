@@ -1,6 +1,7 @@
 using Geuneda.Services;
 using IdleRPG.Battle;
 using IdleRPG.Economy;
+using IdleRPG.Growth;
 using IdleRPG.Hero;
 using IdleRPG.Reward;
 using IdleRPG.Stage;
@@ -13,7 +14,7 @@ namespace IdleRPG.Core
     /// </summary>
     /// <remarks>
     /// <para>씬에 배치되며 <c>DontDestroyOnLoad</c>로 앱 생명주기 동안 유지된다.</para>
-    /// <para>서비스 초기화 순서: 프레임워크 → 게임 고유 서비스 (Economy → Stage → Hero → Battle → Reward)</para>
+    /// <para>서비스 초기화 순서: 프레임워크 → 게임 고유 서비스 (Economy → Stage → Hero → Growth → Battle → Reward)</para>
     /// </remarks>
     public class GameInstaller : MonoBehaviour
     {
@@ -44,7 +45,7 @@ namespace IdleRPG.Core
         }
 
         /// <summary>
-        /// 게임 고유 서비스(Economy, Stage, Hero, Battle)를 생성하고 <see cref="MainInstaller"/>에 바인딩한다.
+        /// 게임 고유 서비스(Economy, Stage, Hero, Growth, Battle, Reward)를 생성하고 <see cref="MainInstaller"/>에 바인딩한다.
         /// </summary>
         /// <param name="messageBroker">이벤트 통신용 메시지 브로커</param>
         private void InitializeGameServices(IMessageBrokerService messageBroker)
@@ -60,6 +61,12 @@ namespace IdleRPG.Core
 
             var heroConfig = new HeroConfig();
             var heroModel = new HeroModel(heroConfig);
+
+            var growthConfig = new GrowthConfig();
+            var growthModel = new HeroGrowthModel();
+            var growthService = new HeroGrowthService(
+                growthConfig, growthModel, heroModel, currencyService, messageBroker);
+            MainInstaller.Bind<IHeroGrowthService>(growthService);
 
             var normalEnemy = new EnemyConfig
             {

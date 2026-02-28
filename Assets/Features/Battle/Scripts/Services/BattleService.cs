@@ -113,7 +113,40 @@ namespace IdleRPG.Battle
                 baseDamage = baseDamage * (double)critDamage;
             }
 
+            float advancedBonus = HeroModel.AdvancedAttackBonus.Value;
+            if (advancedBonus > 0f)
+            {
+                baseDamage = baseDamage * (1.0 + advancedBonus);
+            }
+
+            float enemyBonus = HeroModel.EnemyBonusDamage.Value;
+            if (enemyBonus > 0f)
+            {
+                baseDamage = baseDamage * (1.0 + enemyBonus);
+            }
+
             return baseDamage;
+        }
+
+        /// <inheritdoc />
+        public int RollExtraShots()
+        {
+            int extra = 0;
+
+            float tripleRate = HeroModel.TripleShotRate.Value;
+            if (tripleRate > 0f && _random.NextDouble() < tripleRate)
+            {
+                extra = 2;
+                return extra;
+            }
+
+            float doubleRate = HeroModel.DoubleShotRate.Value;
+            if (doubleRate > 0f && _random.NextDouble() < doubleRate)
+            {
+                extra = 1;
+            }
+
+            return extra;
         }
 
         /// <inheritdoc />

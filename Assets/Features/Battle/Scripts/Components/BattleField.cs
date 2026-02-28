@@ -182,7 +182,8 @@ namespace IdleRPG.Battle
         }
 
         /// <summary>
-        /// 가장 가까운 생존 적을 대상으로 투사체를 발사한다.
+        /// 생존 적을 대상으로 투사체를 발사한다.
+        /// 이중/삼중 사격 확률에 따라 추가 타겟에 투사체를 발사할 수 있다.
         /// </summary>
         private void FireProjectile()
         {
@@ -190,21 +191,80 @@ namespace IdleRPG.Battle
             if (target == null) return;
 
             BigNumber damage = _battleService.CalculateHeroDamage(out bool isCritical);
+            float speed = _battleService.HeroModel.ProjectileSpeed;
 
+            Vector3 spawnPos = _heroView.ProjectileSpawnPoint != null
+                ? _heroView.ProjectileSpawnPoint.position
+                : _heroView.transform.position;
+
+            SpawnProjectile(target, damage, isCritical, speed, spawnPos);
+
+            int extraShots = _battleService.RollExtraShots();
+            if (extraShots > 0)
+            {
+                FireExtraProjectiles(extraShots, target, speed, spawnPos);
+            }
+        }
+
+        /// <summary>
+        /// 추가 타겟에 투사체를 발사한다. 이미 공격 중인 대상을 제외하고 선택한다.
+        /// </summary>
+        /// <param name="count">추가 투사체 수</param>
+        /// <param name="excludeTarget">제외할 주 타겟</param>
+        /// <param name="speed">투사체 속도</param>
+        /// <param name="spawnPos">투사체 발사 위치</param>
+        private void FireExtraProjectiles(int count, EnemyView excludeTarget, float speed, Vector3 spawnPos)
+        {
+            int fired = 0;
+            Vector3 heroPos = _heroView.transform.position;
+            var candidates = new List<EnemyView>();
+
+            foreach (var enemy in _activeEnemies)
+            {
+                if (enemy == excludeTarget) continue;
+                if (enemy.Model == null || !enemy.Model.IsAlive) continue;
+                candidates.Add(enemy);
+            }
+
+            candidates.Sort((a, b) =>
+            {
+                float dA = Vector3.Distance(heroPos, a.transform.position);
+                float dB = Vector3.Distance(heroPos, b.transform.position);
+                return dA.CompareTo(dB);
+            });
+
+            for (int i = 0; i < candidates.Count && fired < count; i++)
+            {
+                BigNumber extraDamage = _battleService.CalculateHeroDamage(out bool extraCrit);
+                SpawnProjectile(candidates[i], extraDamage, extraCrit, speed, spawnPos);
+                fired++;
+            }
+
+            if (fired < count)
+            {
+                for (int i = fired; i < count; i++)
+                {
+                    BigNumber extraDamage = _battleService.CalculateHeroDamage(out bool extraCrit);
+                    SpawnProjectile(excludeTarget, extraDamage, extraCrit, speed, spawnPos);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 단일 투사체를 생성하여 대상으로 발사한다.
+        /// </summary>
+        private void SpawnProjectile(EnemyView target, BigNumber damage, bool isCritical, float speed, Vector3 spawnPos)
+        {
             var data = new ProjectileData
             {
                 Target = target,
                 Damage = damage,
                 IsCritical = isCritical,
-                Speed = _battleService.HeroModel.ProjectileSpeed
+                Speed = speed
             };
 
             var proj = _poolService.Spawn<ProjectileView, ProjectileData>(data);
             proj.Init(_poolService, _messageBroker);
-
-            Vector3 spawnPos = _heroView.ProjectileSpawnPoint != null
-                ? _heroView.ProjectileSpawnPoint.position
-                : _heroView.transform.position;
             proj.transform.position = spawnPos;
         }
 

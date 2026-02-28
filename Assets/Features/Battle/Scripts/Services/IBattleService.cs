@@ -65,5 +65,11 @@ namespace IdleRPG.Battle
         /// </summary>
         /// <returns>적 출현 수</returns>
         int GetCurrentWaveEnemyCount();
+
+        /// <summary>
+        /// 이중/삼중 사격 확률 판정을 수행하여 추가 투사체 수를 반환한다.
+        /// </summary>
+        /// <returns>추가로 발사할 투사체 수 (0, 1, 또는 2)</returns>
+        int RollExtraShots();
     }
 }

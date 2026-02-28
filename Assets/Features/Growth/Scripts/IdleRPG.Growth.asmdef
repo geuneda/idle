@@ -1,14 +1,10 @@
 {
-    "name": "IdleRPG.Bootstrap",
-    "rootNamespace": "IdleRPG.Core",
+    "name": "IdleRPG.Growth",
+    "rootNamespace": "IdleRPG.Growth",
     "references": [
         "IdleRPG.Core",
-        "IdleRPG.Economy",
-        "IdleRPG.Stage",
         "IdleRPG.Hero",
-        "IdleRPG.Battle",
-        "IdleRPG.Reward",
-        "IdleRPG.Growth",
+        "IdleRPG.Economy",
         "Geuneda.GameData",
         "Geuneda.Services"
     ],
