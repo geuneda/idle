@@ -80,6 +80,16 @@ namespace IdleRPG.Economy
         }
 
         /// <summary>
+        /// 지정한 재화의 보유량을 직접 설정한다. 저장 데이터 복원 시 사용한다.
+        /// </summary>
+        /// <param name="type">재화 종류</param>
+        /// <param name="amount">설정할 보유량</param>
+        public void SetAmount(CurrencyType type, BigNumber amount)
+        {
+            _currencies[type] = amount;
+        }
+
+        /// <summary>
         /// 지정한 재화가 충분한지 확인한다.
         /// </summary>
         /// <param name="type">재화 종류</param>

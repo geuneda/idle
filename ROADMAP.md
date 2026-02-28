@@ -8,6 +8,9 @@
 방치형 RPG의 핵심 게임 루프(**전투 → 보상 → 성장 → 더 강한 전투**)를 완성하기 위해
 경제 → 성장 → 저장 → UI 순서로 구조를 잡아간다.
 
+로드맵의 세부 내용은 절대로 그대로 구현할 필요 없으며 임시로 작성해둔것임.
+큰 단위의 구현을 진행하면서 작업내역을 정리해두면 됨.
+
 ---
 
 ## Phase 1. 경제 기반 (Core Economy)
@@ -42,7 +45,7 @@
 - [x] `GrowthConfig` + `StatGrowthEntry` 설정 데이터 (스탯별 성장/비용 곡선 파라미터)
 - [x] `StatGrowthFormula` 순수 함수 (스탯 값/비용 계산, HP 재생 연동)
 - [x] `HeroGrowthModel` 구현 (ObservableDictionary 기반 스탯별 레벨 관리)
-- [x] `CombatPowerCalculator` 전투력 계산 (DPS * 크리티컬 * 멀티샷 + HP 보정)
+- [x] `CombatPowerCalculator` 전투력 계산 (DPS _ 크리티컬 _ 멀티샷 + HP 보정)
 - [x] `IHeroGrowthService` / `HeroGrowthService` 구현
 - [x] HeroStatType 확장 (DoubleShot, TripleShot, AdvancedAttack, EnemyBonusDamage)
 - [x] HeroModel에 확장 스탯 4개 추가 + SetBigNumberStat/SetFloatStat 메서드
@@ -61,12 +64,16 @@
 
 ### 3-1. SaveSystem 구현
 
-- [ ] 저장 데이터 구조 정의 (SaveData 클래스)
-- [ ] DataService를 활용한 JSON 직렬화/역직렬화
-- [ ] 저장 대상: StageModel, CurrencyModel, HeroGrowthModel
-- [ ] 자동 저장 구현 (TickService 기반 주기적 저장)
-- [ ] 앱 시작 시 데이터 복원 로직
-- [ ] 앱 종료/백그라운드 전환 시 저장
+- [x] 저장 데이터 구조 정의 (GameSaveData DTO + Stage/Currency/Growth 서브 DTO)
+- [x] DataService를 활용한 JSON 직렬화/역직렬화
+- [x] 저장 대상: StageModel, CurrencyModel, HeroGrowthModel
+- [x] 2-Tier 저장 전략 (즉시 저장 + Dirty Debounce)
+- [x] 30초 주기 자동 저장 (TickService)
+- [x] 이벤트 기반 dirty 마킹 (StatLevelUpMessage, StageClearedMessage, ChapterClearedMessage)
+- [x] 앱 시작 시 데이터 복원 로직
+- [x] 앱 종료/백그라운드 전환 시 저장 (OnApplicationPause/Quit)
+- [x] SaveVersion 필드로 향후 마이그레이션 대응
+- [x] LastSaveTimestamp 필드로 오프라인 보상 준비 (Phase 6)
 
 ---
 
@@ -179,11 +186,14 @@
 - [x] MessageBrokerService (Pub/Sub 이벤트)
 - [x] TickService, CoroutineService
 - [x] PoolService (오브젝트 풀링)
-- [x] DataService (데이터 영속성 - 미사용 상태)
+- [x] DataService (데이터 영속성)
 - [x] TimeService (시간 관리)
 - [x] BigNumber 구조체 (대형 숫자)
 - [x] BattleMessages (전투 이벤트 정의)
 - [x] StageMessages (스테이지 이벤트 정의)
+- [x] ISaveService / SaveService (2-Tier 저장: 즉시 + Dirty Debounce)
+- [x] GameSaveData DTO (Stage/Currency/Growth)
+- [x] SaveMessages (저장/로드 이벤트)
 
 ### 전투 시스템 ✅
 
