@@ -4,9 +4,9 @@
 
 ## 현재 상태 요약
 
-핵심 전투 루프 + 경제/성장/저장 + 기본 UI가 동작하는 상태.
-Phase 1~4 완료. 다음 단계로 앱 흐름 상태 머신을 도입하여
-게임 진입/복귀/전환 흐름을 체계적으로 관리한다.
+핵심 전투 루프 + 경제/성장/저장 + 기본 UI + 앱 흐름 상태 머신이 동작하는 상태.
+Phase 1~5 완료. 다음 단계로 Config 데이터 파이프라인을 도입하여
+하드코딩을 제거하고 외부 데이터 소스로 전환한다.
 
 로드맵의 세부 내용은 절대로 그대로 구현할 필요 없으며 임시로 작성해둔것임.
 큰 단위의 구현을 진행하면서 작업내역을 정리해두면 됨.
@@ -114,23 +114,24 @@ Phase 1~4 완료. 다음 단계로 앱 흐름 상태 머신을 도입하여
 
 ---
 
-## Phase 5. 앱 흐름 상태 머신 (App Flow Statechart)
+## Phase 5. 앱 흐름 상태 머신 (App Flow Statechart) ✅
 
 > GameInstaller의 하드코딩된 흐름을 Statechart HFSM으로 전환.
 > 이후 오프라인 보상, 튜토리얼, 로딩 화면 등이 자연스럽게 상태로 추가된다.
 
 ### 5-1. AppFlowStatechart
 
-- [ ] `Statechart` 기반 앱 흐름 정의 (Bootstrap → Loading → InGame)
-- [ ] `GameInstaller.Start()`의 UI 오픈 로직을 InGame 상태의 `OnEnter`로 이관
-- [ ] Loading 상태: 에셋/데이터 로드 완료 대기 (`TaskWait`)
-- [ ] InGame 상태: 초기 UI 오픈 + 게임 루프 진행
+- [x] `Statechart` 기반 앱 흐름 정의 (Bootstrap → Loading → PostLoadChoice → InGame)
+- [x] `GameInstaller.Start()`의 UI 오픈 로직을 InGame 상태의 `OnEnter`로 이관
+- [x] Loading 상태: 에셋/데이터 로드 완료 대기 (`TaskWait`, 현재 즉시 완료)
+- [x] InGame 상태: 초기 UI 오픈 + `AppFlowReadyMessage` 발행
+- [x] `AppFlowCallbacks` 콜백 구조로 상태별 로직 외부 주입
 
 ### 5-2. 확장 준비
 
-- [ ] 오프라인 보상 분기점 준비 (`Choice` 상태 — Phase 7에서 구현)
-- [ ] 튜토리얼 분기점 준비 (첫 실행 감지)
-- [ ] 로딩 화면 UI 연동
+- [x] 오프라인 보상 분기점 준비 (`Choice` 상태의 `HasOfflineReward` 조건 — Phase 7에서 구현)
+- [x] 튜토리얼 분기점 준비 (`Choice` 상태의 `IsFirstPlay` 조건)
+- [ ] 로딩 화면 UI 연동 (LoadingTask에 실제 에셋 프리로드 추가 시 구현)
 
 ---
 
@@ -256,6 +257,15 @@ Phase 1~4 완료. 다음 단계로 앱 흐름 상태 머신을 도입하여
 - [x] BottomTabBarPresenter + BottomTabButton (6탭 전환 로직)
 - [x] 탭 컨텐츠 플레이스홀더 (Hero, Skill, Pet, Dungeon, Base, Summon)
 - [x] UiMessages (TabOpenedMessage, TabClosedMessage)
+
+### 앱 흐름 상태 머신 ✅
+
+- [x] AppFlowStatechart POCO 클래스 (Statechart HFSM 기반)
+- [x] AppFlowCallbacks 콜백 구조 (상태별 로직 외부 주입)
+- [x] AppFlowMessages (AppFlowReadyMessage 이벤트)
+- [x] GameInstaller.Start() → AppFlowStatechart.Run() 전환
+- [x] Bootstrap → Loading(TaskWait) → PostLoadChoice(Choice) → InGame(State) 흐름
+- [x] 오프라인 보상/튜토리얼 분기점 Choice 상태로 확장 준비
 
 ### 폴더 구조 ✅
 

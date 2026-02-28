@@ -25,6 +25,7 @@ namespace IdleRPG.Core
 
         private SaveService _saveService;
         private IUiServiceInit _uiService;
+        private AppFlowStatechart _appFlowStatechart;
 
         private void Awake()
         {
@@ -33,13 +34,61 @@ namespace IdleRPG.Core
         }
 
         /// <summary>
-        /// 모든 서비스 초기화 후 초기 UI를 연다.
+        /// 모든 서비스 초기화 후 앱 흐름 상태 머신을 시작한다.
         /// <c>Awake</c>에서 서비스 바인딩이 완료된 뒤 <c>Start</c>에서 실행되므로
         /// 프레젠터가 <see cref="MainInstaller.Resolve{T}"/>를 안전하게 호출할 수 있다.
         /// </summary>
-        private async void Start()
+        private void Start()
         {
-            await OpenInitialUiAsync();
+            StartAppFlow();
+        }
+
+        /// <summary>
+        /// 앱 흐름 상태 머신을 구성하고 실행한다.
+        /// Bootstrap -> Loading -> PostLoadChoice -> InGame 순서로 전이한다.
+        /// </summary>
+        private void StartAppFlow()
+        {
+            var messageBroker = MainInstaller.Resolve<IMessageBrokerService>();
+
+            var callbacks = new AppFlowCallbacks
+            {
+                OnBootstrapEnter = () => DevLog.Log("[AppFlow] Bootstrap 시작"),
+                OnLoadingEnter = () => DevLog.Log("[AppFlow] Loading 시작"),
+                LoadingTask = () => UniTask.CompletedTask,
+                OnLoadingExit = () => DevLog.Log("[AppFlow] Loading 완료"),
+                HasOfflineReward = () => false,
+                IsFirstPlay = () => false,
+                OnInGameEnter = () =>
+                {
+                    DevLog.Log("[AppFlow] InGame 진입");
+                    OpenInitialUiAndPublishReadyAsync(messageBroker).Forget();
+                },
+                OnInGameExit = () => DevLog.Log("[AppFlow] InGame 퇴장")
+            };
+
+            _appFlowStatechart = new AppFlowStatechart(callbacks);
+            _appFlowStatechart.Run();
+        }
+
+        /// <summary>
+        /// 초기 UI를 연 뒤 <see cref="AppFlowReadyMessage"/>를 발행한다.
+        /// UI 오픈 완료 후 메시지를 발행하여 구독자가 준비된 UI에 접근할 수 있도록 보장한다.
+        /// </summary>
+        /// <param name="messageBroker">메시지 발행에 사용할 브로커</param>
+        private async UniTaskVoid OpenInitialUiAndPublishReadyAsync(
+            IMessageBrokerService messageBroker)
+        {
+            try
+            {
+                await OpenInitialUiAsync();
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"[AppFlow] 초기 UI 오픈 실패: {ex}");
+            }
+
+            messageBroker.Publish(new AppFlowReadyMessage());
         }
 
         /// <summary>

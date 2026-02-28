@@ -197,6 +197,32 @@ IDE 린트 에러가 아닌 Unity 컴파일러의 실제 빌드 결과를 기준
 - 컴파일 에러 발생 시 즉시 수정 후 재컴파일
 - 컴파일 성공 확인 후 작업 완료로 간주
 
+## 로그 규칙
+
+디버그 로그는 반드시 `DevLog` 유틸리티(`Core/Scripts/Utils/DevLog.cs`)를 통해 출력한다.
+
+### 필수 규칙
+- `Debug.Log` / `Debug.LogWarning` 직접 호출 금지. `DevLog.Log` / `DevLog.LogWarning` 사용
+- `Debug.LogError` / `Debug.LogException`은 치명적 에러 추적용으로 직접 사용 허용
+- `DEV` 스크립팅 심볼이 정의된 빌드에서만 DevLog 출력. 프로덕션에서는 호출 자체가 제거됨
+
+### DevLog API
+```csharp
+DevLog.Log("메시지");                    // 정보 로그 (DEV에서만)
+DevLog.Log("메시지", context);           // 정보 로그 + 컨텍스트
+DevLog.LogWarning("경고 메시지");         // 경고 로그 (DEV에서만)
+DevLog.LogWarning("경고 메시지", context); // 경고 로그 + 컨텍스트
+
+// 에러는 Debug 직접 사용 (프로덕션에서도 추적 필요)
+Debug.LogError("치명적 에러 메시지");
+Debug.LogException(exception);
+```
+
+### DEV 심볼 설정
+- Unity Editor: Project Settings > Player > Scripting Define Symbols에 `DEV` 추가
+- 개발 빌드: Development Build 체크 시 `DEV` 심볼 포함
+- 프로덕션 빌드: `DEV` 심볼 미포함 → 모든 DevLog 호출이 컴파일러에 의해 제거
+
 ## 프로젝트 고유 규칙
 
 - 시간 계산은 반드시 TimeService 기준. 시간 조작 방지

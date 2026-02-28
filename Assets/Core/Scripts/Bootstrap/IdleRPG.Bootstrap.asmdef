@@ -13,6 +13,7 @@
         "Geuneda.GameData",
         "Geuneda.Services",
         "Geuneda.UiService",
+        "Geuneda.Statechart",
         "UniTask"
     ],
     "includePlatforms": [],
