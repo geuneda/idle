@@ -1,0 +1,26 @@
+{
+    "name": "IdleRPG.UI",
+    "rootNamespace": "IdleRPG.UI",
+    "references": [
+        "IdleRPG.Core",
+        "IdleRPG.Economy",
+        "IdleRPG.Growth",
+        "IdleRPG.Hero",
+        "IdleRPG.Stage",
+        "IdleRPG.Battle",
+        "Geuneda.UiService",
+        "Geuneda.Services",
+        "Geuneda.GameData",
+        "Unity.TextMeshPro",
+        "UniTask"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

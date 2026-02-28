@@ -91,7 +91,7 @@
       "dependencies": {
         "com.geuneda.gamedata": "1.0.0"
       },
-      "hash": "748c41e3852ef219f0ab268c4a485890e09893a0"
+      "hash": "583700eea4b7ed19995bdb360727efc5f8995c7f"
     },
     "com.geuneda.statechart": {
       "version": "https://github.com/geuneda/geuneda-statechart.git",
@@ -110,7 +110,7 @@
         "com.unity.addressables": "2.6.0",
         "com.cysharp.unitask": "2.5.10"
       },
-      "hash": "39b605f48ed37467301d50b07ce4cfd41b5228f6"
+      "hash": "93f174d0dc90addd103a5f32fc64bc601116fe1a"
     },
     "com.unity.2d.animation": {
       "version": "13.0.4",

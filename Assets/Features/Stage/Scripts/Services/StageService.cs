@@ -19,6 +19,9 @@ namespace IdleRPG.Stage
         /// <inheritdoc />
         public StageModel Model { get; }
 
+        /// <inheritdoc />
+        public int WavesPerStage => _config.WavesPerStage;
+
         /// <summary>
         /// <see cref="StageService"/>를 생성한다.
         /// </summary>

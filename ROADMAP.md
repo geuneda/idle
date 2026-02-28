@@ -1,12 +1,12 @@
 # Idle RPG 개발 로드맵
 
-> 최종 업데이트: 2026-02-28
+> 최종 업데이트: 2026-03-01
 
 ## 현재 상태 요약
 
-핵심 전투 루프(영웅 ↔ 적 전투, 웨이브/스테이지/챕터 진행)가 동작하는 상태.
-방치형 RPG의 핵심 게임 루프(**전투 → 보상 → 성장 → 더 강한 전투**)를 완성하기 위해
-경제 → 성장 → 저장 → UI 순서로 구조를 잡아간다.
+핵심 전투 루프 + 경제/성장/저장 + 기본 UI가 동작하는 상태.
+Phase 1~4 완료. 다음 단계로 앱 흐름 상태 머신을 도입하여
+게임 진입/복귀/전환 흐름을 체계적으로 관리한다.
 
 로드맵의 세부 내용은 절대로 그대로 구현할 필요 없으며 임시로 작성해둔것임.
 큰 단위의 구현을 진행하면서 작업내역을 정리해두면 됨.
@@ -77,38 +77,65 @@
 
 ---
 
-## Phase 4. 기본 UI
+## Phase 4. 기본 UI ✅
 
 > 로직이 동작해야 보여줄 것이 생긴다. UiPresenter MVP 패턴으로 구현.
 
-### 4-1. Battle HUD
+### 4-1. UI 인프라
 
-- [ ] 스테이지 표시 UI ("1-3", 웨이브 진행률)
-- [ ] 영웅 HP 바
-- [ ] 적 HP 바
-- [ ] 보스 도전 토글 버튼
-- [ ] 재화 표시 (골드, 젬 등)
-- [ ] UiPresenter<T> 기반 MVP 구현
+- [x] `IdleRPG.UI` asmdef 생성 (UI 전용 어셈블리)
+- [x] `PrefabRegistryUiConfigs` ScriptableObject + `GameInstaller` 연동
+- [x] `GameInstaller`에 `IUiService` 바인딩 및 초기 UI 오픈 (`Start()`)
+- [x] `UiMessages` 정의 (`TabOpenedMessage`, `TabClosedMessage`)
+- [x] `BottomTabType` 열거형
 
-### 4-2. Growth UI (강화 패널)
+### 4-2. 상단 HUD (TopHudPresenter)
 
-- [ ] 스탯별 현재 레벨 / 레벨업 비용 표시
-- [ ] 레벨업 버튼 (재화 부족 시 비활성화)
-- [ ] 레벨업 효과 연출 (선택)
-- [ ] UiPresenter<T> 기반 MVP 구현
+- [x] 재화 표시 (골드, 젬 — `ICurrencyService` 구독)
+- [x] 스테이지 표시 ("챕터-스테이지", 웨이브 점 진행률)
+- [x] 보스 자동 도전 토글 버튼
 
-### 4-3. 메인 네비게이션
+### 4-3. 메인 전투 UI (MainBattleUiPresenter)
 
-- [ ] 탭 기반 하단 네비게이션 (전투 / 강화 / 장비 / 소환 등)
-- [ ] 피처 시스템으로 탭별 UI 세트 관리
+- [x] 현재 전투력 표시 (`CombatPowerChangedMessage` 구독)
+- [x] 스킬 슬롯 플레이스홀더 + 자동 사용 토글
+- [x] 스탯 업그레이드 스크롤 리스트 (`StatUpgradeSlotView` 동적 생성)
+- [x] `StatUpgradeSlotView`: 스탯별 아이콘/이름/레벨/값/비용/잠금 상태 표시, 레벨업 버튼
+
+### 4-4. 하단 탭 바 (BottomTabBarPresenter)
+
+- [x] 6개 탭 버튼 (`BottomTabButton`: Hero, Skill, Pet, Dungeon, Base, Summon)
+- [x] 탭 전환 로직 (열기/닫기/전환 + 아이콘 변경)
+- [x] 탭 오픈 시 `MainBattleUiPresenter` 숨김, 닫기 시 복원
+- [x] 6개 탭 컨텐츠 플레이스홀더 프레젠터
 
 ---
 
-## Phase 5. Config 데이터 파이프라인
+## Phase 5. 앱 흐름 상태 머신 (App Flow Statechart)
+
+> GameInstaller의 하드코딩된 흐름을 Statechart HFSM으로 전환.
+> 이후 오프라인 보상, 튜토리얼, 로딩 화면 등이 자연스럽게 상태로 추가된다.
+
+### 5-1. AppFlowStatechart
+
+- [ ] `Statechart` 기반 앱 흐름 정의 (Bootstrap → Loading → InGame)
+- [ ] `GameInstaller.Start()`의 UI 오픈 로직을 InGame 상태의 `OnEnter`로 이관
+- [ ] Loading 상태: 에셋/데이터 로드 완료 대기 (`TaskWait`)
+- [ ] InGame 상태: 초기 UI 오픈 + 게임 루프 진행
+
+### 5-2. 확장 준비
+
+- [ ] 오프라인 보상 분기점 준비 (`Choice` 상태 — Phase 7에서 구현)
+- [ ] 튜토리얼 분기점 준비 (첫 실행 감지)
+- [ ] 로딩 화면 UI 연동
+
+---
+
+## Phase 6. Config 데이터 파이프라인
 
 > 밸런싱을 위한 데이터 관리 체계. 하드코딩을 제거하고 외부 데이터 소스로 전환.
 
-### 5-1. ConfigsProvider 통합
+### 6-1. ConfigsProvider 통합
 
 - [ ] HeroConfig → ScriptableObject 전환
 - [ ] EnemyConfig → ScriptableObject 전환
@@ -117,7 +144,7 @@
 - [ ] RewardConfig → ScriptableObject 전환
 - [ ] GameInstaller에서 하드코딩 제거, ConfigsProvider로 대체
 
-### 5-2. Google Sheets 연동
+### 6-2. Google Sheets 연동
 
 - [ ] 시트 구조 설계 (Hero, Enemy, Stage, Growth, Reward 탭)
 - [ ] CsvParser 기반 임포터 작성
@@ -125,24 +152,24 @@
 
 ---
 
-## Phase 6. 오프라인 보상
+## Phase 7. 오프라인 보상
 
 > 방치형 게임의 정체성. 앱을 켜지 않아도 보상이 쌓이는 시스템.
 
-### 6-1. OfflineRewardService
+### 7-1. OfflineRewardService
 
 - [ ] TimeService 기반 오프라인 경과 시간 계산
 - [ ] 순수 함수로 오프라인 보상 계산 (테스트 용이성)
 - [ ] 최대 오프라인 시간 제한
-- [ ] 앱 복귀 시 오프라인 보상 팝업 UI
+- [ ] 앱 복귀 시 오프라인 보상 팝업 UI (AppFlowStatechart의 Choice 분기 활용)
 
 ---
 
-## Phase 7. 콘텐츠 시스템
+## Phase 8. 콘텐츠 시스템
 
-> 게임의 깊이를 더하는 콘텐츠. Phase 1~6이 안정된 후 순차적으로 추가.
+> 게임의 깊이를 더하는 콘텐츠. Phase 1~7이 안정된 후 순차적으로 추가.
 
-### 7-1. 장비 시스템 (Equipment)
+### 8-1. 장비 시스템 (Equipment)
 
 - [ ] EquipmentConfig (장비 타입, 등급, 스탯 보너스)
 - [ ] EquipmentModel (장착 상태, 강화 레벨)
@@ -150,26 +177,26 @@
 - [ ] 장비 장착 시 HeroModel 스탯 반영
 - [ ] 장비 UI
 
-### 7-2. 인벤토리 시스템 (Inventory)
+### 8-2. 인벤토리 시스템 (Inventory)
 
 - [ ] InventoryModel (아이템 목록, 슬롯 관리)
 - [ ] IInventoryService / InventoryService
 - [ ] 인벤토리 UI (그리드/리스트 뷰)
 
-### 7-3. 가챠 시스템 (Gacha)
+### 8-3. 가챠 시스템 (Gacha)
 
 - [ ] GachaConfig (확률 테이블, 보장 시스템)
 - [ ] IGachaService / GachaService
 - [ ] 소환 연출 / 결과 UI
 
-### 7-4. 퀘스트 시스템 (Quest)
+### 8-4. 퀘스트 시스템 (Quest)
 
 - [ ] QuestConfig (일일/주간/업적)
 - [ ] QuestModel (진행 상태, 완료 여부)
 - [ ] IQuestService / QuestService
 - [ ] 퀘스트 UI
 
-### 7-5. 상점 시스템 (Shop)
+### 8-5. 상점 시스템 (Shop)
 
 - [ ] ShopConfig (상품 목록, 가격)
 - [ ] IShopService / ShopService
@@ -217,10 +244,20 @@
 - [x] 보스 자동 도전 토글
 - [x] 챕터/스테이지 진행 로직
 
+### UI 시스템 ✅
+
+- [x] IdleRPG.UI asmdef + GameInstaller UiService 바인딩
+- [x] TopHudPresenter (재화, 스테이지/웨이브, 보스 토글)
+- [x] MainBattleUiPresenter (전투력, 스킬 슬롯, 스탯 업그레이드 스크롤)
+- [x] StatUpgradeSlotView (스탯별 레벨/비용/잠금 표시 + 레벨업)
+- [x] BottomTabBarPresenter + BottomTabButton (6탭 전환 로직)
+- [x] 탭 컨텐츠 플레이스홀더 (Hero, Skill, Pet, Dungeon, Base, Summon)
+- [x] UiMessages (TabOpenedMessage, TabClosedMessage)
+
 ### 폴더 구조 ✅
 
 - [x] Feature 기반 폴더 구조 스캐폴딩
-- [x] asmdef 구성 (Core, Bootstrap, Hero, Battle, Stage, Editor, Tests)
+- [x] asmdef 구성 (Core, Bootstrap, Hero, Battle, Stage, Economy, Growth, Reward, UI, Editor, Tests)
 
 ---
 

@@ -1,10 +1,13 @@
+using Cysharp.Threading.Tasks;
 using Geuneda.Services;
+using Geuneda.UiService;
 using IdleRPG.Battle;
 using IdleRPG.Economy;
 using IdleRPG.Growth;
 using IdleRPG.Hero;
 using IdleRPG.Reward;
 using IdleRPG.Stage;
+using IdleRPG.UI;
 using UnityEngine;
 
 namespace IdleRPG.Core
@@ -18,12 +21,37 @@ namespace IdleRPG.Core
     /// </remarks>
     public class GameInstaller : MonoBehaviour
     {
+        [SerializeField] private PrefabRegistryUiConfigs _uiConfigs;
+
         private SaveService _saveService;
+        private IUiServiceInit _uiService;
 
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
             InitializeServices();
+        }
+
+        /// <summary>
+        /// 모든 서비스 초기화 후 초기 UI를 연다.
+        /// <c>Awake</c>에서 서비스 바인딩이 완료된 뒤 <c>Start</c>에서 실행되므로
+        /// 프레젠터가 <see cref="MainInstaller.Resolve{T}"/>를 안전하게 호출할 수 있다.
+        /// </summary>
+        private async void Start()
+        {
+            await OpenInitialUiAsync();
+        }
+
+        /// <summary>
+        /// 항상 표시되는 HUD(상단/하단)와 기본 전투 UI를 연다.
+        /// </summary>
+        private async UniTask OpenInitialUiAsync()
+        {
+            var uiService = MainInstaller.Resolve<IUiService>();
+
+            await uiService.OpenUiAsync<TopHudPresenter>();
+            await uiService.OpenUiAsync<BottomTabBarPresenter>();
+            await uiService.OpenUiAsync<MainBattleUiPresenter>();
         }
 
         /// <summary>
@@ -49,8 +77,21 @@ namespace IdleRPG.Core
             MainInstaller.Bind<ITimeService>(timeService);
             MainInstaller.Bind<ITimeManipulator>(timeService);
 
+            InitializeUiService();
+
             InitializeGameServices(
                 messageBroker, tickService, coroutineService, dataService, timeService);
+        }
+
+        /// <summary>
+        /// <see cref="IUiService"/>를 생성하고 <see cref="MainInstaller"/>에 바인딩한다.
+        /// </summary>
+        private void InitializeUiService()
+        {
+            var loader = new PrefabRegistryUiAssetLoader(_uiConfigs);
+            _uiService = new Geuneda.UiService.UiService(loader);
+            _uiService.Init(_uiConfigs);
+            MainInstaller.Bind<IUiService>(_uiService);
         }
 
         /// <summary>
@@ -142,6 +183,7 @@ namespace IdleRPG.Core
 
         private void OnDestroy()
         {
+            _uiService?.Dispose();
             _saveService?.Dispose();
             MainInstaller.Clean();
         }

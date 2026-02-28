@@ -9,8 +9,11 @@
         "IdleRPG.Battle",
         "IdleRPG.Reward",
         "IdleRPG.Growth",
+        "IdleRPG.UI",
         "Geuneda.GameData",
-        "Geuneda.Services"
+        "Geuneda.Services",
+        "Geuneda.UiService",
+        "UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

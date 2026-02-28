@@ -12,6 +12,9 @@ namespace IdleRPG.Stage
         /// <summary>현재 스테이지 진행 상태 모델</summary>
         StageModel Model { get; }
 
+        /// <summary>스테이지당 총 웨이브 수 (보스 웨이브 포함)</summary>
+        int WavesPerStage { get; }
+
         /// <summary>
         /// 현재 웨이브를 시작하고 <see cref="IdleRPG.Core.WaveStartedMessage"/>를 발행한다.
         /// </summary>

@@ -64,23 +64,41 @@ C# 9.0, 명시적 네임스페이스 사용.
 
 ## 폴더 구조
 
-Feature 기반 구조. 각 기능은 독립된 폴더에서 자체 Scripts/Prefabs/UI를 관리한다.
+Feature 기반 구조. 비즈니스 로직은 Features/, UI는 Assets/UI/에 집중한다.
+
+### 폴더 역할 기준
+
+| 찾고 싶은 것 | 위치 | 설명 |
+|-------------|------|------|
+| 비즈니스 로직 | `Features/{Feature}/Scripts/` | Service, Model, Component, Config |
+| 게임플레이 프리팹 | `Features/{Feature}/Prefabs/` | 캐릭터, 적, 투사체 등 |
+| UI 스크립트 | `UI/{Common,HUD,Popup}/Scripts/` | Presenter, View 스크립트 |
+| UI 프리팹 | `UI/{Common,HUD,Popup}/Prefabs/` | UI 화면 프리팹 (Addressables) |
+| 공통 프리팹 | `_Project/Prefabs/Common/` | 이펙트, 로딩 등 공유 프리팹 |
+| 아트 에셋 | `_Project/Art/{종류}/` | Sprites, Animations, Fonts, UI, VFX |
+| 설정 파일 | `_Project/Settings/` | URP, Input System, 렌더러 설정 |
+| 씬 | `_Project/Scenes/` | 게임 씬 파일 |
+| 데이터 설정 | `_Project/Configs/` | ConfigsProvider, 버전 데이터 등 |
+
+### 디렉토리 트리
 
 ```
 Assets/
   _Project/                  # 비코드 에셋 (상단 정렬)
     Art/
       Animations/
+      Fonts/                 # 폰트 에셋 (NotoSansKR 등)
       Sprites/
-      UI/
+      UI/                    # UI 스프라이트, 아이콘
       VFX/
     Audio/
       BGM/
       SFX/
-    Configs/Resources/       # 버전 데이터 등 기본 설정
-    Prefabs/Common/          # 공통 프리팹
-    Scenes/
-    Settings/                # URP, 렌더러 설정
+    Configs/                 # 설정 데이터
+      Resources/             # 버전 데이터 등 (Resources 로드)
+    Prefabs/Common/          # 공통 프리팹 (여러 Feature 공유)
+    Scenes/                  # 게임 씬
+    Settings/                # URP, 렌더러, Input System 설정
 
   Core/                      # 공통 기반 코드 (Feature 의존 금지)
     Scripts/
@@ -98,25 +116,26 @@ Assets/
         Configs/             # ScriptableObject 설정
         Models/              # POCO 데이터 모델
         Services/            # Feature 전용 서비스
-      Prefabs/
-      UI/
+      Prefabs/               # Feature 전용 프리팹
     Battle/                  # 전투 시스템 (자동 전투)
       Scripts/Components/, Configs/, Models/, Services/
       Prefabs/
-      UI/
     Stage/                   # 스테이지/던전 시스템
+    Economy/                 # 재화/경제 시스템
     Equipment/               # 장비 시스템
     Inventory/               # 인벤토리 시스템
     Gacha/                   # 가챠/소환 시스템
     Growth/                  # 성장/강화 시스템
     Quest/                   # 퀘스트 시스템
     Shop/                    # 상점 시스템
+    Reward/                  # 보상 시스템
     OfflineReward/           # 오프라인 보상 시스템
 
-  UI/                        # 여러 Feature 공유 UI
-    Common/Scripts/, Prefabs/
-    HUD/Scripts/, Prefabs/
-    Popup/Scripts/, Prefabs/
+  UI/                        # 모든 UI (여러 Feature 공유)
+    IdleRPG.UI.asmdef        # UI 전체 커버 asmdef
+    Common/Scripts/, Prefabs/ # 공통 UI (탭바, 전투 HUD 등)
+    HUD/Scripts/, Prefabs/    # 상단 HUD
+    Popup/Scripts/, Prefabs/  # 팝업 UI (영웅, 던전, 소환 탭 등)
 
   Editor/                    # 에디터 전용 (별도 asmdef)
     Scripts/
@@ -128,6 +147,12 @@ Assets/
     EditMode/
     PlayMode/
 ```
+
+### 건드리지 않는 외부 폴더
+
+- `TextMesh Pro/` - Unity 자동 생성 (이동 시 재생성 위험)
+- `Plugins/Demigiant/` - DOTween 라이브러리 관례 유지
+- `Resources/` - DOTween 런타임 설정 전용 (게임 에셋은 Addressables 사용)
 
 ## 서비스 초기화 순서
 
