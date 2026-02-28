@@ -48,7 +48,7 @@ namespace IdleRPG.Growth
         /// <summary>
         /// BigNumber 계열 스탯인지 여부.
         /// <see cref="HeroStatType.Attack"/>, <see cref="HeroStatType.Hp"/>,
-        /// <see cref="HeroStatType.Defense"/>, <see cref="HeroStatType.HpRegen"/>이 해당한다.
+        /// <see cref="HeroStatType.HpRegen"/>이 해당한다.
         /// </summary>
         public bool IsBigNumberStat;
 

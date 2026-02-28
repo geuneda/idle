@@ -19,9 +19,6 @@ namespace IdleRPG.Hero
         /// <summary>공격력</summary>
         public ObservableField<BigNumber> Attack { get; }
 
-        /// <summary>방어력</summary>
-        public ObservableField<BigNumber> Defense { get; }
-
         /// <summary>초당 체력 재생량</summary>
         public ObservableField<BigNumber> HpRegen { get; }
 
@@ -64,7 +61,6 @@ namespace IdleRPG.Hero
             Hp = new ObservableField<BigNumber>(config.BaseHp);
             MaxHp = new ObservableField<BigNumber>(config.BaseHp);
             Attack = new ObservableField<BigNumber>(config.BaseAttack);
-            Defense = new ObservableField<BigNumber>(config.BaseDefense);
             HpRegen = new ObservableField<BigNumber>(config.BaseHpRegen);
             AttackSpeed = new ObservableField<float>(config.BaseAttackSpeed);
             CritRate = new ObservableField<float>(config.BaseCritRate);
@@ -84,7 +80,7 @@ namespace IdleRPG.Hero
         /// <summary>
         /// 지정한 스탯 유형의 값을 <see cref="BigNumber"/>로 설정한다.
         /// <see cref="HeroStatType.Hp"/>, <see cref="HeroStatType.Attack"/>,
-        /// <see cref="HeroStatType.Defense"/>, <see cref="HeroStatType.HpRegen"/>에 사용한다.
+        /// <see cref="HeroStatType.HpRegen"/>에 사용한다.
         /// </summary>
         /// <param name="statType">설정할 스탯 유형</param>
         /// <param name="value">설정할 값</param>
@@ -99,9 +95,6 @@ namespace IdleRPG.Hero
                     break;
                 case HeroStatType.Attack:
                     Attack.Value = value;
-                    break;
-                case HeroStatType.Defense:
-                    Defense.Value = value;
                     break;
                 case HeroStatType.HpRegen:
                     HpRegen.Value = value;
@@ -152,15 +145,14 @@ namespace IdleRPG.Hero
         }
 
         /// <summary>
-        /// 피해를 받아 체력을 감소시킨다. 방어력만큼 피해가 경감되며 최소 1의 피해를 받는다.
+        /// 피해를 받아 체력을 감소시킨다. 최소 1의 피해를 받는다.
         /// </summary>
         /// <param name="damage">받은 피해량</param>
         public void TakeDamage(BigNumber damage)
         {
-            BigNumber reduced = damage - Defense.Value;
-            if (reduced < BigNumber.One) reduced = BigNumber.One;
+            if (damage < BigNumber.One) damage = BigNumber.One;
 
-            BigNumber newHp = Hp.Value - reduced;
+            BigNumber newHp = Hp.Value - damage;
             Hp.Value = BigNumber.Max(newHp, BigNumber.Zero);
         }
 

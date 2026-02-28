@@ -15,9 +15,6 @@ namespace IdleRPG.Hero
         /// <summary>기본 공격력</summary>
         public BigNumber BaseAttack = 10;
 
-        /// <summary>기본 방어력</summary>
-        public BigNumber BaseDefense = 2;
-
         /// <summary>기본 공격 속도 (초당 공격 횟수)</summary>
         public float BaseAttackSpeed = 1f;
 

@@ -18,9 +18,6 @@ namespace IdleRPG.Battle
         /// <summary>기본 공격력</summary>
         public BigNumber BaseAttack = 5;
 
-        /// <summary>기본 방어력</summary>
-        public BigNumber BaseDefense = BigNumber.Zero;
-
         /// <summary>이동 속도 (초당 유닛)</summary>
         public float MoveSpeed = 2f;
 

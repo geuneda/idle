@@ -17,9 +17,6 @@ namespace IdleRPG.Battle
         /// <summary>공격력</summary>
         public BigNumber Attack;
 
-        /// <summary>방어력</summary>
-        public BigNumber Defense;
-
         /// <summary>이동 속도 (초당 유닛)</summary>
         public float MoveSpeed;
 
@@ -48,7 +45,6 @@ namespace IdleRPG.Battle
             MaxHp = config.BaseHp * hpMultiplier;
             CurrentHp = MaxHp;
             Attack = config.BaseAttack * attackMultiplier;
-            Defense = config.BaseDefense;
             MoveSpeed = config.MoveSpeed;
             AttackRange = config.AttackRange;
             AttackSpeed = config.AttackSpeed;
@@ -58,15 +54,14 @@ namespace IdleRPG.Battle
         public bool IsAlive => CurrentHp > BigNumber.Zero;
 
         /// <summary>
-        /// 피해를 받아 체력을 감소시킨다. 방어력만큼 피해가 경감되며 최소 1의 피해를 받는다.
+        /// 피해를 받아 체력을 감소시킨다. 최소 1의 피해를 받는다.
         /// </summary>
         /// <param name="damage">받은 피해량</param>
         public void TakeDamage(BigNumber damage)
         {
-            BigNumber reduced = damage - Defense;
-            if (reduced < BigNumber.One) reduced = BigNumber.One;
+            if (damage < BigNumber.One) damage = BigNumber.One;
 
-            BigNumber newHp = CurrentHp - reduced;
+            BigNumber newHp = CurrentHp - damage;
             CurrentHp = BigNumber.Max(newHp, BigNumber.Zero);
         }
     }
