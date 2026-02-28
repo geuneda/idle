@@ -16,21 +16,18 @@
 
 ### 1-1. 재화 시스템 (CurrencyService)
 
-- [ ] `CurrencyType` 열거형 정의 (Gold, Gem, Exp 등)
-- [ ] `CurrencyModel` 구현 (ObservableField<BigNumber> 기반 재화 저장소)
-- [ ] `ICurrencyService` / `CurrencyService` 구현
-- [ ] 커맨드 패턴으로 재화 증감 처리 (CommandService 연동)
-- [ ] GameInstaller에 CurrencyService 바인딩
-- [ ] asmdef 생성 (IdleRPG.Economy)
+- [x] `CurrencyType` 열거형 정의 (Gold, Gem)
+- [x] `CurrencyModel` 구현 (ObservableDictionary<CurrencyType, BigNumber> 기반 재화 저장소)
+- [x] `ICurrencyService` / `CurrencyService` 구현
+- [x] 커맨드 패턴으로 재화 증감 처리 (CommandService 연동)
+- [x] GameInstaller에 CurrencyService 바인딩
+- [x] asmdef 생성 (IdleRPG.Economy)
 
 ### 1-2. 보상 시스템 (RewardService)
 
-- [ ] `RewardConfig` 설정 데이터 (적/웨이브/스테이지 클리어 보상)
+- [ ] `RewardConfig` 설정 데이터 (적 처치 보상 보상)
 - [ ] `IRewardService` / `RewardService` 구현
 - [ ] `EnemyDiedMessage` 구독 → 골드/경험치 지급
-- [ ] `WaveClearedMessage` 구독 → 웨이브 클리어 보상
-- [ ] `StageClearedMessage` 구독 → 스테이지 클리어 보상
-- [ ] `ChapterClearedMessage` 구독 → 챕터 클리어 보상
 - [ ] GameInstaller에 RewardService 바인딩
 
 ---

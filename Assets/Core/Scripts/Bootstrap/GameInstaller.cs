@@ -1,5 +1,6 @@
 using Geuneda.Services;
 using IdleRPG.Battle;
+using IdleRPG.Economy;
 using IdleRPG.Hero;
 using IdleRPG.Stage;
 using UnityEngine;
@@ -42,11 +43,15 @@ namespace IdleRPG.Core
         }
 
         /// <summary>
-        /// 게임 고유 서비스(Stage, Hero, Battle)를 생성하고 <see cref="MainInstaller"/>에 바인딩한다.
+        /// 게임 고유 서비스(Economy, Stage, Hero, Battle)를 생성하고 <see cref="MainInstaller"/>에 바인딩한다.
         /// </summary>
         /// <param name="messageBroker">이벤트 통신용 메시지 브로커</param>
         private void InitializeGameServices(IMessageBrokerService messageBroker)
         {
+            var currencyModel = new CurrencyModel();
+            var currencyService = new CurrencyService(currencyModel, messageBroker);
+            MainInstaller.Bind<ICurrencyService>(currencyService);
+
             var stageConfig = new StageConfig();
             var stageModel = new StageModel();
             var stageService = new StageService(stageConfig, stageModel, messageBroker);
