@@ -2,6 +2,7 @@ using Geuneda.Services;
 using IdleRPG.Battle;
 using IdleRPG.Economy;
 using IdleRPG.Hero;
+using IdleRPG.Reward;
 using IdleRPG.Stage;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ namespace IdleRPG.Core
     /// </summary>
     /// <remarks>
     /// <para>씬에 배치되며 <c>DontDestroyOnLoad</c>로 앱 생명주기 동안 유지된다.</para>
-    /// <para>서비스 초기화 순서: 프레임워크 → 게임 고유 서비스 (Stage → Hero → Battle)</para>
+    /// <para>서비스 초기화 순서: 프레임워크 → 게임 고유 서비스 (Economy → Stage → Hero → Battle → Reward)</para>
     /// </remarks>
     public class GameInstaller : MonoBehaviour
     {
@@ -86,6 +87,11 @@ namespace IdleRPG.Core
                 stageService, stageConfig, heroModel,
                 normalEnemy, bossEnemy, messageBroker);
             MainInstaller.Bind<IBattleService>(battleService);
+
+            var rewardConfig = new RewardConfig();
+            var rewardService = new RewardService(
+                rewardConfig, currencyService, stageService, stageConfig, messageBroker);
+            MainInstaller.Bind<IRewardService>(rewardService);
         }
 
         private void OnDestroy()

@@ -25,10 +25,11 @@
 
 ### 1-2. 보상 시스템 (RewardService)
 
-- [ ] `RewardConfig` 설정 데이터 (적 처치 보상 보상)
-- [ ] `IRewardService` / `RewardService` 구현
-- [ ] `EnemyDiedMessage` 구독 → 골드/경험치 지급
-- [ ] GameInstaller에 RewardService 바인딩
+- [x] `RewardConfig` 설정 데이터 (적 처치 보상)
+- [x] `IRewardService` / `RewardService` 구현
+- [x] `EnemyDiedMessage` 구독 → 골드 지급
+- [x] GameInstaller에 RewardService 바인딩
+- [x] asmdef 생성 (IdleRPG.Reward)
 
 ---
 
