@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0e381bf6e3a1418488eadab49122444, type: 3}
+  m_Name: AddressablesUiConfigs
+  m_EditorClassIdentifier: Geuneda.UiService::Geuneda.UiService.AddressablesUiConfigs
+  _configs:
+  - Address: Assets/UI/Common/Prefabs/BottomTabBarPresenter.prefab
+    Layer: 100
+    UiType: IdleRPG.UI.BottomTabBarPresenter, IdleRPG.UI, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Address: Assets/UI/Common/Prefabs/LoadingPresenter.prefab
+    Layer: 200
+    UiType: IdleRPG.UI.LoadingPresenter, IdleRPG.UI, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Address: Assets/UI/HUD/Prefabs/TopHudPresenter.prefab
+    Layer: 0
+    UiType: IdleRPG.UI.TopHudPresenter, IdleRPG.UI, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Address: Assets/UI/Common/Prefabs/MainBattleUiPresenter.prefab
+    Layer: 0
+    UiType: IdleRPG.UI.MainBattleUiPresenter, IdleRPG.UI, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Address: Assets/UI/Popup/Prefabs/PetTabPresenter.prefab
+    Layer: 10
+    UiType: IdleRPG.UI.PetTabPresenter, IdleRPG.UI, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Address: Assets/UI/Popup/Prefabs/DungeonTabPresenter.prefab
+    Layer: 10
+    UiType: IdleRPG.UI.DungeonTabPresenter, IdleRPG.UI, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Address: Assets/UI/Popup/Prefabs/BaseTabPresenter.prefab
+    Layer: 10
+    UiType: IdleRPG.UI.BaseTabPresenter, IdleRPG.UI, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Address: Assets/UI/Popup/Prefabs/SkillTabPresenter.prefab
+    Layer: 10
+    UiType: IdleRPG.UI.SkillTabPresenter, IdleRPG.UI, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Address: Assets/UI/Popup/Prefabs/SummonTabPresenter.prefab
+    Layer: 10
+    UiType: IdleRPG.UI.SummonTabPresenter, IdleRPG.UI, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Address: Assets/UI/Popup/Prefabs/HeroTabPresenter.prefab
+    Layer: 10
+    UiType: IdleRPG.UI.HeroTabPresenter, IdleRPG.UI, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  _sets:
+  - SetId: 0
+    UiEntries: []
+  - SetId: 1
+    UiEntries: []
+  - SetId: 2
+    UiEntries: []
+  - SetId: 3
+    UiEntries: []
+  - SetId: 4
+    UiEntries: []
+  - SetId: 5
+    UiEntries: []

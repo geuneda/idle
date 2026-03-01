@@ -22,7 +22,7 @@ namespace IdleRPG.Core
     /// </remarks>
     public class GameInstaller : MonoBehaviour
     {
-        [SerializeField] private PrefabRegistryUiConfigs _uiConfigs;
+        [SerializeField] private AddressablesUiConfigs _uiConfigs;
 
         private SaveService _saveService;
         private IUiServiceInit _uiService;
@@ -188,7 +188,7 @@ namespace IdleRPG.Core
         /// </summary>
         private void InitializeUiService()
         {
-            var loader = new PrefabRegistryUiAssetLoader(_uiConfigs);
+            var loader = new AddressablesUiAssetLoader();
             _uiService = new Geuneda.UiService.UiService(loader);
             _uiService.Init(_uiConfigs);
             MainInstaller.Bind<IUiService>(_uiService);

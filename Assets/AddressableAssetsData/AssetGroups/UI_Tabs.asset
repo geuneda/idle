@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: UI_Tabs
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: UI_Tabs
+  m_GUID: e82c2c5f0e5214b8987a6c4f0e60e951
+  m_SerializeEntries:
+  - m_GUID: 0b13ed1a6b68f400aa327effa5c90ba7
+    m_Address: Assets/UI/Popup/Prefabs/PetTabPresenter.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 15dd3cb18c2414656bd9d45ecc9b7045
+    m_Address: Assets/UI/Popup/Prefabs/DungeonTabPresenter.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 336971e07bd5c407f9ac10a80846543a
+    m_Address: Assets/UI/Popup/Prefabs/BaseTabPresenter.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 557ff275db7384442bb18f69795a0742
+    m_Address: Assets/UI/Popup/Prefabs/SkillTabPresenter.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a9a0ebeab9b8401b831f5ef54242c15
+    m_Address: Assets/UI/Popup/Prefabs/SummonTabPresenter.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cf432e46cc6e048ad8031f19d087d21d
+    m_Address: Assets/UI/Popup/Prefabs/HeroTabPresenter.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 3424eafbe2c8148b591eebb409068e2c, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 86d2d5b976a7543eebe272efcbddd4e2, type: 2}
+    - {fileID: 11400000, guid: 3daf15310395f44d798e6ed6a575bc52, type: 2}

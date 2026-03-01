@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Battle_Core
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Battle_Core
+  m_GUID: 7418f77444ae443d2a993b20fb441e5a
+  m_SerializeEntries:
+  - m_GUID: a4449db6489fb401fadb3fdbc2da457b
+    m_Address: Assets/Features/Battle/Prefabs/Projectile_Temp.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2
+    m_Address: Assets/Features/Battle/Prefabs/Enemy_Temp.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ebea5f8b8163f9a4ab9d9a1b45444e28
+    m_Address: Assets/Features/Hero/Prefabs/Hero_Temp.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 3424eafbe2c8148b591eebb409068e2c, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 552ba7c1b6b2d4b8d92f757835b38761, type: 2}
+    - {fileID: 11400000, guid: 5717f15f9562f41f7a86d86cba6829be, type: 2}
