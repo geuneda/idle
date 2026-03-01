@@ -1,0 +1,20 @@
+{
+    "name": "IdleRPG.Equipment",
+    "rootNamespace": "IdleRPG.Equipment",
+    "references": [
+        "IdleRPG.Core",
+        "IdleRPG.Hero",
+        "IdleRPG.Growth",
+        "Geuneda.GameData",
+        "Geuneda.Services"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

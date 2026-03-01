@@ -3,6 +3,7 @@ using System.Collections;
 using System.Globalization;
 using Geuneda.Services;
 using IdleRPG.Economy;
+using IdleRPG.Equipment;
 using IdleRPG.Growth;
 using IdleRPG.Hero;
 using IdleRPG.Stage;
@@ -22,6 +23,8 @@ namespace IdleRPG.Core
         private readonly StageModel _stageModel;
         private readonly CurrencyModel _currencyModel;
         private readonly HeroGrowthModel _growthModel;
+        private readonly EquipmentModel _equipmentModel;
+        private readonly EquipmentConfigCollection _equipmentConfig;
         private readonly IDataService _dataService;
         private readonly ITickService _tickService;
         private readonly ICoroutineService _coroutineService;
@@ -38,6 +41,8 @@ namespace IdleRPG.Core
         /// <param name="stageModel">스테이지 진행 모델</param>
         /// <param name="currencyModel">재화 모델</param>
         /// <param name="growthModel">영웅 성장 모델</param>
+        /// <param name="equipmentModel">장비 모델</param>
+        /// <param name="equipmentConfig">장비 설정 (장비 ID 열거용)</param>
         /// <param name="dataService">데이터 영속성 서비스</param>
         /// <param name="tickService">주기적 업데이트 서비스</param>
         /// <param name="coroutineService">코루틴 호스트 서비스</param>
@@ -47,6 +52,8 @@ namespace IdleRPG.Core
             StageModel stageModel,
             CurrencyModel currencyModel,
             HeroGrowthModel growthModel,
+            EquipmentModel equipmentModel,
+            EquipmentConfigCollection equipmentConfig,
             IDataService dataService,
             ITickService tickService,
             ICoroutineService coroutineService,
@@ -56,6 +63,8 @@ namespace IdleRPG.Core
             _stageModel = stageModel;
             _currencyModel = currencyModel;
             _growthModel = growthModel;
+            _equipmentModel = equipmentModel;
+            _equipmentConfig = equipmentConfig;
             _dataService = dataService;
             _tickService = tickService;
             _coroutineService = coroutineService;
@@ -135,6 +144,9 @@ namespace IdleRPG.Core
             _messageBroker.Subscribe<StatLevelUpMessage>(OnStatLevelUp);
             _messageBroker.Subscribe<StageClearedMessage>(OnStageCleared);
             _messageBroker.Subscribe<ChapterClearedMessage>(OnChapterCleared);
+            _messageBroker.Subscribe<EquipmentAcquiredMessage>(OnEquipmentChanged);
+            _messageBroker.Subscribe<EquipmentUpgradedMessage>(OnEquipmentChanged);
+            _messageBroker.Subscribe<EquipmentEquippedMessage>(OnEquipmentChanged);
 
             Debug.Log("[SaveService] 자동 저장 시작");
         }
@@ -149,6 +161,9 @@ namespace IdleRPG.Core
             _messageBroker.Unsubscribe<StatLevelUpMessage>(this);
             _messageBroker.Unsubscribe<StageClearedMessage>(this);
             _messageBroker.Unsubscribe<ChapterClearedMessage>(this);
+            _messageBroker.Unsubscribe<EquipmentAcquiredMessage>(this);
+            _messageBroker.Unsubscribe<EquipmentUpgradedMessage>(this);
+            _messageBroker.Unsubscribe<EquipmentEquippedMessage>(this);
 
             CancelDebounce();
 
@@ -166,6 +181,7 @@ namespace IdleRPG.Core
             ApplyStageData(saveData.Stage);
             ApplyCurrencyData(saveData.Currency);
             ApplyGrowthData(saveData.Growth);
+            ApplyEquipmentData(saveData.Equipment);
 
             bool hasExisting = saveData.LastSaveTimestamp > 0;
 
@@ -193,7 +209,8 @@ namespace IdleRPG.Core
                 LastSaveTimestamp = _timeService.UnixTimeNow,
                 Stage = ExtractStageData(),
                 Currency = ExtractCurrencyData(),
-                Growth = ExtractGrowthData()
+                Growth = ExtractGrowthData(),
+                Equipment = ExtractEquipmentData()
             };
         }
 
@@ -269,6 +286,52 @@ namespace IdleRPG.Core
             }
         }
 
+        private EquipmentSaveData ExtractEquipmentData()
+        {
+            var data = new EquipmentSaveData();
+            foreach (var item in _equipmentModel.GetAllItems())
+            {
+                if (item.OwnedCount.Value <= 0 && item.Level.Value <= 0) continue;
+
+                data.Items[item.Id] = new EquipmentItemSaveEntry
+                {
+                    OwnedCount = item.OwnedCount.Value,
+                    Level = item.Level.Value
+                };
+            }
+
+            foreach (EquipmentType type in Enum.GetValues(typeof(EquipmentType)))
+            {
+                int equippedId = _equipmentModel.GetEquippedId(type);
+                if (equippedId != EquipmentModel.UNEQUIPPED)
+                {
+                    data.Equipped[(int)type] = equippedId;
+                }
+            }
+
+            return data;
+        }
+
+        private void ApplyEquipmentData(EquipmentSaveData data)
+        {
+            if (data == null) return;
+
+            foreach (var pair in data.Items)
+            {
+                var state = _equipmentModel.GetOrCreateItemState(pair.Key);
+                state.OwnedCount.Value = pair.Value.OwnedCount;
+                state.Level.Value = pair.Value.Level;
+            }
+
+            foreach (var pair in data.Equipped)
+            {
+                if (!Enum.IsDefined(typeof(EquipmentType), pair.Key)) continue;
+
+                var type = (EquipmentType)pair.Key;
+                _equipmentModel.Equip(type, pair.Value);
+            }
+        }
+
         private void OnAutoSaveTick(float deltaTime)
         {
             Save();
@@ -285,6 +348,11 @@ namespace IdleRPG.Core
         }
 
         private void OnChapterCleared(ChapterClearedMessage message)
+        {
+            MarkDirty();
+        }
+
+        private void OnEquipmentChanged<T>(T message)
         {
             MarkDirty();
         }

@@ -5,6 +5,7 @@ using Geuneda.Services;
 using Geuneda.UiService;
 using IdleRPG.Battle;
 using IdleRPG.Economy;
+using IdleRPG.Equipment;
 using IdleRPG.Growth;
 using IdleRPG.Hero;
 using IdleRPG.OfflineReward;
@@ -40,6 +41,7 @@ namespace IdleRPG.Core
         private GrowthConfigAsset _growthConfigAsset;
         private RewardConfigAsset _rewardConfigAsset;
         private OfflineRewardConfigAsset _offlineRewardConfigAsset;
+        private EquipmentConfigAsset _equipmentConfigAsset;
         private readonly List<AsyncOperationHandle> _configHandles = new List<AsyncOperationHandle>();
 
         private void Awake()
@@ -176,6 +178,7 @@ namespace IdleRPG.Core
             var growthOp = Addressables.LoadAssetAsync<GrowthConfigAsset>("GrowthConfigAsset");
             var rewardOp = Addressables.LoadAssetAsync<RewardConfigAsset>("RewardConfigAsset");
             var offlineRewardOp = Addressables.LoadAssetAsync<OfflineRewardConfigAsset>("OfflineRewardConfigAsset");
+            var equipmentOp = Addressables.LoadAssetAsync<EquipmentConfigAsset>("EquipmentConfigAsset");
 
             _configHandles.Add(heroOp);
             _configHandles.Add(enemyOp);
@@ -183,6 +186,7 @@ namespace IdleRPG.Core
             _configHandles.Add(growthOp);
             _configHandles.Add(rewardOp);
             _configHandles.Add(offlineRewardOp);
+            _configHandles.Add(equipmentOp);
 
             _heroConfigAsset = await heroOp.Task;
             _enemyConfigsAsset = await enemyOp.Task;
@@ -190,6 +194,7 @@ namespace IdleRPG.Core
             _growthConfigAsset = await growthOp.Task;
             _rewardConfigAsset = await rewardOp.Task;
             _offlineRewardConfigAsset = await offlineRewardOp.Task;
+            _equipmentConfigAsset = await equipmentOp.Task;
         }
 
         /// <summary>
@@ -205,6 +210,7 @@ namespace IdleRPG.Core
             provider.AddSingletonConfig(_growthConfigAsset.Config);
             provider.AddSingletonConfig(_rewardConfigAsset.Config);
             provider.AddSingletonConfig(_offlineRewardConfigAsset.Config);
+            provider.AddSingletonConfig(_equipmentConfigAsset.Config);
             provider.AddConfigs(config => config.Id, _enemyConfigsAsset.Configs);
 
             return provider;
@@ -301,9 +307,12 @@ namespace IdleRPG.Core
             var currencyModel = new CurrencyModel();
             var stageModel = new StageModel();
             var growthModel = new HeroGrowthModel();
+            var equipmentModel = new EquipmentModel();
+            var equipmentConfig = configsProvider.GetConfig<EquipmentConfigCollection>();
 
             _saveService = new SaveService(
                 stageModel, currencyModel, growthModel,
+                equipmentModel, equipmentConfig,
                 dataService, tickService, coroutineService, messageBroker, timeService);
 
             var saveData = _saveService.Load();
@@ -326,6 +335,11 @@ namespace IdleRPG.Core
             var growthService = new HeroGrowthService(
                 growthConfig, growthModel, heroModel, currencyService, messageBroker);
             MainInstaller.Bind<IHeroGrowthService>(growthService);
+
+            var equipmentService = new EquipmentService(
+                equipmentConfig, equipmentModel, heroModel,
+                growthService, messageBroker);
+            MainInstaller.Bind<IEquipmentService>(equipmentService);
 
             var normalEnemy = configsProvider.GetConfig<EnemyConfig>(1);
             var bossEnemy = configsProvider.GetConfig<EnemyConfig>(100);

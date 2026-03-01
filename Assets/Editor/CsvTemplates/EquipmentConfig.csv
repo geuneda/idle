@@ -1,0 +1,63 @@
+Id,Type,SubKind,Grade,DisplayName,SpriteKey,BasePossessionEffect,PossessionEffectPerLevel,BaseEquipEffect,EquipEffectPerLevel,MaxLevel
+1001,Weapon,0,Normal,검,equip_weapon_sword_normal,3,3,15,15,0
+1002,Weapon,1,Normal,창,equip_weapon_spear_normal,3,3,18,18,0
+1003,Weapon,2,Normal,지팡이,equip_weapon_staff_normal,3,3,21,21,0
+1004,Weapon,3,Normal,도끼,equip_weapon_axe_normal,3,3,24,24,0
+1005,Weapon,4,Normal,활,equip_weapon_bow_normal,3,3,27,27,0
+1006,Weapon,0,Advanced,고급 검,equip_weapon_sword_advanced,10,10,60,60,0
+1007,Weapon,1,Advanced,고급 창,equip_weapon_spear_advanced,10,10,75,75,0
+1008,Weapon,2,Advanced,고급 지팡이,equip_weapon_staff_advanced,10,10,90,90,0
+1009,Weapon,3,Advanced,고급 도끼,equip_weapon_axe_advanced,10,10,105,105,0
+1010,Weapon,4,Advanced,고급 활,equip_weapon_bow_advanced,10,10,120,120,0
+1011,Weapon,0,Rare,희귀 검,equip_weapon_sword_rare,100,50,500,250,0
+1012,Weapon,1,Rare,희귀 창,equip_weapon_spear_rare,100,50,600,300,0
+1013,Weapon,2,Rare,희귀 지팡이,equip_weapon_staff_rare,100,50,700,350,0
+1014,Weapon,3,Rare,희귀 도끼,equip_weapon_axe_rare,100,50,800,400,0
+1015,Weapon,4,Rare,희귀 활,equip_weapon_bow_rare,100,50,900,450,0
+1016,Weapon,0,Epic,영웅 검,equip_weapon_sword_epic,500,400,2200,1760,0
+1017,Weapon,1,Epic,영웅 창,equip_weapon_spear_epic,500,400,2700,2160,0
+1018,Weapon,2,Epic,영웅 지팡이,equip_weapon_staff_epic,500,400,3200,2560,0
+1019,Weapon,3,Epic,영웅 도끼,equip_weapon_axe_epic,500,400,3700,2960,0
+1020,Weapon,4,Epic,영웅 활,equip_weapon_bow_epic,500,400,4200,3360,0
+1021,Weapon,0,Legend,전설 검,equip_weapon_sword_legend,2500,2000,10000,8000,0
+1022,Weapon,1,Legend,전설 창,equip_weapon_spear_legend,2500,2000,12000,9600,0
+1023,Weapon,2,Legend,전설 지팡이,equip_weapon_staff_legend,2500,2000,14000,11200,0
+1024,Weapon,3,Legend,전설 도끼,equip_weapon_axe_legend,2500,2000,16000,12800,0
+1025,Weapon,4,Legend,전설 활,equip_weapon_bow_legend,2500,2000,18000,14400,0
+1026,Weapon,0,Myth,신화 검,equip_weapon_sword_myth,12500,10000,45000,36000,0
+1027,Weapon,1,Myth,신화 창,equip_weapon_spear_myth,12500,10000,55000,44000,0
+1028,Weapon,2,Myth,신화 지팡이,equip_weapon_staff_myth,12500,10000,65000,52000,0
+1029,Weapon,3,Myth,신화 도끼,equip_weapon_axe_myth,12500,10000,75000,60000,0
+1030,Weapon,4,Myth,신화 활,equip_weapon_bow_myth,12500,10000,85000,68000,0
+1031,Weapon,0,Special,천상의 검,equip_weapon_special,60000,60000,200000,200000,0
+2001,Armor,0,Normal,투구,equip_armor_helmet_normal,3,3,12,12,0
+2002,Armor,1,Normal,흉갑,equip_armor_chestplate_normal,3,3,14,14,0
+2003,Armor,2,Normal,각반,equip_armor_leggings_normal,3,3,17,17,0
+2004,Armor,3,Normal,방패,equip_armor_shield_normal,3,3,19,19,0
+2005,Armor,4,Normal,장화,equip_armor_boots_normal,3,3,22,22,0
+2006,Armor,0,Advanced,고급 투구,equip_armor_helmet_advanced,10,10,48,48,0
+2007,Armor,1,Advanced,고급 흉갑,equip_armor_chestplate_advanced,10,10,60,60,0
+2008,Armor,2,Advanced,고급 각반,equip_armor_leggings_advanced,10,10,72,72,0
+2009,Armor,3,Advanced,고급 방패,equip_armor_shield_advanced,10,10,84,84,0
+2010,Armor,4,Advanced,고급 장화,equip_armor_boots_advanced,10,10,96,96,0
+2011,Armor,0,Rare,희귀 투구,equip_armor_helmet_rare,100,50,400,200,0
+2012,Armor,1,Rare,희귀 흉갑,equip_armor_chestplate_rare,100,50,480,240,0
+2013,Armor,2,Rare,희귀 각반,equip_armor_leggings_rare,100,50,560,280,0
+2014,Armor,3,Rare,희귀 방패,equip_armor_shield_rare,100,50,640,320,0
+2015,Armor,4,Rare,희귀 장화,equip_armor_boots_rare,100,50,720,360,0
+2016,Armor,0,Epic,영웅 투구,equip_armor_helmet_epic,500,400,1760,1408,0
+2017,Armor,1,Epic,영웅 흉갑,equip_armor_chestplate_epic,500,400,2160,1728,0
+2018,Armor,2,Epic,영웅 각반,equip_armor_leggings_epic,500,400,2560,2048,0
+2019,Armor,3,Epic,영웅 방패,equip_armor_shield_epic,500,400,2960,2368,0
+2020,Armor,4,Epic,영웅 장화,equip_armor_boots_epic,500,400,3360,2688,0
+2021,Armor,0,Legend,전설 투구,equip_armor_helmet_legend,2500,2000,8000,6400,0
+2022,Armor,1,Legend,전설 흉갑,equip_armor_chestplate_legend,2500,2000,9600,7680,0
+2023,Armor,2,Legend,전설 각반,equip_armor_leggings_legend,2500,2000,11200,8960,0
+2024,Armor,3,Legend,전설 방패,equip_armor_shield_legend,2500,2000,12800,10240,0
+2025,Armor,4,Legend,전설 장화,equip_armor_boots_legend,2500,2000,14400,11520,0
+2026,Armor,0,Myth,신화 투구,equip_armor_helmet_myth,12500,10000,36000,28800,0
+2027,Armor,1,Myth,신화 흉갑,equip_armor_chestplate_myth,12500,10000,44000,35200,0
+2028,Armor,2,Myth,신화 각반,equip_armor_leggings_myth,12500,10000,52000,41600,0
+2029,Armor,3,Myth,신화 방패,equip_armor_shield_myth,12500,10000,60000,48000,0
+2030,Armor,4,Myth,신화 장화,equip_armor_boots_myth,12500,10000,68000,54400,0
+2031,Armor,0,Special,천상의 갑옷,equip_armor_special,60000,60000,160000,160000,0

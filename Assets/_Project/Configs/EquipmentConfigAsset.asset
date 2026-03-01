@@ -1,0 +1,702 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fccfd1e1cc6844dda7450132ba5f72b, type: 3}
+  m_Name: EquipmentConfigAsset
+  m_EditorClassIdentifier: IdleRPG.Equipment::IdleRPG.Equipment.EquipmentConfigAsset
+  _config:
+    Entries:
+    - Id: 1001
+      Type: 0
+      SubKind: 0
+      Grade: 0
+      DisplayName: "\uAC80"
+      SpriteKey: equip_weapon_sword_normal
+      BasePossessionEffect: 3
+      PossessionEffectPerLevel: 3
+      BaseEquipEffect: 15
+      EquipEffectPerLevel: 15
+      MaxLevel: 0
+    - Id: 1002
+      Type: 0
+      SubKind: 1
+      Grade: 0
+      DisplayName: "\uCC3D"
+      SpriteKey: equip_weapon_spear_normal
+      BasePossessionEffect: 3
+      PossessionEffectPerLevel: 3
+      BaseEquipEffect: 18
+      EquipEffectPerLevel: 18
+      MaxLevel: 0
+    - Id: 1003
+      Type: 0
+      SubKind: 2
+      Grade: 0
+      DisplayName: "\uC9C0\uD321\uC774"
+      SpriteKey: equip_weapon_staff_normal
+      BasePossessionEffect: 3
+      PossessionEffectPerLevel: 3
+      BaseEquipEffect: 21
+      EquipEffectPerLevel: 21
+      MaxLevel: 0
+    - Id: 1004
+      Type: 0
+      SubKind: 3
+      Grade: 0
+      DisplayName: "\uB3C4\uB07C"
+      SpriteKey: equip_weapon_axe_normal
+      BasePossessionEffect: 3
+      PossessionEffectPerLevel: 3
+      BaseEquipEffect: 24
+      EquipEffectPerLevel: 24
+      MaxLevel: 0
+    - Id: 1005
+      Type: 0
+      SubKind: 4
+      Grade: 0
+      DisplayName: "\uD65C"
+      SpriteKey: equip_weapon_bow_normal
+      BasePossessionEffect: 3
+      PossessionEffectPerLevel: 3
+      BaseEquipEffect: 27
+      EquipEffectPerLevel: 27
+      MaxLevel: 0
+    - Id: 1006
+      Type: 0
+      SubKind: 0
+      Grade: 1
+      DisplayName: "\uACE0\uAE09 \uAC80"
+      SpriteKey: equip_weapon_sword_advanced
+      BasePossessionEffect: 10
+      PossessionEffectPerLevel: 10
+      BaseEquipEffect: 60
+      EquipEffectPerLevel: 60
+      MaxLevel: 0
+    - Id: 1007
+      Type: 0
+      SubKind: 1
+      Grade: 1
+      DisplayName: "\uACE0\uAE09 \uCC3D"
+      SpriteKey: equip_weapon_spear_advanced
+      BasePossessionEffect: 10
+      PossessionEffectPerLevel: 10
+      BaseEquipEffect: 75
+      EquipEffectPerLevel: 75
+      MaxLevel: 0
+    - Id: 1008
+      Type: 0
+      SubKind: 2
+      Grade: 1
+      DisplayName: "\uACE0\uAE09 \uC9C0\uD321\uC774"
+      SpriteKey: equip_weapon_staff_advanced
+      BasePossessionEffect: 10
+      PossessionEffectPerLevel: 10
+      BaseEquipEffect: 90
+      EquipEffectPerLevel: 90
+      MaxLevel: 0
+    - Id: 1009
+      Type: 0
+      SubKind: 3
+      Grade: 1
+      DisplayName: "\uACE0\uAE09 \uB3C4\uB07C"
+      SpriteKey: equip_weapon_axe_advanced
+      BasePossessionEffect: 10
+      PossessionEffectPerLevel: 10
+      BaseEquipEffect: 105
+      EquipEffectPerLevel: 105
+      MaxLevel: 0
+    - Id: 1010
+      Type: 0
+      SubKind: 4
+      Grade: 1
+      DisplayName: "\uACE0\uAE09 \uD65C"
+      SpriteKey: equip_weapon_bow_advanced
+      BasePossessionEffect: 10
+      PossessionEffectPerLevel: 10
+      BaseEquipEffect: 120
+      EquipEffectPerLevel: 120
+      MaxLevel: 0
+    - Id: 1011
+      Type: 0
+      SubKind: 0
+      Grade: 2
+      DisplayName: "\uD76C\uADC0 \uAC80"
+      SpriteKey: equip_weapon_sword_rare
+      BasePossessionEffect: 100
+      PossessionEffectPerLevel: 50
+      BaseEquipEffect: 500
+      EquipEffectPerLevel: 250
+      MaxLevel: 0
+    - Id: 1012
+      Type: 0
+      SubKind: 1
+      Grade: 2
+      DisplayName: "\uD76C\uADC0 \uCC3D"
+      SpriteKey: equip_weapon_spear_rare
+      BasePossessionEffect: 100
+      PossessionEffectPerLevel: 50
+      BaseEquipEffect: 600
+      EquipEffectPerLevel: 300
+      MaxLevel: 0
+    - Id: 1013
+      Type: 0
+      SubKind: 2
+      Grade: 2
+      DisplayName: "\uD76C\uADC0 \uC9C0\uD321\uC774"
+      SpriteKey: equip_weapon_staff_rare
+      BasePossessionEffect: 100
+      PossessionEffectPerLevel: 50
+      BaseEquipEffect: 700
+      EquipEffectPerLevel: 350
+      MaxLevel: 0
+    - Id: 1014
+      Type: 0
+      SubKind: 3
+      Grade: 2
+      DisplayName: "\uD76C\uADC0 \uB3C4\uB07C"
+      SpriteKey: equip_weapon_axe_rare
+      BasePossessionEffect: 100
+      PossessionEffectPerLevel: 50
+      BaseEquipEffect: 800
+      EquipEffectPerLevel: 400
+      MaxLevel: 0
+    - Id: 1015
+      Type: 0
+      SubKind: 4
+      Grade: 2
+      DisplayName: "\uD76C\uADC0 \uD65C"
+      SpriteKey: equip_weapon_bow_rare
+      BasePossessionEffect: 100
+      PossessionEffectPerLevel: 50
+      BaseEquipEffect: 900
+      EquipEffectPerLevel: 450
+      MaxLevel: 0
+    - Id: 1016
+      Type: 0
+      SubKind: 0
+      Grade: 3
+      DisplayName: "\uC601\uC6C5 \uAC80"
+      SpriteKey: equip_weapon_sword_epic
+      BasePossessionEffect: 500
+      PossessionEffectPerLevel: 400
+      BaseEquipEffect: 2200
+      EquipEffectPerLevel: 1760
+      MaxLevel: 0
+    - Id: 1017
+      Type: 0
+      SubKind: 1
+      Grade: 3
+      DisplayName: "\uC601\uC6C5 \uCC3D"
+      SpriteKey: equip_weapon_spear_epic
+      BasePossessionEffect: 500
+      PossessionEffectPerLevel: 400
+      BaseEquipEffect: 2700
+      EquipEffectPerLevel: 2160
+      MaxLevel: 0
+    - Id: 1018
+      Type: 0
+      SubKind: 2
+      Grade: 3
+      DisplayName: "\uC601\uC6C5 \uC9C0\uD321\uC774"
+      SpriteKey: equip_weapon_staff_epic
+      BasePossessionEffect: 500
+      PossessionEffectPerLevel: 400
+      BaseEquipEffect: 3200
+      EquipEffectPerLevel: 2560
+      MaxLevel: 0
+    - Id: 1019
+      Type: 0
+      SubKind: 3
+      Grade: 3
+      DisplayName: "\uC601\uC6C5 \uB3C4\uB07C"
+      SpriteKey: equip_weapon_axe_epic
+      BasePossessionEffect: 500
+      PossessionEffectPerLevel: 400
+      BaseEquipEffect: 3700
+      EquipEffectPerLevel: 2960
+      MaxLevel: 0
+    - Id: 1020
+      Type: 0
+      SubKind: 4
+      Grade: 3
+      DisplayName: "\uC601\uC6C5 \uD65C"
+      SpriteKey: equip_weapon_bow_epic
+      BasePossessionEffect: 500
+      PossessionEffectPerLevel: 400
+      BaseEquipEffect: 4200
+      EquipEffectPerLevel: 3360
+      MaxLevel: 0
+    - Id: 1021
+      Type: 0
+      SubKind: 0
+      Grade: 4
+      DisplayName: "\uC804\uC124 \uAC80"
+      SpriteKey: equip_weapon_sword_legend
+      BasePossessionEffect: 2500
+      PossessionEffectPerLevel: 2000
+      BaseEquipEffect: 10000
+      EquipEffectPerLevel: 8000
+      MaxLevel: 0
+    - Id: 1022
+      Type: 0
+      SubKind: 1
+      Grade: 4
+      DisplayName: "\uC804\uC124 \uCC3D"
+      SpriteKey: equip_weapon_spear_legend
+      BasePossessionEffect: 2500
+      PossessionEffectPerLevel: 2000
+      BaseEquipEffect: 12000
+      EquipEffectPerLevel: 9600
+      MaxLevel: 0
+    - Id: 1023
+      Type: 0
+      SubKind: 2
+      Grade: 4
+      DisplayName: "\uC804\uC124 \uC9C0\uD321\uC774"
+      SpriteKey: equip_weapon_staff_legend
+      BasePossessionEffect: 2500
+      PossessionEffectPerLevel: 2000
+      BaseEquipEffect: 14000
+      EquipEffectPerLevel: 11200
+      MaxLevel: 0
+    - Id: 1024
+      Type: 0
+      SubKind: 3
+      Grade: 4
+      DisplayName: "\uC804\uC124 \uB3C4\uB07C"
+      SpriteKey: equip_weapon_axe_legend
+      BasePossessionEffect: 2500
+      PossessionEffectPerLevel: 2000
+      BaseEquipEffect: 16000
+      EquipEffectPerLevel: 12800
+      MaxLevel: 0
+    - Id: 1025
+      Type: 0
+      SubKind: 4
+      Grade: 4
+      DisplayName: "\uC804\uC124 \uD65C"
+      SpriteKey: equip_weapon_bow_legend
+      BasePossessionEffect: 2500
+      PossessionEffectPerLevel: 2000
+      BaseEquipEffect: 18000
+      EquipEffectPerLevel: 14400
+      MaxLevel: 0
+    - Id: 1026
+      Type: 0
+      SubKind: 0
+      Grade: 5
+      DisplayName: "\uC2E0\uD654 \uAC80"
+      SpriteKey: equip_weapon_sword_myth
+      BasePossessionEffect: 12500
+      PossessionEffectPerLevel: 10000
+      BaseEquipEffect: 45000
+      EquipEffectPerLevel: 36000
+      MaxLevel: 0
+    - Id: 1027
+      Type: 0
+      SubKind: 1
+      Grade: 5
+      DisplayName: "\uC2E0\uD654 \uCC3D"
+      SpriteKey: equip_weapon_spear_myth
+      BasePossessionEffect: 12500
+      PossessionEffectPerLevel: 10000
+      BaseEquipEffect: 55000
+      EquipEffectPerLevel: 44000
+      MaxLevel: 0
+    - Id: 1028
+      Type: 0
+      SubKind: 2
+      Grade: 5
+      DisplayName: "\uC2E0\uD654 \uC9C0\uD321\uC774"
+      SpriteKey: equip_weapon_staff_myth
+      BasePossessionEffect: 12500
+      PossessionEffectPerLevel: 10000
+      BaseEquipEffect: 65000
+      EquipEffectPerLevel: 52000
+      MaxLevel: 0
+    - Id: 1029
+      Type: 0
+      SubKind: 3
+      Grade: 5
+      DisplayName: "\uC2E0\uD654 \uB3C4\uB07C"
+      SpriteKey: equip_weapon_axe_myth
+      BasePossessionEffect: 12500
+      PossessionEffectPerLevel: 10000
+      BaseEquipEffect: 75000
+      EquipEffectPerLevel: 60000
+      MaxLevel: 0
+    - Id: 1030
+      Type: 0
+      SubKind: 4
+      Grade: 5
+      DisplayName: "\uC2E0\uD654 \uD65C"
+      SpriteKey: equip_weapon_bow_myth
+      BasePossessionEffect: 12500
+      PossessionEffectPerLevel: 10000
+      BaseEquipEffect: 85000
+      EquipEffectPerLevel: 68000
+      MaxLevel: 0
+    - Id: 1031
+      Type: 0
+      SubKind: 0
+      Grade: 6
+      DisplayName: "\uCC9C\uC0C1\uC758 \uAC80"
+      SpriteKey: equip_weapon_special
+      BasePossessionEffect: 60000
+      PossessionEffectPerLevel: 60000
+      BaseEquipEffect: 200000
+      EquipEffectPerLevel: 200000
+      MaxLevel: 0
+    - Id: 2001
+      Type: 1
+      SubKind: 0
+      Grade: 0
+      DisplayName: "\uD22C\uAD6C"
+      SpriteKey: equip_armor_helmet_normal
+      BasePossessionEffect: 3
+      PossessionEffectPerLevel: 3
+      BaseEquipEffect: 12
+      EquipEffectPerLevel: 12
+      MaxLevel: 0
+    - Id: 2002
+      Type: 1
+      SubKind: 1
+      Grade: 0
+      DisplayName: "\uD749\uAC11"
+      SpriteKey: equip_armor_chestplate_normal
+      BasePossessionEffect: 3
+      PossessionEffectPerLevel: 3
+      BaseEquipEffect: 14
+      EquipEffectPerLevel: 14
+      MaxLevel: 0
+    - Id: 2003
+      Type: 1
+      SubKind: 2
+      Grade: 0
+      DisplayName: "\uAC01\uBC18"
+      SpriteKey: equip_armor_leggings_normal
+      BasePossessionEffect: 3
+      PossessionEffectPerLevel: 3
+      BaseEquipEffect: 17
+      EquipEffectPerLevel: 17
+      MaxLevel: 0
+    - Id: 2004
+      Type: 1
+      SubKind: 3
+      Grade: 0
+      DisplayName: "\uBC29\uD328"
+      SpriteKey: equip_armor_shield_normal
+      BasePossessionEffect: 3
+      PossessionEffectPerLevel: 3
+      BaseEquipEffect: 19
+      EquipEffectPerLevel: 19
+      MaxLevel: 0
+    - Id: 2005
+      Type: 1
+      SubKind: 4
+      Grade: 0
+      DisplayName: "\uC7A5\uD654"
+      SpriteKey: equip_armor_boots_normal
+      BasePossessionEffect: 3
+      PossessionEffectPerLevel: 3
+      BaseEquipEffect: 22
+      EquipEffectPerLevel: 22
+      MaxLevel: 0
+    - Id: 2006
+      Type: 1
+      SubKind: 0
+      Grade: 1
+      DisplayName: "\uACE0\uAE09 \uD22C\uAD6C"
+      SpriteKey: equip_armor_helmet_advanced
+      BasePossessionEffect: 10
+      PossessionEffectPerLevel: 10
+      BaseEquipEffect: 48
+      EquipEffectPerLevel: 48
+      MaxLevel: 0
+    - Id: 2007
+      Type: 1
+      SubKind: 1
+      Grade: 1
+      DisplayName: "\uACE0\uAE09 \uD749\uAC11"
+      SpriteKey: equip_armor_chestplate_advanced
+      BasePossessionEffect: 10
+      PossessionEffectPerLevel: 10
+      BaseEquipEffect: 60
+      EquipEffectPerLevel: 60
+      MaxLevel: 0
+    - Id: 2008
+      Type: 1
+      SubKind: 2
+      Grade: 1
+      DisplayName: "\uACE0\uAE09 \uAC01\uBC18"
+      SpriteKey: equip_armor_leggings_advanced
+      BasePossessionEffect: 10
+      PossessionEffectPerLevel: 10
+      BaseEquipEffect: 72
+      EquipEffectPerLevel: 72
+      MaxLevel: 0
+    - Id: 2009
+      Type: 1
+      SubKind: 3
+      Grade: 1
+      DisplayName: "\uACE0\uAE09 \uBC29\uD328"
+      SpriteKey: equip_armor_shield_advanced
+      BasePossessionEffect: 10
+      PossessionEffectPerLevel: 10
+      BaseEquipEffect: 84
+      EquipEffectPerLevel: 84
+      MaxLevel: 0
+    - Id: 2010
+      Type: 1
+      SubKind: 4
+      Grade: 1
+      DisplayName: "\uACE0\uAE09 \uC7A5\uD654"
+      SpriteKey: equip_armor_boots_advanced
+      BasePossessionEffect: 10
+      PossessionEffectPerLevel: 10
+      BaseEquipEffect: 96
+      EquipEffectPerLevel: 96
+      MaxLevel: 0
+    - Id: 2011
+      Type: 1
+      SubKind: 0
+      Grade: 2
+      DisplayName: "\uD76C\uADC0 \uD22C\uAD6C"
+      SpriteKey: equip_armor_helmet_rare
+      BasePossessionEffect: 100
+      PossessionEffectPerLevel: 50
+      BaseEquipEffect: 400
+      EquipEffectPerLevel: 200
+      MaxLevel: 0
+    - Id: 2012
+      Type: 1
+      SubKind: 1
+      Grade: 2
+      DisplayName: "\uD76C\uADC0 \uD749\uAC11"
+      SpriteKey: equip_armor_chestplate_rare
+      BasePossessionEffect: 100
+      PossessionEffectPerLevel: 50
+      BaseEquipEffect: 480
+      EquipEffectPerLevel: 240
+      MaxLevel: 0
+    - Id: 2013
+      Type: 1
+      SubKind: 2
+      Grade: 2
+      DisplayName: "\uD76C\uADC0 \uAC01\uBC18"
+      SpriteKey: equip_armor_leggings_rare
+      BasePossessionEffect: 100
+      PossessionEffectPerLevel: 50
+      BaseEquipEffect: 560
+      EquipEffectPerLevel: 280
+      MaxLevel: 0
+    - Id: 2014
+      Type: 1
+      SubKind: 3
+      Grade: 2
+      DisplayName: "\uD76C\uADC0 \uBC29\uD328"
+      SpriteKey: equip_armor_shield_rare
+      BasePossessionEffect: 100
+      PossessionEffectPerLevel: 50
+      BaseEquipEffect: 640
+      EquipEffectPerLevel: 320
+      MaxLevel: 0
+    - Id: 2015
+      Type: 1
+      SubKind: 4
+      Grade: 2
+      DisplayName: "\uD76C\uADC0 \uC7A5\uD654"
+      SpriteKey: equip_armor_boots_rare
+      BasePossessionEffect: 100
+      PossessionEffectPerLevel: 50
+      BaseEquipEffect: 720
+      EquipEffectPerLevel: 360
+      MaxLevel: 0
+    - Id: 2016
+      Type: 1
+      SubKind: 0
+      Grade: 3
+      DisplayName: "\uC601\uC6C5 \uD22C\uAD6C"
+      SpriteKey: equip_armor_helmet_epic
+      BasePossessionEffect: 500
+      PossessionEffectPerLevel: 400
+      BaseEquipEffect: 1760
+      EquipEffectPerLevel: 1408
+      MaxLevel: 0
+    - Id: 2017
+      Type: 1
+      SubKind: 1
+      Grade: 3
+      DisplayName: "\uC601\uC6C5 \uD749\uAC11"
+      SpriteKey: equip_armor_chestplate_epic
+      BasePossessionEffect: 500
+      PossessionEffectPerLevel: 400
+      BaseEquipEffect: 2160
+      EquipEffectPerLevel: 1728
+      MaxLevel: 0
+    - Id: 2018
+      Type: 1
+      SubKind: 2
+      Grade: 3
+      DisplayName: "\uC601\uC6C5 \uAC01\uBC18"
+      SpriteKey: equip_armor_leggings_epic
+      BasePossessionEffect: 500
+      PossessionEffectPerLevel: 400
+      BaseEquipEffect: 2560
+      EquipEffectPerLevel: 2048
+      MaxLevel: 0
+    - Id: 2019
+      Type: 1
+      SubKind: 3
+      Grade: 3
+      DisplayName: "\uC601\uC6C5 \uBC29\uD328"
+      SpriteKey: equip_armor_shield_epic
+      BasePossessionEffect: 500
+      PossessionEffectPerLevel: 400
+      BaseEquipEffect: 2960
+      EquipEffectPerLevel: 2368
+      MaxLevel: 0
+    - Id: 2020
+      Type: 1
+      SubKind: 4
+      Grade: 3
+      DisplayName: "\uC601\uC6C5 \uC7A5\uD654"
+      SpriteKey: equip_armor_boots_epic
+      BasePossessionEffect: 500
+      PossessionEffectPerLevel: 400
+      BaseEquipEffect: 3360
+      EquipEffectPerLevel: 2688
+      MaxLevel: 0
+    - Id: 2021
+      Type: 1
+      SubKind: 0
+      Grade: 4
+      DisplayName: "\uC804\uC124 \uD22C\uAD6C"
+      SpriteKey: equip_armor_helmet_legend
+      BasePossessionEffect: 2500
+      PossessionEffectPerLevel: 2000
+      BaseEquipEffect: 8000
+      EquipEffectPerLevel: 6400
+      MaxLevel: 0
+    - Id: 2022
+      Type: 1
+      SubKind: 1
+      Grade: 4
+      DisplayName: "\uC804\uC124 \uD749\uAC11"
+      SpriteKey: equip_armor_chestplate_legend
+      BasePossessionEffect: 2500
+      PossessionEffectPerLevel: 2000
+      BaseEquipEffect: 9600
+      EquipEffectPerLevel: 7680
+      MaxLevel: 0
+    - Id: 2023
+      Type: 1
+      SubKind: 2
+      Grade: 4
+      DisplayName: "\uC804\uC124 \uAC01\uBC18"
+      SpriteKey: equip_armor_leggings_legend
+      BasePossessionEffect: 2500
+      PossessionEffectPerLevel: 2000
+      BaseEquipEffect: 11200
+      EquipEffectPerLevel: 8960
+      MaxLevel: 0
+    - Id: 2024
+      Type: 1
+      SubKind: 3
+      Grade: 4
+      DisplayName: "\uC804\uC124 \uBC29\uD328"
+      SpriteKey: equip_armor_shield_legend
+      BasePossessionEffect: 2500
+      PossessionEffectPerLevel: 2000
+      BaseEquipEffect: 12800
+      EquipEffectPerLevel: 10240
+      MaxLevel: 0
+    - Id: 2025
+      Type: 1
+      SubKind: 4
+      Grade: 4
+      DisplayName: "\uC804\uC124 \uC7A5\uD654"
+      SpriteKey: equip_armor_boots_legend
+      BasePossessionEffect: 2500
+      PossessionEffectPerLevel: 2000
+      BaseEquipEffect: 14400
+      EquipEffectPerLevel: 11520
+      MaxLevel: 0
+    - Id: 2026
+      Type: 1
+      SubKind: 0
+      Grade: 5
+      DisplayName: "\uC2E0\uD654 \uD22C\uAD6C"
+      SpriteKey: equip_armor_helmet_myth
+      BasePossessionEffect: 12500
+      PossessionEffectPerLevel: 10000
+      BaseEquipEffect: 36000
+      EquipEffectPerLevel: 28800
+      MaxLevel: 0
+    - Id: 2027
+      Type: 1
+      SubKind: 1
+      Grade: 5
+      DisplayName: "\uC2E0\uD654 \uD749\uAC11"
+      SpriteKey: equip_armor_chestplate_myth
+      BasePossessionEffect: 12500
+      PossessionEffectPerLevel: 10000
+      BaseEquipEffect: 44000
+      EquipEffectPerLevel: 35200
+      MaxLevel: 0
+    - Id: 2028
+      Type: 1
+      SubKind: 2
+      Grade: 5
+      DisplayName: "\uC2E0\uD654 \uAC01\uBC18"
+      SpriteKey: equip_armor_leggings_myth
+      BasePossessionEffect: 12500
+      PossessionEffectPerLevel: 10000
+      BaseEquipEffect: 52000
+      EquipEffectPerLevel: 41600
+      MaxLevel: 0
+    - Id: 2029
+      Type: 1
+      SubKind: 3
+      Grade: 5
+      DisplayName: "\uC2E0\uD654 \uBC29\uD328"
+      SpriteKey: equip_armor_shield_myth
+      BasePossessionEffect: 12500
+      PossessionEffectPerLevel: 10000
+      BaseEquipEffect: 60000
+      EquipEffectPerLevel: 48000
+      MaxLevel: 0
+    - Id: 2030
+      Type: 1
+      SubKind: 4
+      Grade: 5
+      DisplayName: "\uC2E0\uD654 \uC7A5\uD654"
+      SpriteKey: equip_armor_boots_myth
+      BasePossessionEffect: 12500
+      PossessionEffectPerLevel: 10000
+      BaseEquipEffect: 68000
+      EquipEffectPerLevel: 54400
+      MaxLevel: 0
+    - Id: 2031
+      Type: 1
+      SubKind: 0
+      Grade: 6
+      DisplayName: "\uCC9C\uC0C1\uC758 \uAC11\uC637"
+      SpriteKey: equip_armor_special
+      BasePossessionEffect: 60000
+      PossessionEffectPerLevel: 60000
+      BaseEquipEffect: 160000
+      EquipEffectPerLevel: 160000
+      MaxLevel: 0
+    UpgradeConfig:
+      RequiredCountPerLevel: 0200000003000000040000000600000007000000090000000b0000000e0000001100000014000000180000001c00000021000000260000002c00000032000000390000004100000049000000520000005c0000006700000073000000800000008e0000009d000000ad000000be000000d0000000
+      OverflowBase: 208
+      OverflowGrowthRate: 0.12

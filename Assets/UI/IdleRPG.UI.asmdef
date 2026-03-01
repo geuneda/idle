@@ -9,6 +9,7 @@
         "IdleRPG.Stage",
         "IdleRPG.Battle",
         "IdleRPG.OfflineReward",
+        "IdleRPG.Equipment",
         "Geuneda.UiService",
         "Geuneda.Services",
         "Geuneda.GameData",
