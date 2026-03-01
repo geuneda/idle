@@ -5,8 +5,8 @@
 ## 현재 상태 요약
 
 핵심 전투 루프 + 경제/성장/저장 + 기본 UI + 앱 흐름 상태 머신이 동작하는 상태.
-Phase 1~5 완료. 다음 단계로 Config 데이터 파이프라인을 도입하여
-하드코딩을 제거하고 외부 데이터 소스로 전환한다.
+Phase 1~6 완료. Config 데이터 파이프라인(ScriptableObject + Addressables + Google Sheets 임포터) 구축 완료.
+다음 단계로 오프라인 보상 시스템을 구현한다.
 
 로드맵의 세부 내용은 절대로 그대로 구현할 필요 없으며 임시로 작성해둔것임.
 큰 단위의 구현을 진행하면서 작업내역을 정리해두면 됨.
@@ -135,24 +135,27 @@ Phase 1~5 완료. 다음 단계로 Config 데이터 파이프라인을 도입하
 
 ---
 
-## Phase 6. Config 데이터 파이프라인
+## Phase 6. Config 데이터 파이프라인 ✅
 
 > 밸런싱을 위한 데이터 관리 체계. 하드코딩을 제거하고 외부 데이터 소스로 전환.
 
 ### 6-1. ConfigsProvider 통합
 
-- [ ] HeroConfig → ScriptableObject 전환
-- [ ] EnemyConfig → ScriptableObject 전환
-- [ ] StageConfig → ScriptableObject 전환
-- [ ] GrowthConfig → ScriptableObject 전환
-- [ ] RewardConfig → ScriptableObject 전환
-- [ ] GameInstaller에서 하드코딩 제거, ConfigsProvider로 대체
+- [x] HeroConfig → ScriptableObject 전환 (HeroConfigAsset)
+- [x] EnemyConfig → ScriptableObject 전환 (EnemyConfigsAsset, 컬렉션)
+- [x] StageConfig → ScriptableObject 전환 (StageConfigAsset)
+- [x] GrowthConfig → ScriptableObject 전환 (GrowthConfigAsset)
+- [x] RewardConfig → ScriptableObject 전환 (RewardConfigAsset)
+- [x] GameInstaller에서 하드코딩 제거, ConfigsProvider로 대체
+- [x] Addressables 그룹(Configs)에 5개 ConfigAsset 등록
+- [x] ConfigsProvider 통합 테스트 (ConfigsProviderIntegrationTest)
 
 ### 6-2. Google Sheets 연동
 
-- [ ] 시트 구조 설계 (Hero, Enemy, Stage, Growth, Reward 탭)
-- [ ] CsvParser 기반 임포터 작성
-- [ ] Editor 스크립트로 원클릭 임포트
+- [x] 시트 구조 설계 (Hero, Enemy, Stage, Growth, Reward 5개 탭)
+- [x] CsvParser 기반 임포터 작성 (5개 Importer + ConfigImporterHelper)
+- [x] Editor 스크립트로 원클릭 임포트 (GoogleSheetImporter 프레임워크 연동)
+- [x] IdleRPG.Importers.asmdef (Editor 전용 어셈블리)
 
 ---
 
@@ -270,6 +273,21 @@ Phase 1~5 완료. 다음 단계로 Config 데이터 파이프라인을 도입하
 - [x] LoadingFadeFeature 페이드 인/아웃 전환 피처 (ITransitionFeature)
 - [x] LoadingTaskRunner + LoadingStep POCO (단계별 로딩 파이프라인)
 - [x] GameInstaller 로딩 콜백 연동 (OnLoadingEnter/Task/Exit)
+
+### Config 데이터 파이프라인 (Phase 6-1) ✅
+
+- [x] 5개 Config POCO → ScriptableObject Asset 래퍼 전환
+- [x] Addressables Configs 그룹에 등록 (비동기 로딩)
+- [x] GameInstaller에서 ConfigsProvider 초기화 + 서비스 주입
+- [x] UI Presenter에서 ConfigsProvider 통해 Config 접근
+- [x] ConfigsProvider 통합 테스트
+
+### Google Sheets 연동 (Phase 6-2) ✅
+
+- [x] Google Sheets 5개 탭 구조 (Hero, Enemy, Stage, Growth, Reward)
+- [x] 5개 Importer (GoogleSheetScriptableObjectImportContainer 기반)
+- [x] ConfigImporterHelper (URL 빌더, 리플렉션 필드 세터, enum 빈값 처리)
+- [x] IdleRPG.Importers.asmdef (Editor 전용)
 
 ### 폴더 구조 ✅
 

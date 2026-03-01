@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Geuneda.DataExtensions;
 using Geuneda.Services;
 using Geuneda.UiService;
 using IdleRPG.Core;
@@ -29,6 +30,7 @@ namespace IdleRPG.UI
         private IHeroGrowthService _growthService;
         private ICurrencyService _currencyService;
         private IMessageBrokerService _messageBroker;
+        private IConfigsProvider _configsProvider;
         private readonly List<StatUpgradeSlotView> _statSlots = new();
 
         private static readonly Dictionary<HeroStatType, string> StatDisplayNames = new()
@@ -50,6 +52,7 @@ namespace IdleRPG.UI
             _growthService = MainInstaller.Resolve<IHeroGrowthService>();
             _currencyService = MainInstaller.Resolve<ICurrencyService>();
             _messageBroker = MainInstaller.Resolve<IMessageBrokerService>();
+            _configsProvider = MainInstaller.Resolve<IConfigsProvider>();
 
             _messageBroker.Subscribe<CombatPowerChangedMessage>(OnCombatPowerChanged);
 
@@ -66,8 +69,8 @@ namespace IdleRPG.UI
         {
             if (_statScrollContent == null || _statSlotPrefab == null) return;
 
-            var config = new GrowthConfig();
-            foreach (var entry in config.Entries)
+            var growthConfig = _configsProvider.GetConfig<GrowthConfig>();
+            foreach (var entry in growthConfig.Entries)
             {
                 var slot = Instantiate(_statSlotPrefab, _statScrollContent);
                 string displayName = StatDisplayNames.TryGetValue(entry.StatType, out var name)

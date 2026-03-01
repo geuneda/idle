@@ -1,0 +1,2 @@
+StagesPerChapter,WavesPerStage,BossWaveIndex,EnemiesPerNormalWave,EnemiesPerBossWave,HpScalePerStage,AttackScalePerStage
+10,5,4,3,1,0.15,0.1

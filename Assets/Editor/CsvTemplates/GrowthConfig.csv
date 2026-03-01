@@ -1,0 +1,11 @@
+StatType,IsExponential,BaseValue,GrowthRate,Increment,BaseCost,CostGrowthRate,MaxLevel,HasPrerequisite,PrerequisiteStat,IsBigNumberStat,HpRegenPercent
+Attack,true,10,0.032,0,300000,0.006,0,false,,true,0
+Hp,true,100,0.024,0,55,0.0075,0,false,,true,0
+HpRegen,false,1,0,3.2,55,0.0074,0,false,,true,0.00001
+AttackSpeed,false,1,0,0.01,300000,0.033,200,false,,false,0
+CritRate,false,0,0,0.001,190000,0.036,0,false,,false,0
+CritDamage,false,1.5,0,0.01,68,0.007,0,false,,false,0
+DoubleShot,false,0,0,0.001,500000,0.04,0,true,AttackSpeed,false,0
+TripleShot,false,0,0,0.001,1000000,0.04,350,true,DoubleShot,false,0
+AdvancedAttack,false,0,0,0.005,2000000,0.04,150,true,TripleShot,false,0
+EnemyBonusDamage,false,0,0,0.005,5000000,0.04,0,true,AdvancedAttack,false,0

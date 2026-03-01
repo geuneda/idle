@@ -18,7 +18,6 @@ namespace IdleRPG.UI
         [SerializeField] private BottomTabButton[] _tabButtons;
 
         private BottomTabType? _activeTab;
-        private IUiService _uiService;
         private IMessageBrokerService _messageBroker;
 
         private static readonly Dictionary<BottomTabType, Type> TabPresenterTypes = new()
@@ -33,7 +32,6 @@ namespace IdleRPG.UI
 
         protected override void OnInitialized()
         {
-            _uiService = MainInstaller.Resolve<IUiService>();
             _messageBroker = MainInstaller.Resolve<IMessageBrokerService>();
 
             foreach (var button in _tabButtons)

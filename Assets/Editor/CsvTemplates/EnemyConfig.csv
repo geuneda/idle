@@ -1,0 +1,3 @@
+Id,BaseHp,BaseAttack,MoveSpeed,AttackRange,AttackSpeed,IsBoss
+1,30,5,2,1,1,false
+100,300,15,1.5,1.5,0.8,true

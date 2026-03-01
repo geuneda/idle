@@ -1,0 +1,26 @@
+{
+    "name": "IdleRPG.Importers",
+    "rootNamespace": "IdleRPG.Editor.Importers",
+    "references": [
+        "IdleRPG.Core",
+        "IdleRPG.Hero",
+        "IdleRPG.Battle",
+        "IdleRPG.Stage",
+        "IdleRPG.Growth",
+        "IdleRPG.Reward",
+        "Geuneda.GoogleSheetImporter",
+        "Geuneda.GoogleSheetImporter.Editor",
+        "Geuneda.GameData"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
