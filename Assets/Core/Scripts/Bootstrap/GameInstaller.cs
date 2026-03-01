@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Geuneda.Services;
 using Geuneda.UiService;
@@ -51,13 +52,32 @@ namespace IdleRPG.Core
         private void StartAppFlow()
         {
             var messageBroker = MainInstaller.Resolve<IMessageBrokerService>();
+            var uiService = MainInstaller.Resolve<IUiService>();
+
+            var loadingSteps = CreateLoadingSteps();
+            var loadingTaskRunner = new LoadingTaskRunner(messageBroker, loadingSteps);
 
             var callbacks = new AppFlowCallbacks
             {
                 OnBootstrapEnter = () => DevLog.Log("[AppFlow] Bootstrap 시작"),
                 OnLoadingEnter = () => DevLog.Log("[AppFlow] Loading 시작"),
-                LoadingTask = async () => await UniTask.Yield(),
-                OnLoadingExit = () => DevLog.Log("[AppFlow] Loading 완료"),
+                LoadingTask = async () =>
+                {
+                    await uiService.OpenUiAsync<LoadingPresenter>();
+
+                    var loadingUi = uiService.GetUi<LoadingPresenter>();
+                    if (loadingUi != null)
+                    {
+                        await loadingUi.OpenTransitionTask;
+                    }
+
+                    await loadingTaskRunner.RunAsync();
+                },
+                OnLoadingExit = () =>
+                {
+                    DevLog.Log("[AppFlow] Loading 완료");
+                    uiService.CloseUi<LoadingPresenter>();
+                },
                 HasOfflineReward = () => false,
                 IsFirstPlay = () => false,
                 OnInGameEnter = () =>
@@ -70,6 +90,33 @@ namespace IdleRPG.Core
 
             _appFlowStatechart = new AppFlowStatechart(callbacks);
             _appFlowStatechart.Run();
+        }
+
+        /// <summary>
+        /// 로딩 단계 목록을 생성한다.
+        /// 추후 서버 연결, 에셋 프리로드 등 실제 작업으로 교체한다.
+        /// </summary>
+        /// <returns>순차 실행할 로딩 단계 목록</returns>
+        private static List<LoadingStep> CreateLoadingSteps()
+        {
+            return new List<LoadingStep>
+            {
+                new LoadingStep("데이터 검증", async () =>
+                {
+                    await UniTask.Delay(300);
+                    DevLog.Log("[Loading] 데이터 검증 완료");
+                }),
+                new LoadingStep("설정 초기화", async () =>
+                {
+                    await UniTask.Delay(300);
+                    DevLog.Log("[Loading] 설정 초기화 완료");
+                }),
+                new LoadingStep("에셋 프리로드", async () =>
+                {
+                    await UniTask.Delay(400);
+                    DevLog.Log("[Loading] 에셋 프리로드 완료");
+                })
+            };
         }
 
         /// <summary>

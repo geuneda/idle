@@ -131,7 +131,7 @@ Phase 1~5 완료. 다음 단계로 Config 데이터 파이프라인을 도입하
 
 - [x] 오프라인 보상 분기점 준비 (`Choice` 상태의 `HasOfflineReward` 조건 — Phase 7에서 구현)
 - [x] 튜토리얼 분기점 준비 (`Choice` 상태의 `IsFirstPlay` 조건)
-- [ ] 로딩 화면 UI 연동 (LoadingTask에 실제 에셋 프리로드 추가 시 구현)
+- [x] 로딩 화면 UI 연동 (LoadingPresenter + LoadingFadeFeature + LoadingTaskRunner)
 
 ---
 
@@ -266,6 +266,10 @@ Phase 1~5 완료. 다음 단계로 Config 데이터 파이프라인을 도입하
 - [x] GameInstaller.Start() → AppFlowStatechart.Run() 전환
 - [x] Bootstrap → Loading(TaskWait) → PostLoadChoice(Choice) → InGame(State) 흐름
 - [x] 오프라인 보상/튜토리얼 분기점 Choice 상태로 확장 준비
+- [x] LoadingPresenter 로딩 화면 UI (프로그레스 바, 진행률 텍스트)
+- [x] LoadingFadeFeature 페이드 인/아웃 전환 피처 (ITransitionFeature)
+- [x] LoadingTaskRunner + LoadingStep POCO (단계별 로딩 파이프라인)
+- [x] GameInstaller 로딩 콜백 연동 (OnLoadingEnter/Task/Exit)
 
 ### 폴더 구조 ✅
 
