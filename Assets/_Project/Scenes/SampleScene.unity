@@ -516,7 +516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d11cd6ebb1e49e491e463217f1fd64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: IdleRPG.Bootstrap::IdleRPG.Core.GameInstaller
-  _uiConfigs: {fileID: 11400000, guid: fc181c96aa8f94ad78025fc50ec04d02, type: 2}
+  _uiConfigs: {fileID: 11400000, guid: 9c0e7407def9a4608a3472133badc9ed, type: 2}
 --- !u!4 &1536031238
 Transform:
   m_ObjectHideFlags: 0

@@ -162,7 +162,10 @@ namespace IdleRPG.Growth
             return _lookup.TryGetValue(statType, out var entry) ? entry : null;
         }
 
-        private void BuildLookup()
+        /// <summary>
+        /// 룩업 딕셔너리를 재구성한다. 역직렬화 후 호출해야 한다.
+        /// </summary>
+        public void BuildLookup()
         {
             _lookup = new Dictionary<HeroStatType, StatGrowthEntry>();
             foreach (var entry in Entries)

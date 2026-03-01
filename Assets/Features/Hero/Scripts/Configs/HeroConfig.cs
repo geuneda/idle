@@ -1,5 +1,4 @@
 using System;
-using IdleRPG.Core;
 
 namespace IdleRPG.Hero
 {
@@ -10,16 +9,16 @@ namespace IdleRPG.Hero
     public class HeroConfig
     {
         /// <summary>기본 체력</summary>
-        public BigNumber BaseHp = 100;
+        public double BaseHp = 100;
 
         /// <summary>기본 공격력</summary>
-        public BigNumber BaseAttack = 10;
+        public double BaseAttack = 10;
 
         /// <summary>기본 공격 속도 (초당 공격 횟수)</summary>
         public float BaseAttackSpeed = 1f;
 
         /// <summary>기본 초당 체력 재생량</summary>
-        public BigNumber BaseHpRegen = BigNumber.Zero;
+        public double BaseHpRegen = 0;
 
         /// <summary>기본 치명타 확률 (0~1)</summary>
         public float BaseCritRate = 0f;

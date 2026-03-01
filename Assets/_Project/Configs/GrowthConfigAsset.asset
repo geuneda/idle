@@ -1,0 +1,136 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d39cca90177a4c52b9cdf30399c7f08, type: 3}
+  m_Name: GrowthConfigAsset
+  m_EditorClassIdentifier: IdleRPG.Growth::IdleRPG.Growth.GrowthConfigAsset
+  _config:
+    Entries:
+    - StatType: 1
+      IsExponential: 1
+      BaseValue: 10
+      GrowthRate: 0.032
+      Increment: 0
+      BaseCost: 300000
+      CostGrowthRate: 0.006
+      MaxLevel: 0
+      PrerequisiteStat: 0
+      HasPrerequisite: 0
+      IsBigNumberStat: 1
+      HpRegenPercent: 0
+    - StatType: 0
+      IsExponential: 1
+      BaseValue: 100
+      GrowthRate: 0.024
+      Increment: 0
+      BaseCost: 55
+      CostGrowthRate: 0.0075
+      MaxLevel: 0
+      PrerequisiteStat: 0
+      HasPrerequisite: 0
+      IsBigNumberStat: 1
+      HpRegenPercent: 0
+    - StatType: 3
+      IsExponential: 0
+      BaseValue: 1
+      GrowthRate: 0
+      Increment: 3.2
+      BaseCost: 55
+      CostGrowthRate: 0.0074
+      MaxLevel: 0
+      PrerequisiteStat: 0
+      HasPrerequisite: 0
+      IsBigNumberStat: 1
+      HpRegenPercent: 0.00001
+    - StatType: 2
+      IsExponential: 0
+      BaseValue: 1
+      GrowthRate: 0
+      Increment: 0.01
+      BaseCost: 300000
+      CostGrowthRate: 0.033
+      MaxLevel: 200
+      PrerequisiteStat: 0
+      HasPrerequisite: 0
+      IsBigNumberStat: 0
+      HpRegenPercent: 0
+    - StatType: 4
+      IsExponential: 0
+      BaseValue: 0
+      GrowthRate: 0
+      Increment: 0.001
+      BaseCost: 190000
+      CostGrowthRate: 0.036
+      MaxLevel: 0
+      PrerequisiteStat: 0
+      HasPrerequisite: 0
+      IsBigNumberStat: 0
+      HpRegenPercent: 0
+    - StatType: 5
+      IsExponential: 0
+      BaseValue: 1.5
+      GrowthRate: 0
+      Increment: 0.01
+      BaseCost: 68
+      CostGrowthRate: 0.007
+      MaxLevel: 0
+      PrerequisiteStat: 0
+      HasPrerequisite: 0
+      IsBigNumberStat: 0
+      HpRegenPercent: 0
+    - StatType: 6
+      IsExponential: 0
+      BaseValue: 0
+      GrowthRate: 0
+      Increment: 0.001
+      BaseCost: 500000
+      CostGrowthRate: 0.04
+      MaxLevel: 0
+      PrerequisiteStat: 2
+      HasPrerequisite: 1
+      IsBigNumberStat: 0
+      HpRegenPercent: 0
+    - StatType: 7
+      IsExponential: 0
+      BaseValue: 0
+      GrowthRate: 0
+      Increment: 0.001
+      BaseCost: 1000000
+      CostGrowthRate: 0.04
+      MaxLevel: 350
+      PrerequisiteStat: 6
+      HasPrerequisite: 1
+      IsBigNumberStat: 0
+      HpRegenPercent: 0
+    - StatType: 8
+      IsExponential: 0
+      BaseValue: 0
+      GrowthRate: 0
+      Increment: 0.005
+      BaseCost: 2000000
+      CostGrowthRate: 0.04
+      MaxLevel: 150
+      PrerequisiteStat: 7
+      HasPrerequisite: 1
+      IsBigNumberStat: 0
+      HpRegenPercent: 0
+    - StatType: 9
+      IsExponential: 0
+      BaseValue: 0
+      GrowthRate: 0
+      Increment: 0.005
+      BaseCost: 5000000
+      CostGrowthRate: 0.04
+      MaxLevel: 0
+      PrerequisiteStat: 8
+      HasPrerequisite: 1
+      IsBigNumberStat: 0
+      HpRegenPercent: 0

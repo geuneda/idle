@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Geuneda.DataExtensions;
 using Geuneda.Services;
 using Geuneda.UiService;
 using IdleRPG.Battle;
@@ -10,6 +11,8 @@ using IdleRPG.Reward;
 using IdleRPG.Stage;
 using IdleRPG.UI;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace IdleRPG.Core
 {
@@ -18,7 +21,7 @@ namespace IdleRPG.Core
     /// </summary>
     /// <remarks>
     /// <para>씬에 배치되며 <c>DontDestroyOnLoad</c>로 앱 생명주기 동안 유지된다.</para>
-    /// <para>서비스 초기화 순서: 프레임워크 → 저장 데이터 로드 → 모델 복원 → 게임 서비스 → 자동 저장 시작</para>
+    /// <para>초기화 흐름: Awake(프레임워크 서비스) → Loading 단계(Config 로드 + 게임 서비스) → InGame</para>
     /// </remarks>
     public class GameInstaller : MonoBehaviour
     {
@@ -29,16 +32,22 @@ namespace IdleRPG.Core
         private AppFlowStatechart _appFlowStatechart;
         private bool _initialUiOpened;
 
+        private HeroConfigAsset _heroConfigAsset;
+        private EnemyConfigsAsset _enemyConfigsAsset;
+        private StageConfigAsset _stageConfigAsset;
+        private GrowthConfigAsset _growthConfigAsset;
+        private RewardConfigAsset _rewardConfigAsset;
+        private readonly List<AsyncOperationHandle> _configHandles = new List<AsyncOperationHandle>();
+
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
-            InitializeServices();
+            InitializeFrameworkServices();
         }
 
         /// <summary>
-        /// 모든 서비스 초기화 후 앱 흐름 상태 머신을 시작한다.
-        /// <c>Awake</c>에서 서비스 바인딩이 완료된 뒤 <c>Start</c>에서 실행되므로
-        /// 프레젠터가 <see cref="MainInstaller.Resolve{T}"/>를 안전하게 호출할 수 있다.
+        /// 프레임워크 서비스 초기화 후 앱 흐름 상태 머신을 시작한다.
+        /// Loading 단계에서 Config 에셋 로드와 게임 서비스 초기화가 수행된다.
         /// </summary>
         private void Start()
         {
@@ -94,29 +103,73 @@ namespace IdleRPG.Core
 
         /// <summary>
         /// 로딩 단계 목록을 생성한다.
-        /// 추후 서버 연결, 에셋 프리로드 등 실제 작업으로 교체한다.
+        /// Config 에셋 로드 → 게임 서비스 초기화 → 에셋 프리로드 순서로 실행된다.
         /// </summary>
         /// <returns>순차 실행할 로딩 단계 목록</returns>
-        private static List<LoadingStep> CreateLoadingSteps()
+        private List<LoadingStep> CreateLoadingSteps()
         {
             return new List<LoadingStep>
             {
-                new LoadingStep("데이터 검증", async () =>
+                new LoadingStep("설정 데이터 로드", async () =>
                 {
-                    await UniTask.Delay(300);
-                    DevLog.Log("[Loading] 데이터 검증 완료");
+                    await LoadConfigAssetsAsync();
+                    DevLog.Log("[Loading] Config 에셋 로드 완료");
                 }),
-                new LoadingStep("설정 초기화", async () =>
+                new LoadingStep("게임 초기화", () =>
                 {
-                    await UniTask.Delay(300);
-                    DevLog.Log("[Loading] 설정 초기화 완료");
+                    var configsProvider = InitializeConfigsProvider();
+                    InitializeGameServices(configsProvider);
+                    DevLog.Log("[Loading] 게임 서비스 초기화 완료");
+                    return UniTask.CompletedTask;
                 }),
                 new LoadingStep("에셋 프리로드", async () =>
                 {
-                    await UniTask.Delay(400);
+                    await UniTask.Delay(100);
                     DevLog.Log("[Loading] 에셋 프리로드 완료");
                 })
             };
+        }
+
+        /// <summary>
+        /// Addressables를 통해 5개 Config ScriptableObject 에셋을 병렬 로딩한다.
+        /// 로딩된 핸들은 <see cref="OnDestroy"/>에서 해제된다.
+        /// </summary>
+        private async UniTask LoadConfigAssetsAsync()
+        {
+            var heroOp = Addressables.LoadAssetAsync<HeroConfigAsset>("HeroConfigAsset");
+            var enemyOp = Addressables.LoadAssetAsync<EnemyConfigsAsset>("EnemyConfigsAsset");
+            var stageOp = Addressables.LoadAssetAsync<StageConfigAsset>("StageConfigAsset");
+            var growthOp = Addressables.LoadAssetAsync<GrowthConfigAsset>("GrowthConfigAsset");
+            var rewardOp = Addressables.LoadAssetAsync<RewardConfigAsset>("RewardConfigAsset");
+
+            _configHandles.Add(heroOp);
+            _configHandles.Add(enemyOp);
+            _configHandles.Add(stageOp);
+            _configHandles.Add(growthOp);
+            _configHandles.Add(rewardOp);
+
+            _heroConfigAsset = await heroOp.Task;
+            _enemyConfigsAsset = await enemyOp.Task;
+            _stageConfigAsset = await stageOp.Task;
+            _growthConfigAsset = await growthOp.Task;
+            _rewardConfigAsset = await rewardOp.Task;
+        }
+
+        /// <summary>
+        /// 로드된 Config 에셋에서 POCO Config를 꺼내 <see cref="ConfigsProvider"/>에 등록한다.
+        /// </summary>
+        /// <returns>Config가 등록된 ConfigsProvider</returns>
+        private ConfigsProvider InitializeConfigsProvider()
+        {
+            var provider = new ConfigsProvider();
+
+            provider.AddSingletonConfig(_heroConfigAsset.Config);
+            provider.AddSingletonConfig(_stageConfigAsset.Config);
+            provider.AddSingletonConfig(_growthConfigAsset.Config);
+            provider.AddSingletonConfig(_rewardConfigAsset.Config);
+            provider.AddConfigs(config => config.Id, _enemyConfigsAsset.Configs);
+
+            return provider;
         }
 
         /// <summary>
@@ -156,8 +209,9 @@ namespace IdleRPG.Core
 
         /// <summary>
         /// 프레임워크 핵심 서비스를 <see cref="MainInstaller"/>에 바인딩한다.
+        /// 게임 고유 서비스는 Loading 단계에서 초기화된다.
         /// </summary>
-        private void InitializeServices()
+        private void InitializeFrameworkServices()
         {
             var messageBroker = new MessageBrokerService();
             MainInstaller.Bind<IMessageBrokerService>(messageBroker);
@@ -178,9 +232,6 @@ namespace IdleRPG.Core
             MainInstaller.Bind<ITimeManipulator>(timeService);
 
             InitializeUiService();
-
-            InitializeGameServices(
-                messageBroker, tickService, coroutineService, dataService, timeService);
         }
 
         /// <summary>
@@ -196,15 +247,19 @@ namespace IdleRPG.Core
 
         /// <summary>
         /// 게임 고유 서비스를 생성하고 <see cref="MainInstaller"/>에 바인딩한다.
-        /// 저장 데이터가 있으면 로드하여 모델에 적용한 뒤 서비스를 초기화한다.
+        /// <see cref="ConfigsProvider"/>에서 Config를 조회하여 서비스에 주입한다.
         /// </summary>
-        private void InitializeGameServices(
-            IMessageBrokerService messageBroker,
-            ITickService tickService,
-            ICoroutineService coroutineService,
-            IDataService dataService,
-            ITimeService timeService)
+        /// <param name="configsProvider">Config가 등록된 프로바이더</param>
+        private void InitializeGameServices(ConfigsProvider configsProvider)
         {
+            MainInstaller.Bind<IConfigsProvider>(configsProvider);
+
+            var messageBroker = MainInstaller.Resolve<IMessageBrokerService>();
+            var tickService = MainInstaller.Resolve<ITickService>();
+            var coroutineService = MainInstaller.Resolve<ICoroutineService>();
+            var dataService = MainInstaller.Resolve<IDataService>();
+            var timeService = MainInstaller.Resolve<ITimeService>();
+
             var currencyModel = new CurrencyModel();
             var stageModel = new StageModel();
             var growthModel = new HeroGrowthModel();
@@ -221,46 +276,27 @@ namespace IdleRPG.Core
             var currencyService = new CurrencyService(currencyModel, messageBroker);
             MainInstaller.Bind<ICurrencyService>(currencyService);
 
-            var stageConfig = new StageConfig();
+            var stageConfig = configsProvider.GetConfig<StageConfig>();
             var stageService = new StageService(stageConfig, stageModel, messageBroker);
             MainInstaller.Bind<IStageService>(stageService);
 
-            var heroConfig = new HeroConfig();
+            var heroConfig = configsProvider.GetConfig<HeroConfig>();
             var heroModel = new HeroModel(heroConfig);
 
-            var growthConfig = new GrowthConfig();
+            var growthConfig = configsProvider.GetConfig<GrowthConfig>();
             var growthService = new HeroGrowthService(
                 growthConfig, growthModel, heroModel, currencyService, messageBroker);
             MainInstaller.Bind<IHeroGrowthService>(growthService);
 
-            var normalEnemy = new EnemyConfig
-            {
-                Id = 1,
-                BaseHp = 30,
-                BaseAttack = 5,
-                MoveSpeed = 2f,
-                AttackRange = 1.2f,
-                AttackSpeed = 1f,
-                IsBoss = false
-            };
-
-            var bossEnemy = new EnemyConfig
-            {
-                Id = 100,
-                BaseHp = 200,
-                BaseAttack = 15,
-                MoveSpeed = 1.5f,
-                AttackRange = 1.5f,
-                AttackSpeed = 0.8f,
-                IsBoss = true
-            };
+            var normalEnemy = configsProvider.GetConfig<EnemyConfig>(1);
+            var bossEnemy = configsProvider.GetConfig<EnemyConfig>(100);
 
             var battleService = new BattleService(
                 stageService, stageConfig, heroModel,
                 normalEnemy, bossEnemy, messageBroker);
             MainInstaller.Bind<IBattleService>(battleService);
 
-            var rewardConfig = new RewardConfig();
+            var rewardConfig = configsProvider.GetConfig<RewardConfig>();
             var rewardService = new RewardService(
                 rewardConfig, currencyService, stageService, stageConfig, messageBroker);
             MainInstaller.Bind<IRewardService>(rewardService);
@@ -283,6 +319,15 @@ namespace IdleRPG.Core
 
         private void OnDestroy()
         {
+            foreach (var handle in _configHandles)
+            {
+                if (handle.IsValid())
+                {
+                    Addressables.Release(handle);
+                }
+            }
+
+            _configHandles.Clear();
             _uiService?.Dispose();
             _saveService?.Dispose();
             MainInstaller.Clean();

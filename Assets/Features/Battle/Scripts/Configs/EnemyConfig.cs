@@ -1,5 +1,4 @@
 using System;
-using IdleRPG.Core;
 
 namespace IdleRPG.Battle
 {
@@ -13,10 +12,10 @@ namespace IdleRPG.Battle
         public int Id;
 
         /// <summary>기본 체력</summary>
-        public BigNumber BaseHp = 30;
+        public double BaseHp = 30;
 
         /// <summary>기본 공격력</summary>
-        public BigNumber BaseAttack = 5;
+        public double BaseAttack = 5;
 
         /// <summary>이동 속도 (초당 유닛)</summary>
         public float MoveSpeed = 2f;

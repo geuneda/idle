@@ -14,7 +14,9 @@
         "Geuneda.Services",
         "Geuneda.UiService",
         "Geuneda.Statechart",
-        "UniTask"
+        "UniTask",
+        "Unity.Addressables",
+        "Unity.ResourceManager"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

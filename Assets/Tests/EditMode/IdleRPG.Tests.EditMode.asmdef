@@ -4,6 +4,10 @@
     "references": [
         "IdleRPG.Core",
         "IdleRPG.Stage",
+        "IdleRPG.Hero",
+        "IdleRPG.Battle",
+        "IdleRPG.Growth",
+        "IdleRPG.Reward",
         "Geuneda.GameData",
         "Geuneda.Services"
     ],

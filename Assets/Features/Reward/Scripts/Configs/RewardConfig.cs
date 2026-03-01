@@ -11,7 +11,7 @@ namespace IdleRPG.Reward
     public class RewardConfig
     {
         /// <summary>일반 적 처치 시 기본 골드 보상량</summary>
-        public BigNumber BaseGoldPerKill = 10;
+        public double BaseGoldPerKill = 10;
 
         /// <summary>보스 처치 시 골드 배율</summary>
         public float BossGoldMultiplier = 5f;

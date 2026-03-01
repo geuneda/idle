@@ -41,14 +41,18 @@ namespace IdleRPG.Battle
 
         private void Start()
         {
-            _battleService = MainInstaller.Resolve<IBattleService>();
             _poolService = MainInstaller.Resolve<IPoolService>();
             _messageBroker = MainInstaller.Resolve<IMessageBrokerService>();
 
             SetupPools();
 
             _messageBroker.Subscribe<BattleStartedMessage>(OnBattleStarted);
+            _messageBroker.Subscribe<AppFlowReadyMessage>(OnAppFlowReady);
+        }
 
+        private void OnAppFlowReady(AppFlowReadyMessage msg)
+        {
+            _battleService = MainInstaller.Resolve<IBattleService>();
             _initialized = true;
             _battleService.StartBattle();
         }
