@@ -5,8 +5,8 @@
 ## 현재 상태 요약
 
 핵심 전투 루프 + 경제/성장/저장 + 기본 UI + 앱 흐름 상태 머신이 동작하는 상태.
-Phase 1~6 완료. Config 데이터 파이프라인(ScriptableObject + Addressables + Google Sheets 임포터) 구축 완료.
-다음 단계로 오프라인 보상 시스템을 구현한다.
+Phase 1~7 완료. Config 데이터 파이프라인 + 오프라인 보상 시스템 구축 완료.
+다음 단계로 콘텐츠 시스템(장비, 인벤토리, 가챠 등)을 순차적으로 구현한다.
 
 로드맵의 세부 내용은 절대로 그대로 구현할 필요 없으며 임시로 작성해둔것임.
 큰 단위의 구현을 진행하면서 작업내역을 정리해두면 됨.
@@ -159,16 +159,21 @@ Phase 1~6 완료. Config 데이터 파이프라인(ScriptableObject + Addressabl
 
 ---
 
-## Phase 7. 오프라인 보상
+## Phase 7. 오프라인 보상 ✅
 
 > 방치형 게임의 정체성. 앱을 켜지 않아도 보상이 쌓이는 시스템.
 
 ### 7-1. OfflineRewardService
 
-- [ ] TimeService 기반 오프라인 경과 시간 계산
-- [ ] 순수 함수로 오프라인 보상 계산 (테스트 용이성)
-- [ ] 최대 오프라인 시간 제한
-- [ ] 앱 복귀 시 오프라인 보상 팝업 UI (AppFlowStatechart의 Choice 분기 활용)
+- [x] TimeService 기반 오프라인 경과 시간 계산
+- [x] 순수 함수로 오프라인 보상 계산 (테스트 용이성)
+- [x] 최대 오프라인 시간 제한 (기본 12시간, 멤버십 확장 가능)
+- [x] 앱 복귀 시 오프라인 보상 강제 팝업 UI (AppFlowStatechart의 Choice 분기 활용)
+- [x] 골드 보상 (RewardConfig 기반 스테이지별 스케일링)
+- [x] 아이템 드롭 (펫/장비/스킬, 스테이지 범위별 확률 테이블)
+- [x] 광고 시청 2배 보상 구조
+- [x] OfflineRewardConfig ScriptableObject + ConfigsProvider 등록
+- [x] Edit Mode 단위 테스트 (계산 + 서비스)
 
 ---
 
@@ -289,10 +294,22 @@ Phase 1~6 완료. Config 데이터 파이프라인(ScriptableObject + Addressabl
 - [x] ConfigImporterHelper (URL 빌더, 리플렉션 필드 세터, enum 빈값 처리)
 - [x] IdleRPG.Importers.asmdef (Editor 전용)
 
+### 오프라인 보상 (Phase 7) ✅
+
+- [x] OfflineRewardConfig POCO + OfflineRewardConfigAsset ScriptableObject
+- [x] OfflineDropTable (OfflineDropType/ItemGrade enum, 스테이지 범위별 드롭 테이블)
+- [x] OfflineRewardResult 불변 결과 모델 (WithMultiplier 2배 지원)
+- [x] IOfflineRewardService / OfflineRewardService (순수 함수 계산 + CurrencyService 연동)
+- [x] AppFlowStatechart에 OfflineReward TaskWait 상태 추가
+- [x] OfflineRewardPopupPresenter 강제 팝업 (수령/광고2배 수령)
+- [x] GameInstaller 통합 (Config 로드, 서비스 생성, 콜백 연결)
+- [x] IdleRPG.OfflineReward.asmdef
+- [x] Edit Mode 테스트 (OfflineRewardCalculationTest, OfflineRewardServiceTest)
+
 ### 폴더 구조 ✅
 
 - [x] Feature 기반 폴더 구조 스캐폴딩
-- [x] asmdef 구성 (Core, Bootstrap, Hero, Battle, Stage, Economy, Growth, Reward, UI, Editor, Tests)
+- [x] asmdef 구성 (Core, Bootstrap, Hero, Battle, Stage, Economy, Growth, Reward, OfflineReward, UI, Editor, Tests)
 
 ---
 

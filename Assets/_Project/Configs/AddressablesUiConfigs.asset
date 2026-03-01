@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: AddressablesUiConfigs
   m_EditorClassIdentifier: Geuneda.UiService::Geuneda.UiService.AddressablesUiConfigs
   _configs:
+  - Address: Assets/UI/Popup/Prefabs/OfflineRewardPopup.prefab
+    Layer: 150
+    UiType: IdleRPG.UI.OfflineRewardPopupPresenter, IdleRPG.UI, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   - Address: Assets/UI/Common/Prefabs/BottomTabBarPresenter.prefab
     Layer: 100
     UiType: IdleRPG.UI.BottomTabBarPresenter, IdleRPG.UI, Version=0.0.0.0, Culture=neutral,

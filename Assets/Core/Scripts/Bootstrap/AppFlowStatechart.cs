@@ -46,6 +46,7 @@ namespace IdleRPG.Core
             var bootstrap = factory.Transition("Bootstrap");
             var loading = factory.TaskWait("Loading");
             var postLoadChoice = factory.Choice("PostLoadChoice");
+            var offlineReward = factory.TaskWait("OfflineReward");
             var inGame = factory.State("InGame");
 
             // Initial -> Bootstrap (자동 전이)
@@ -63,12 +64,16 @@ namespace IdleRPG.Core
             // PostLoadChoice: 조건 분기 (오프라인 보상 / 튜토리얼 / 기본)
             postLoadChoice.Transition()
                 .Condition(callbacks.HasOfflineReward)
-                .Target(inGame); // 추후 OfflineReward 상태로 변경
+                .Target(offlineReward);
             postLoadChoice.Transition()
                 .Condition(callbacks.IsFirstPlay)
                 .Target(inGame); // 추후 Tutorial 상태로 변경
             postLoadChoice.Transition()
                 .Target(inGame); // 기본 경로
+
+            // OfflineReward: 팝업 표시 후 수령 대기
+            offlineReward.WaitingFor(callbacks.OfflineRewardTask).Target(inGame);
+            offlineReward.OnExit(() => callbacks.OnOfflineRewardExit?.Invoke());
 
             // InGame: 게임 루프 진행 (이벤트 대기 상태)
             inGame.OnEnter(() => callbacks.OnInGameEnter?.Invoke());

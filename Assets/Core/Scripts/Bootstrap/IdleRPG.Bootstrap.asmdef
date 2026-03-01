@@ -8,6 +8,7 @@
         "IdleRPG.Hero",
         "IdleRPG.Battle",
         "IdleRPG.Reward",
+        "IdleRPG.OfflineReward",
         "IdleRPG.Growth",
         "IdleRPG.UI",
         "Geuneda.GameData",

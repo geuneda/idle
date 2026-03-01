@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Configs
   m_GUID: bef9305d67a054b8a8d723fd1431412a
   m_SerializeEntries:
+  - m_GUID: 0a602795c80e745bca60354c29bfc670
+    m_Address: OfflineRewardConfigAsset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 40353f4afbbe04b23817faa164968d58
     m_Address: EnemyConfigsAsset
     m_ReadOnly: 0

@@ -1,19 +1,13 @@
 {
-    "name": "IdleRPG.UI",
-    "rootNamespace": "IdleRPG.UI",
+    "name": "IdleRPG.OfflineReward",
+    "rootNamespace": "IdleRPG.OfflineReward",
     "references": [
         "IdleRPG.Core",
         "IdleRPG.Economy",
-        "IdleRPG.Growth",
-        "IdleRPG.Hero",
         "IdleRPG.Stage",
-        "IdleRPG.Battle",
-        "IdleRPG.OfflineReward",
-        "Geuneda.UiService",
-        "Geuneda.Services",
+        "IdleRPG.Reward",
         "Geuneda.GameData",
-        "Unity.TextMeshPro",
-        "UniTask"
+        "Geuneda.Services"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -7,6 +7,7 @@ using IdleRPG.Battle;
 using IdleRPG.Economy;
 using IdleRPG.Growth;
 using IdleRPG.Hero;
+using IdleRPG.OfflineReward;
 using IdleRPG.Reward;
 using IdleRPG.Stage;
 using IdleRPG.UI;
@@ -31,12 +32,14 @@ namespace IdleRPG.Core
         private IUiServiceInit _uiService;
         private AppFlowStatechart _appFlowStatechart;
         private bool _initialUiOpened;
+        private long _lastSaveTimestamp;
 
         private HeroConfigAsset _heroConfigAsset;
         private EnemyConfigsAsset _enemyConfigsAsset;
         private StageConfigAsset _stageConfigAsset;
         private GrowthConfigAsset _growthConfigAsset;
         private RewardConfigAsset _rewardConfigAsset;
+        private OfflineRewardConfigAsset _offlineRewardConfigAsset;
         private readonly List<AsyncOperationHandle> _configHandles = new List<AsyncOperationHandle>();
 
         private void Awake()
@@ -87,8 +90,39 @@ namespace IdleRPG.Core
                     DevLog.Log("[AppFlow] Loading 완료");
                     uiService.CloseUi<LoadingPresenter>();
                 },
-                HasOfflineReward = () => false,
+                HasOfflineReward = () =>
+                {
+                    var offlineService = MainInstaller.Resolve<IOfflineRewardService>();
+                    return offlineService.HasOfflineReward(_lastSaveTimestamp);
+                },
                 IsFirstPlay = () => false,
+                OfflineRewardTask = async () =>
+                {
+                    var offlineService = MainInstaller.Resolve<IOfflineRewardService>();
+                    var result = offlineService.CalculateReward(_lastSaveTimestamp);
+
+                    var tcs = new UniTaskCompletionSource();
+
+                    var popupData = new OfflineRewardPopupData
+                    {
+                        Result = result,
+                        OnClaimed = (watchedAd) =>
+                        {
+                            var finalResult = watchedAd
+                                ? result.WithMultiplier(offlineService.Config.AdMultiplier)
+                                : result;
+                            offlineService.ClaimReward(finalResult);
+                            tcs.TrySetResult();
+                        }
+                    };
+
+                    await uiService.OpenUiAsync<OfflineRewardPopupPresenter, OfflineRewardPopupData>(popupData);
+                    await tcs.Task;
+                },
+                OnOfflineRewardExit = () =>
+                {
+                    DevLog.Log("[AppFlow] OfflineReward 완료");
+                },
                 OnInGameEnter = () =>
                 {
                     DevLog.Log("[AppFlow] InGame 진입");
@@ -141,18 +175,21 @@ namespace IdleRPG.Core
             var stageOp = Addressables.LoadAssetAsync<StageConfigAsset>("StageConfigAsset");
             var growthOp = Addressables.LoadAssetAsync<GrowthConfigAsset>("GrowthConfigAsset");
             var rewardOp = Addressables.LoadAssetAsync<RewardConfigAsset>("RewardConfigAsset");
+            var offlineRewardOp = Addressables.LoadAssetAsync<OfflineRewardConfigAsset>("OfflineRewardConfigAsset");
 
             _configHandles.Add(heroOp);
             _configHandles.Add(enemyOp);
             _configHandles.Add(stageOp);
             _configHandles.Add(growthOp);
             _configHandles.Add(rewardOp);
+            _configHandles.Add(offlineRewardOp);
 
             _heroConfigAsset = await heroOp.Task;
             _enemyConfigsAsset = await enemyOp.Task;
             _stageConfigAsset = await stageOp.Task;
             _growthConfigAsset = await growthOp.Task;
             _rewardConfigAsset = await rewardOp.Task;
+            _offlineRewardConfigAsset = await offlineRewardOp.Task;
         }
 
         /// <summary>
@@ -167,6 +204,7 @@ namespace IdleRPG.Core
             provider.AddSingletonConfig(_stageConfigAsset.Config);
             provider.AddSingletonConfig(_growthConfigAsset.Config);
             provider.AddSingletonConfig(_rewardConfigAsset.Config);
+            provider.AddSingletonConfig(_offlineRewardConfigAsset.Config);
             provider.AddConfigs(config => config.Id, _enemyConfigsAsset.Configs);
 
             return provider;
@@ -269,6 +307,7 @@ namespace IdleRPG.Core
                 dataService, tickService, coroutineService, messageBroker, timeService);
 
             var saveData = _saveService.Load();
+            _lastSaveTimestamp = saveData.LastSaveTimestamp;
             _saveService.ApplyLoadedData(saveData);
 
             MainInstaller.Bind<ISaveService>(_saveService);
@@ -300,6 +339,12 @@ namespace IdleRPG.Core
             var rewardService = new RewardService(
                 rewardConfig, currencyService, stageService, stageConfig, messageBroker);
             MainInstaller.Bind<IRewardService>(rewardService);
+
+            var offlineRewardConfig = configsProvider.GetConfig<OfflineRewardConfig>();
+            var offlineRewardService = new OfflineRewardService(
+                offlineRewardConfig, rewardConfig, stageConfig,
+                stageService, currencyService, timeService, messageBroker);
+            MainInstaller.Bind<IOfflineRewardService>(offlineRewardService);
 
             _saveService.StartAutoSave();
         }

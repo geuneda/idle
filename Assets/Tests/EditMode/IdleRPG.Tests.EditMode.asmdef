@@ -8,6 +8,8 @@
         "IdleRPG.Battle",
         "IdleRPG.Growth",
         "IdleRPG.Reward",
+        "IdleRPG.Economy",
+        "IdleRPG.OfflineReward",
         "Geuneda.GameData",
         "Geuneda.Services"
     ],

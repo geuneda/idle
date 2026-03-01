@@ -30,6 +30,12 @@ namespace IdleRPG.Core
         /// <summary>첫 실행(튜토리얼 필요) 여부 판정 (추후 구현)</summary>
         public Func<bool> IsFirstPlay { get; set; } = () => false;
 
+        /// <summary>오프라인 보상 상태에서 대기할 비동기 작업 (팝업 표시 및 수령 대기)</summary>
+        public Func<UniTask> OfflineRewardTask { get; set; } = () => UniTask.CompletedTask;
+
+        /// <summary>오프라인 보상 상태 퇴장 시 실행할 액션</summary>
+        public Action OnOfflineRewardExit { get; set; }
+
         /// <summary>InGame 상태 진입 시 실행할 액션 (초기 UI 오픈 등)</summary>
         public Action OnInGameEnter { get; set; }
 
