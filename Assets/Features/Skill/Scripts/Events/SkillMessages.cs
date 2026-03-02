@@ -129,4 +129,13 @@ namespace IdleRPG.Skill
         /// <summary>감소 비율 (%)</summary>
         public float ReductionPercent;
     }
+
+    /// <summary>
+    /// 스킬 자동 사용 토글 상태가 변경되었을 때 발행되는 메시지.
+    /// </summary>
+    public struct SkillAutoToggleChangedMessage : IMessage
+    {
+        /// <summary>자동 사용 활성화 여부</summary>
+        public bool IsAutoEnabled;
+    }
 }

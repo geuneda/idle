@@ -12,6 +12,8 @@ namespace IdleRPG.Skill
     /// <remarks>
     /// 스킬 ID별로 <see cref="ISkillEffectExecutor"/>를 등록하여
     /// 21개 스킬 각각의 고유 효과를 처리한다.
+    /// Duration이 있는 스킬은 Active → Cooldown 순서로 전환되며,
+    /// 즉발 스킬은 바로 Cooldown 상태에 진입한다.
     /// </remarks>
     public class SkillExecutionService : ISkillExecutionService
     {
@@ -19,8 +21,28 @@ namespace IdleRPG.Skill
         private readonly IMessageBrokerService _messageBroker;
         private readonly Dictionary<int, ISkillEffectExecutor> _executors = new();
         private readonly float[] _cooldownTimers = new float[SkillModel.MAX_SLOTS];
+        private readonly float[] _cooldownTotalTimers = new float[SkillModel.MAX_SLOTS];
+        private readonly float[] _activeTimers = new float[SkillModel.MAX_SLOTS];
+        private readonly float[] _activeTotalDurations = new float[SkillModel.MAX_SLOTS];
         private readonly SkillExecutionContext _context = new();
         private readonly List<ISustainedEffect> _activeSustainedEffects = new();
+        private readonly Queue<int> _manualActivationQueue = new();
+
+        private bool _isAutoEnabled = true;
+
+        /// <inheritdoc/>
+        public bool IsAutoEnabled => _isAutoEnabled;
+
+        /// <inheritdoc/>
+        public void SetAutoEnabled(bool enabled)
+        {
+            if (_isAutoEnabled == enabled) return;
+            _isAutoEnabled = enabled;
+            _messageBroker.Publish(new SkillAutoToggleChangedMessage
+            {
+                IsAutoEnabled = _isAutoEnabled
+            });
+        }
 
         /// <summary>
         /// <see cref="SkillExecutionService"/>의 새 인스턴스를 생성한다.
@@ -44,10 +66,16 @@ namespace IdleRPG.Skill
         /// <inheritdoc/>
         public void Tick(float dt, BigNumber heroAttack, Vector3 heroPosition, IReadOnlyList<ISkillTarget> targets)
         {
+            TickActiveTimers(dt);
+
             for (int i = 0; i < SkillModel.MAX_SLOTS; i++)
             {
                 if (_cooldownTimers[i] > 0f)
+                {
                     _cooldownTimers[i] -= dt;
+                    if (_cooldownTimers[i] < 0f)
+                        _cooldownTimers[i] = 0f;
+                }
             }
 
             _context.HeroAttack = heroAttack;
@@ -56,11 +84,28 @@ namespace IdleRPG.Skill
 
             TickSustainedEffects(dt);
 
-            for (int i = 0; i < SkillModel.MAX_SLOTS; i++)
+            while (_manualActivationQueue.Count > 0)
             {
-                if (TryActivateSlot(i, heroAttack, heroPosition, targets))
-                    break;
+                int slot = _manualActivationQueue.Dequeue();
+                TryActivateSlot(slot, heroAttack, heroPosition, targets);
             }
+
+            if (_isAutoEnabled)
+            {
+                for (int i = 0; i < SkillModel.MAX_SLOTS; i++)
+                {
+                    if (TryActivateSlot(i, heroAttack, heroPosition, targets))
+                        break;
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public void RequestManualActivation(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= SkillModel.MAX_SLOTS) return;
+            if (_manualActivationQueue.Contains(slotIndex)) return;
+            _manualActivationQueue.Enqueue(slotIndex);
         }
 
         /// <inheritdoc/>
@@ -73,26 +118,77 @@ namespace IdleRPG.Skill
         public float GetCooldownRemaining(int slotIndex)
         {
             if (slotIndex < 0 || slotIndex >= SkillModel.MAX_SLOTS) return 0f;
-            return _cooldownTimers[slotIndex] > 0f ? _cooldownTimers[slotIndex] : 0f;
+            return _cooldownTimers[slotIndex];
         }
 
         /// <inheritdoc/>
         public float GetCooldownTotal(int slotIndex)
         {
             if (slotIndex < 0 || slotIndex >= SkillModel.MAX_SLOTS) return 0f;
-            int skillId = _skillService.Model.GetEquippedSkillId(slotIndex);
-            if (skillId == SkillModel.UNEQUIPPED) return 0f;
+            return _cooldownTotalTimers[slotIndex];
+        }
 
-            var entry = _skillService.Config.GetEntry(skillId);
-            return entry?.Cooldown ?? 0f;
+        /// <inheritdoc/>
+        public bool IsSlotActive(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= SkillModel.MAX_SLOTS) return false;
+            return _activeTimers[slotIndex] > 0f;
+        }
+
+        /// <inheritdoc/>
+        public float GetActiveRemaining(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= SkillModel.MAX_SLOTS) return 0f;
+            return _activeTimers[slotIndex];
+        }
+
+        /// <inheritdoc/>
+        public float GetActiveTotal(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= SkillModel.MAX_SLOTS) return 0f;
+            return _activeTimers[slotIndex] > 0f ? _activeTotalDurations[slotIndex] : 0f;
         }
 
         /// <inheritdoc/>
         public void ResetState()
         {
             _activeSustainedEffects.Clear();
-            for (int i = 0; i < _cooldownTimers.Length; i++)
+            _manualActivationQueue.Clear();
+            for (int i = 0; i < SkillModel.MAX_SLOTS; i++)
+            {
                 _cooldownTimers[i] = 0f;
+                _cooldownTotalTimers[i] = 0f;
+                _activeTimers[i] = 0f;
+                _activeTotalDurations[i] = 0f;
+            }
+        }
+
+        /// <summary>
+        /// Active 타이머를 감소시키고, 만료 시 쿨다운을 시작한다.
+        /// </summary>
+        private void TickActiveTimers(float dt)
+        {
+            for (int i = 0; i < SkillModel.MAX_SLOTS; i++)
+            {
+                if (_activeTimers[i] <= 0f) continue;
+
+                _activeTimers[i] -= dt;
+                if (_activeTimers[i] <= 0f)
+                {
+                    _activeTimers[i] = 0f;
+                    _activeTotalDurations[i] = 0f;
+
+                    int skillId = _skillService.Model.GetEquippedSkillId(i);
+                    if (skillId == SkillModel.UNEQUIPPED) continue;
+
+                    var entry = _skillService.Config.GetEntry(skillId);
+                    if (entry != null)
+                    {
+                        _cooldownTimers[i] = entry.Cooldown;
+                        _cooldownTotalTimers[i] = entry.Cooldown;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -101,6 +197,7 @@ namespace IdleRPG.Skill
         private bool TryActivateSlot(int slotIndex, BigNumber heroAttack, Vector3 heroPosition, IReadOnlyList<ISkillTarget> targets)
         {
             if (slotIndex < 0 || slotIndex >= SkillModel.MAX_SLOTS) return false;
+            if (_activeTimers[slotIndex] > 0f) return false;
             if (_cooldownTimers[slotIndex] > 0f) return false;
 
             int skillId = _skillService.Model.GetEquippedSkillId(slotIndex);
@@ -117,13 +214,18 @@ namespace IdleRPG.Skill
             int level = state?.Level.Value ?? 1;
             double damagePercent = SkillFormula.CalcDamagePercent(entry, level);
 
-            _context.HeroAttack = heroAttack;
-            _context.HeroPosition = heroPosition;
-            _context.Targets = targets;
-
             executor.Execute(_context, entry, damagePercent);
 
-            _cooldownTimers[slotIndex] = entry.Cooldown;
+            if (entry.Duration > 0f)
+            {
+                _activeTimers[slotIndex] = entry.Duration;
+                _activeTotalDurations[slotIndex] = entry.Duration;
+            }
+            else
+            {
+                _cooldownTimers[slotIndex] = entry.Cooldown;
+                _cooldownTotalTimers[slotIndex] = entry.Cooldown;
+            }
 
             return true;
         }

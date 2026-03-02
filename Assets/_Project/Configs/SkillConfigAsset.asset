@@ -16,8 +16,56 @@ MonoBehaviour:
     Entries:
     - Id: 3001
       Grade: 0
-      DisplayName: "\uC804\uD22C\uC758 \uD568\uC131"
-      SpriteKey: skill_battlecry
+      DisplayName: "\uC694\uC815\uC18C\uD658"
+      SpriteKey: skill_fairy_summon
+      BasePossessionEffect: 36
+      PossessionEffectPerLevel: 3.6
+      SkillType: 6
+      Cooldown: 8
+      BaseDamagePercent: 140
+      DamagePercentPerLevel: 14
+      HitCount: 0
+      Duration: 5
+      BuffValue: 2.3
+      DescriptionTemplate: "\uC694\uC815\uC744 \uC18C\uD658\uD558\uC5EC {Duration}\uCD08\uAC04
+        \uCD08\uB2F9 \uACF5\uACA9\uB825\uC758 {DamagePercent}% \uB370\uBBF8\uC9C0"
+      MaxLevel: 0
+    - Id: 3002
+      Grade: 0
+      DisplayName: "\uAC80\uC0DD\uC131"
+      SpriteKey: skill_sword_creation
+      BasePossessionEffect: 33
+      PossessionEffectPerLevel: 3.3
+      SkillType: 1
+      Cooldown: 7
+      BaseDamagePercent: 95
+      DamagePercentPerLevel: 9.5
+      HitCount: 9
+      Duration: 0
+      BuffValue: 0
+      DescriptionTemplate: "\uAC80\uC744 \uC0DD\uC131\uD558\uC5EC {HitCount}\uD68C
+        \uACF5\uACA9\uB825\uC758 {DamagePercent}% \uB370\uBBF8\uC9C0"
+      MaxLevel: 0
+    - Id: 3003
+      Grade: 0
+      DisplayName: "\uAC70\uB300\uD55C \uB3CC"
+      SpriteKey: skill_giant_rock
+      BasePossessionEffect: 36
+      PossessionEffectPerLevel: 3.6
+      SkillType: 2
+      Cooldown: 6
+      BaseDamagePercent: 780
+      DamagePercentPerLevel: 78
+      HitCount: 0
+      Duration: 0
+      BuffValue: 0
+      DescriptionTemplate: "\uAC70\uB300\uD55C \uB3CC\uB85C \uBAA8\uB4E0 \uC801\uC5D0\uAC8C
+        \uACF5\uACA9\uB825\uC758 {DamagePercent}% \uB370\uBBF8\uC9C0"
+      MaxLevel: 0
+    - Id: 3004
+      Grade: 1
+      DisplayName: "\uACF5\uACA9\uC18D\uB3C4 \uBC84\uD504"
+      SpriteKey: skill_atk_speed_buff
       BasePossessionEffect: 180
       PossessionEffectPerLevel: 18
       SkillType: 4
@@ -25,15 +73,15 @@ MonoBehaviour:
       BaseDamagePercent: 0
       DamagePercentPerLevel: 0
       HitCount: 0
-      Duration: 8
+      Duration: 10
       BuffValue: 30
       DescriptionTemplate: "{Duration}\uCD08 \uB3D9\uC548 \uACF5\uACA9\uC18D\uB3C4
         {BuffValue}% \uC99D\uAC00"
       MaxLevel: 0
-    - Id: 3002
-      Grade: 0
-      DisplayName: "\uC5BC\uC74C \uC870\uAC01"
-      SpriteKey: skill_iceshards
+    - Id: 3005
+      Grade: 1
+      DisplayName: "\uC5BC\uC74C\uC870\uAC01"
+      SpriteKey: skill_ice_shard
       BasePossessionEffect: 180
       PossessionEffectPerLevel: 18
       SkillType: 1
@@ -43,12 +91,12 @@ MonoBehaviour:
       HitCount: 5
       Duration: 0
       BuffValue: 0
-      DescriptionTemplate: "\uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758 {DamagePercent}%\uB85C
-        {HitCount}\uD68C \uACF5\uACA9"
+      DescriptionTemplate: "\uC5BC\uC74C \uC870\uAC01\uC73C\uB85C {HitCount}\uD68C
+        \uACF5\uACA9\uB825\uC758 {DamagePercent}% \uB370\uBBF8\uC9C0"
       MaxLevel: 0
-    - Id: 3003
-      Grade: 0
-      DisplayName: "\uBC88\uAC1C \uD654\uC0B4"
+    - Id: 3006
+      Grade: 1
+      DisplayName: "\uBC88\uAC1C"
       SpriteKey: skill_lightning
       BasePossessionEffect: 180
       PossessionEffectPerLevel: 18
@@ -59,60 +107,12 @@ MonoBehaviour:
       HitCount: 4
       Duration: 0
       BuffValue: 0
-      DescriptionTemplate: "\uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758 {DamagePercent}%\uB85C
-        {HitCount}\uD68C \uACF5\uACA9"
-      MaxLevel: 0
-    - Id: 3004
-      Grade: 1
-      DisplayName: "\uD654\uC5FC\uAD6C"
-      SpriteKey: skill_fireball
-      BasePossessionEffect: 250
-      PossessionEffectPerLevel: 25
-      SkillType: 0
-      Cooldown: 7
-      BaseDamagePercent: 650
-      DamagePercentPerLevel: 65
-      HitCount: 0
-      Duration: 0
-      BuffValue: 0
-      DescriptionTemplate: "\uAC00\uC7A5 \uAC00\uAE4C\uC6B4 \uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758
+      DescriptionTemplate: "\uBC88\uAC1C\uB85C {HitCount}\uD68C \uACF5\uACA9\uB825\uC758
         {DamagePercent}% \uB370\uBBF8\uC9C0"
-      MaxLevel: 0
-    - Id: 3005
-      Grade: 1
-      DisplayName: "\uB3C5\uC548\uAC1C"
-      SpriteKey: skill_poisonfog
-      BasePossessionEffect: 250
-      PossessionEffectPerLevel: 25
-      SkillType: 3
-      Cooldown: 8
-      BaseDamagePercent: 200
-      DamagePercentPerLevel: 20
-      HitCount: 0
-      Duration: 6
-      BuffValue: 0
-      DescriptionTemplate: "{Duration}\uCD08 \uB3D9\uC548 \uBAA8\uB4E0 \uC801\uC5D0\uAC8C
-        \uB9E4\uCD08 \uACF5\uACA9\uB825\uC758 {DamagePercent}% \uB370\uBBF8\uC9C0"
-      MaxLevel: 0
-    - Id: 3006
-      Grade: 1
-      DisplayName: "\uCE58\uC720\uC758 \uBE5B"
-      SpriteKey: skill_heallight
-      BasePossessionEffect: 250
-      PossessionEffectPerLevel: 25
-      SkillType: 5
-      Cooldown: 12
-      BaseDamagePercent: 500
-      DamagePercentPerLevel: 50
-      HitCount: 0
-      Duration: 0
-      BuffValue: 0
-      DescriptionTemplate: "\uC601\uC6C5\uC758 \uCCB4\uB825\uC744 \uACF5\uACA9\uB825\uC758
-        {DamagePercent}% \uB9CC\uD07C \uD68C\uBCF5"
       MaxLevel: 0
     - Id: 3007
       Grade: 2
-      DisplayName: "\uBD88\uC0AC\uC870\uC758 \uB0A0\uAC1C"
+      DisplayName: "\uBD88\uC0AC\uC870"
       SpriteKey: skill_phoenix
       BasePossessionEffect: 375
       PossessionEffectPerLevel: 37.5
@@ -123,8 +123,8 @@ MonoBehaviour:
       HitCount: 0
       Duration: 0
       BuffValue: 0
-      DescriptionTemplate: "\uAC00\uC7A5 \uAC00\uAE4C\uC6B4 \uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758
-        {DamagePercent}% \uB370\uBBF8\uC9C0"
+      DescriptionTemplate: "\uBD88\uC0AC\uC870\uB85C \uAC00\uC7A5 \uAC00\uAE4C\uC6B4
+        \uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758 {DamagePercent}% \uB370\uBBF8\uC9C0"
       MaxLevel: 0
     - Id: 3008
       Grade: 2
@@ -139,15 +139,16 @@ MonoBehaviour:
       HitCount: 0
       Duration: 5
       BuffValue: 0
-      DescriptionTemplate: "{Duration}\uCD08 \uB3D9\uC548 \uBAA8\uB4E0 \uC801\uC5D0\uAC8C
-        \uB9E4\uCD08 \uACF5\uACA9\uB825\uC758 {DamagePercent}% \uB370\uBBF8\uC9C0"
+      DescriptionTemplate: "\uB208\uBCF4\uB77C\uB85C {Duration}\uCD08\uAC04 \uB9E4\uCD08
+        \uBAA8\uB4E0 \uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758 {DamagePercent}%
+        \uB370\uBBF8\uC9C0"
       MaxLevel: 0
     - Id: 3009
       Grade: 2
-      DisplayName: "\uB3D9\uBB3C \uBB34\uB9AC"
-      SpriteKey: skill_animalpack
-      BasePossessionEffect: 375
-      PossessionEffectPerLevel: 37.5
+      DisplayName: "\uB3D9\uBB3C\uBB34\uB9AC"
+      SpriteKey: skill_animal_pack
+      BasePossessionEffect: 525
+      PossessionEffectPerLevel: 52.5
       SkillType: 2
       Cooldown: 10
       BaseDamagePercent: 1050
@@ -155,63 +156,15 @@ MonoBehaviour:
       HitCount: 0
       Duration: 0
       BuffValue: 0
-      DescriptionTemplate: "\uBAA8\uB4E0 \uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758
-        {DamagePercent}% \uB370\uBBF8\uC9C0"
+      DescriptionTemplate: "\uB3D9\uBB3C \uBB34\uB9AC\uB85C \uBAA8\uB4E0 \uC801\uC5D0\uAC8C
+        \uACF5\uACA9\uB825\uC758 {DamagePercent}% \uB370\uBBF8\uC9C0"
       MaxLevel: 0
     - Id: 3010
       Grade: 3
-      DisplayName: "\uCC9C\uB465\uBCBC\uB77D"
-      SpriteKey: skill_thunderstrike
-      BasePossessionEffect: 450
-      PossessionEffectPerLevel: 45
-      SkillType: 2
-      Cooldown: 9
-      BaseDamagePercent: 1350
-      DamagePercentPerLevel: 135
-      HitCount: 0
-      Duration: 0
-      BuffValue: 0
-      DescriptionTemplate: "\uBAA8\uB4E0 \uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758
-        {DamagePercent}% \uB370\uBBF8\uC9C0"
-      MaxLevel: 0
-    - Id: 3011
-      Grade: 3
-      DisplayName: "\uD68C\uC624\uB9AC\uBC14\uB78C"
-      SpriteKey: skill_whirlwind
-      BasePossessionEffect: 450
-      PossessionEffectPerLevel: 45
-      SkillType: 1
-      Cooldown: 7
-      BaseDamagePercent: 550
-      DamagePercentPerLevel: 55
-      HitCount: 6
-      Duration: 0
-      BuffValue: 0
-      DescriptionTemplate: "\uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758 {DamagePercent}%\uB85C
-        {HitCount}\uD68C \uACF5\uACA9"
-      MaxLevel: 0
-    - Id: 3012
-      Grade: 3
-      DisplayName: "\uC0DD\uBA85\uC758 \uC0D8"
-      SpriteKey: skill_lifefountain
-      BasePossessionEffect: 450
-      PossessionEffectPerLevel: 45
-      SkillType: 5
-      Cooldown: 15
-      BaseDamagePercent: 800
-      DamagePercentPerLevel: 80
-      HitCount: 0
-      Duration: 0
-      BuffValue: 0
-      DescriptionTemplate: "\uC601\uC6C5\uC758 \uCCB4\uB825\uC744 \uACF5\uACA9\uB825\uC758
-        {DamagePercent}% \uB9CC\uD07C \uD68C\uBCF5"
-      MaxLevel: 0
-    - Id: 3013
-      Grade: 4
       DisplayName: "\uB3CC\uBE44"
-      SpriteKey: skill_rockfall
-      BasePossessionEffect: 525
-      PossessionEffectPerLevel: 52.5
+      SpriteKey: skill_rock_rain
+      BasePossessionEffect: 600
+      PossessionEffectPerLevel: 60
       SkillType: 2
       Cooldown: 10
       BaseDamagePercent: 1000
@@ -219,43 +172,11 @@ MonoBehaviour:
       HitCount: 0
       Duration: 0
       BuffValue: 0
-      DescriptionTemplate: "\uBAA8\uB4E0 \uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758
+      DescriptionTemplate: "\uB3CC\uBE44\uB85C \uBAA8\uB4E0 \uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758
         {DamagePercent}% \uB370\uBBF8\uC9C0"
       MaxLevel: 0
-    - Id: 3014
-      Grade: 4
-      DisplayName: "\uAD11\uC804\uC0AC\uC758 \uBD84\uB178"
-      SpriteKey: skill_berserkrage
-      BasePossessionEffect: 525
-      PossessionEffectPerLevel: 52.5
-      SkillType: 4
-      Cooldown: 12
-      BaseDamagePercent: 0
-      DamagePercentPerLevel: 0
-      HitCount: 0
-      Duration: 10
-      BuffValue: 50
-      DescriptionTemplate: "{Duration}\uCD08 \uB3D9\uC548 \uACF5\uACA9\uC18D\uB3C4
-        {BuffValue}% \uC99D\uAC00"
-      MaxLevel: 0
-    - Id: 3015
-      Grade: 4
-      DisplayName: "\uC0AC\uC2AC \uBC88\uAC1C"
-      SpriteKey: skill_chainlightning
-      BasePossessionEffect: 525
-      PossessionEffectPerLevel: 52.5
-      SkillType: 1
-      Cooldown: 8
-      BaseDamagePercent: 700
-      DamagePercentPerLevel: 70
-      HitCount: 8
-      Duration: 0
-      BuffValue: 0
-      DescriptionTemplate: "\uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758 {DamagePercent}%\uB85C
-        {HitCount}\uD68C \uACF5\uACA9"
-      MaxLevel: 0
-    - Id: 3016
-      Grade: 5
+    - Id: 3011
+      Grade: 3
       DisplayName: "\uC6B4\uC11D"
       SpriteKey: skill_meteor
       BasePossessionEffect: 600
@@ -267,47 +188,15 @@ MonoBehaviour:
       HitCount: 0
       Duration: 0
       BuffValue: 0
-      DescriptionTemplate: "\uBAA8\uB4E0 \uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758
-        {DamagePercent}% \uB370\uBBF8\uC9C0"
+      DescriptionTemplate: "\uC6B4\uC11D\uC73C\uB85C \uBAA8\uB4E0 \uC801\uC5D0\uAC8C
+        \uACF5\uACA9\uB825\uC758 {DamagePercent}% \uB370\uBBF8\uC9C0"
       MaxLevel: 0
-    - Id: 3017
-      Grade: 5
-      DisplayName: "\uC6A9\uC758 \uC228\uACB0"
-      SpriteKey: skill_dragonbreath
-      BasePossessionEffect: 600
-      PossessionEffectPerLevel: 60
-      SkillType: 3
-      Cooldown: 11
-      BaseDamagePercent: 400
-      DamagePercentPerLevel: 40
-      HitCount: 0
-      Duration: 8
-      BuffValue: 0
-      DescriptionTemplate: "{Duration}\uCD08 \uB3D9\uC548 \uBAA8\uB4E0 \uC801\uC5D0\uAC8C
-        \uB9E4\uCD08 \uACF5\uACA9\uB825\uC758 {DamagePercent}% \uB370\uBBF8\uC9C0"
-      MaxLevel: 0
-    - Id: 3018
-      Grade: 5
-      DisplayName: "\uC2E0\uC131\uD55C \uC77C\uACA9"
-      SpriteKey: skill_holysmite
-      BasePossessionEffect: 600
-      PossessionEffectPerLevel: 60
-      SkillType: 0
-      Cooldown: 9
-      BaseDamagePercent: 2500
-      DamagePercentPerLevel: 250
-      HitCount: 0
-      Duration: 0
-      BuffValue: 0
-      DescriptionTemplate: "\uAC00\uC7A5 \uAC00\uAE4C\uC6B4 \uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758
-        {DamagePercent}% \uB370\uBBF8\uC9C0"
-      MaxLevel: 0
-    - Id: 3019
-      Grade: 6
+    - Id: 3012
+      Grade: 3
       DisplayName: "\uD1B5 \uB358\uC9C0\uAE30"
-      SpriteKey: skill_barreltoss
-      BasePossessionEffect: 700
-      PossessionEffectPerLevel: 70
+      SpriteKey: skill_barrel_toss
+      BasePossessionEffect: 600
+      PossessionEffectPerLevel: 60
       SkillType: 2
       Cooldown: 12
       BaseDamagePercent: 5000
@@ -315,40 +204,159 @@ MonoBehaviour:
       HitCount: 0
       Duration: 0
       BuffValue: 0
-      DescriptionTemplate: "\uBAA8\uB4E0 \uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758
-        {DamagePercent}% \uB370\uBBF8\uC9C0"
+      DescriptionTemplate: "\uD3ED\uBC1C \uD1B5\uC73C\uB85C \uBAA8\uB4E0 \uC801\uC5D0\uAC8C
+        \uACF5\uACA9\uB825\uC758 {DamagePercent}% \uB370\uBBF8\uC9C0"
+      MaxLevel: 0
+    - Id: 3013
+      Grade: 4
+      DisplayName: "\uBC14\uB78C\uAD6C\uCCB4"
+      SpriteKey: skill_wind_orb
+      BasePossessionEffect: 3000
+      PossessionEffectPerLevel: 300
+      SkillType: 1
+      Cooldown: 13
+      BaseDamagePercent: 2000
+      DamagePercentPerLevel: 200
+      HitCount: 6
+      Duration: 0
+      BuffValue: 0
+      DescriptionTemplate: "\uBC14\uB78C \uAD6C\uCCB4\uB97C {HitCount}\uBC88 \uD3ED\uBC1C\uC2DC\uCF1C
+        \uBAA8\uB4E0 \uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758 {DamagePercent}%
+        \uB370\uBBF8\uC9C0"
+      MaxLevel: 0
+    - Id: 3014
+      Grade: 4
+      DisplayName: "\uB4DC\uB798\uACE4"
+      SpriteKey: skill_dragon
+      BasePossessionEffect: 3000
+      PossessionEffectPerLevel: 300
+      SkillType: 6
+      Cooldown: 14
+      BaseDamagePercent: 400
+      DamagePercentPerLevel: 40
+      HitCount: 0
+      Duration: 5
+      BuffValue: 3.5
+      DescriptionTemplate: "\uB4DC\uB798\uACE4\uC744 \uC18C\uD658\uD558\uC5EC {Duration}\uCD08\uAC04
+        \uCD08\uB2F9 \uBAA8\uB4E0 \uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758 {DamagePercent}%
+        \uB370\uBBF8\uC9C0"
+      MaxLevel: 0
+    - Id: 3015
+      Grade: 4
+      DisplayName: "\uD070\uAC80"
+      SpriteKey: skill_great_sword
+      BasePossessionEffect: 3000
+      PossessionEffectPerLevel: 300
+      SkillType: 2
+      Cooldown: 10
+      BaseDamagePercent: 8500
+      DamagePercentPerLevel: 850
+      HitCount: 0
+      Duration: 0
+      BuffValue: 0
+      DescriptionTemplate: "\uAC70\uB300\uD55C \uAC80\uC73C\uB85C \uBAA8\uB4E0 \uC801\uC5D0\uAC8C
+        \uACF5\uACA9\uB825\uC758 {DamagePercent}% \uB370\uBBF8\uC9C0"
+      MaxLevel: 0
+    - Id: 3016
+      Grade: 5
+      DisplayName: "\uB9C8\uBC95\uC11C\uD074"
+      SpriteKey: skill_magic_circle
+      BasePossessionEffect: 15000
+      PossessionEffectPerLevel: 1500
+      SkillType: 1
+      Cooldown: 13
+      BaseDamagePercent: 6600
+      DamagePercentPerLevel: 660
+      HitCount: 6
+      Duration: 0
+      BuffValue: 0
+      DescriptionTemplate: "\uB9C8\uBC95 \uAD6C\uC2AC {HitCount}\uAC1C\uB85C \uBAA8\uB4E0
+        \uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758 {DamagePercent}% \uB370\uBBF8\uC9C0"
+      MaxLevel: 0
+    - Id: 3017
+      Grade: 5
+      DisplayName: "\uC2E4\uCCB4\uC18C\uD658"
+      SpriteKey: skill_entity_summon
+      BasePossessionEffect: 15000
+      PossessionEffectPerLevel: 1500
+      SkillType: 6
+      Cooldown: 15
+      BaseDamagePercent: 55000
+      DamagePercentPerLevel: 5500
+      HitCount: 0
+      Duration: 6
+      BuffValue: 0
+      DescriptionTemplate: "\uC2E4\uCCB4\uB97C \uC18C\uD658\uD558\uC5EC {Duration}\uCD08\uAC04
+        \uB9E4\uCD08 \uBAA8\uB4E0 \uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758 {DamagePercent}%
+        \uB370\uBBF8\uC9C0"
+      MaxLevel: 0
+    - Id: 3018
+      Grade: 5
+      DisplayName: "\uC2E0\uC18C\uD658"
+      SpriteKey: skill_god_summon
+      BasePossessionEffect: 15000
+      PossessionEffectPerLevel: 1500
+      SkillType: 6
+      Cooldown: 17
+      BaseDamagePercent: 66000
+      DamagePercentPerLevel: 6600
+      HitCount: 0
+      Duration: 8
+      BuffValue: 1.5
+      DescriptionTemplate: "\uC2E0\uC744 \uC18C\uD658\uD558\uC5EC {Duration}\uCD08\uAC04
+        \uCD08\uB2F9 \uBAA8\uB4E0 \uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758 {DamagePercent}%
+        \uB370\uBBF8\uC9C0"
+      MaxLevel: 0
+    - Id: 3019
+      Grade: 6
+      DisplayName: "\uC5B4\uB450\uC6B4\uAD6C\uCCB4"
+      SpriteKey: skill_dark_orb
+      BasePossessionEffect: 80000
+      PossessionEffectPerLevel: 8000
+      SkillType: 2
+      Cooldown: 14
+      BaseDamagePercent: 83000
+      DamagePercentPerLevel: 8300
+      HitCount: 0
+      Duration: 0
+      BuffValue: 80
+      DescriptionTemplate: "\uC5B4\uB450\uC6B4 \uAD6C\uCCB4\uB85C \uBAA8\uB4E0 \uC801\uC5D0\uAC8C
+        \uACF5\uACA9\uB825\uC758 {DamagePercent}% \uB370\uBBF8\uC9C0 + \uCFE8\uD0C0\uC784
+        {BuffValue}% \uAC10\uC18C"
       MaxLevel: 0
     - Id: 3020
       Grade: 6
-      DisplayName: "\uCC28\uC6D0\uC758 \uADE0\uC5F4"
-      SpriteKey: skill_dimensionrift
-      BasePossessionEffect: 700
-      PossessionEffectPerLevel: 70
-      SkillType: 1
-      Cooldown: 10
-      BaseDamagePercent: 1000
-      DamagePercentPerLevel: 100
-      HitCount: 10
-      Duration: 0
-      BuffValue: 0
-      DescriptionTemplate: "\uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758 {DamagePercent}%\uB85C
-        {HitCount}\uD68C \uACF5\uACA9"
+      DisplayName: "\uC545\uB9C8"
+      SpriteKey: skill_demon
+      BasePossessionEffect: 80000
+      PossessionEffectPerLevel: 8000
+      SkillType: 6
+      Cooldown: 90
+      BaseDamagePercent: 180000
+      DamagePercentPerLevel: 18000
+      HitCount: 0
+      Duration: 10
+      BuffValue: 1
+      DescriptionTemplate: "\uC545\uB9C8\uB97C \uC18C\uD658\uD558\uC5EC {Duration}\uCD08\uAC04
+        \uCD08\uB2F9 \uBAA8\uB4E0 \uC801\uC5D0\uAC8C \uACF5\uACA9\uB825\uC758 {DamagePercent}%
+        \uB370\uBBF8\uC9C0"
       MaxLevel: 0
     - Id: 3021
       Grade: 6
-      DisplayName: "\uC601\uC6D0\uC758 \uCD95\uBCF5"
-      SpriteKey: skill_eternalblessing
-      BasePossessionEffect: 700
-      PossessionEffectPerLevel: 70
-      SkillType: 4
+      DisplayName: "\uC5D0\uB108\uC9C0\uC758 \uD3ED\uBC1C"
+      SpriteKey: skill_energy_burst
+      BasePossessionEffect: 80000
+      PossessionEffectPerLevel: 8000
+      SkillType: 2
       Cooldown: 15
-      BaseDamagePercent: 0
-      DamagePercentPerLevel: 0
+      BaseDamagePercent: 92000
+      DamagePercentPerLevel: 9200
       HitCount: 0
-      Duration: 12
-      BuffValue: 80
-      DescriptionTemplate: "{Duration}\uCD08 \uB3D9\uC548 \uACF5\uACA9\uC18D\uB3C4
-        {BuffValue}% \uC99D\uAC00"
+      Duration: 0
+      BuffValue: 50
+      DescriptionTemplate: "\uC5D0\uB108\uC9C0 \uD3ED\uBC1C\uB85C \uBAA8\uB4E0 \uC801\uC5D0\uAC8C
+        \uACF5\uACA9\uB825\uC758 {DamagePercent}% \uB370\uBBF8\uC9C0 + HP {BuffValue}%
+        \uD68C\uBCF5"
       MaxLevel: 0
     UpgradeConfig:
       RequiredCountPerLevel: 0200000003000000040000000600000007000000090000000b0000000e0000001100000014000000180000001c00000021000000260000002c00000032000000390000004100000049000000520000005c0000006700000073000000800000008e0000009d000000ad000000be000000d0000000
