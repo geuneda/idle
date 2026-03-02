@@ -25,6 +25,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7773c04a1fba8453990d20d0331ef59d
+    m_Address: SkillConfigAsset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 80141c5e213c84d169c153e5dd954b36
     m_Address: RewardConfigAsset
     m_ReadOnly: 0

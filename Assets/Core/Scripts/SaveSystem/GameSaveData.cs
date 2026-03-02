@@ -30,6 +30,32 @@ namespace IdleRPG.Core
     }
 
     /// <summary>
+    /// 스킬 보유/장착 상태 DTO.
+    /// </summary>
+    [Serializable]
+    public class SkillSaveData
+    {
+        /// <summary>스킬ID(int) -> 보유 수량 및 레벨 매핑</summary>
+        public Dictionary<int, SkillItemSaveEntry> Items = new Dictionary<int, SkillItemSaveEntry>();
+
+        /// <summary>슬롯 인덱스(int) -> 장착된 스킬 ID 매핑. 미장착 슬롯은 키가 없다</summary>
+        public Dictionary<int, int> Equipped = new Dictionary<int, int>();
+    }
+
+    /// <summary>
+    /// 개별 스킬 아이템의 저장 항목.
+    /// </summary>
+    [Serializable]
+    public class SkillItemSaveEntry
+    {
+        /// <summary>보유 수량</summary>
+        public int OwnedCount;
+
+        /// <summary>강화 레벨</summary>
+        public int Level;
+    }
+
+    /// <summary>
     /// 게임 전체 저장 데이터의 최상위 DTO.
     /// 단일 객체로 원자적 저장을 보장하여 데이터 일관성을 유지한다.
     /// </summary>
@@ -53,6 +79,9 @@ namespace IdleRPG.Core
 
         /// <summary>장비 보유 및 장착 상태</summary>
         public EquipmentSaveData Equipment = new EquipmentSaveData();
+
+        /// <summary>스킬 보유 및 장착 상태</summary>
+        public SkillSaveData Skill = new SkillSaveData();
     }
 
     /// <summary>

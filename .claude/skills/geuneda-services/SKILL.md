@@ -1,6 +1,6 @@
 ---
 name: geuneda-services
-description: Unity 게임 아키텍처를 위한 핵심 서비스 패키지. DI 컨테이너(MainInstaller), 메시지 브로커(Pub/Sub), 틱 서비스(업데이트 관리), 코루틴 서비스, 오브젝트 풀링, 데이터 영속성, 시간 관리, 결정론적 RNG, 커맨드 패턴, 버전 관리 관련 코드를 작성하거나 수정할 때 사용한다.
+description: Unity 게임 아키텍처를 위한 핵심 서비스 패키지. TRIGGER when: 코드에 `using Geuneda.Services` 포함, 또는 MainInstaller.Bind/Resolve, MessageBrokerService, IMessage 구현, IGameCommand 구현, CommandService, TickService, CoroutineService, PoolService, DataService, TimeService, RngService를 사용하는 코드를 작성하거나 수정할 때. 새로운 Service/Model/Command 클래스 생성 시에도 반드시 invoke한다.
 ---
 
 # Geuneda Services

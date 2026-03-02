@@ -17,6 +17,7 @@ namespace IdleRPG.Equipment
         private readonly IHeroGrowthService _growthService;
         private readonly IMessageBrokerService _messageBroker;
         private readonly CommandService<EquipmentModel> _commandService;
+        private ISkillBonusProvider _skillBonusProvider;
 
         /// <inheritdoc />
         public EquipmentModel Model => _model;
@@ -59,6 +60,7 @@ namespace IdleRPG.Equipment
             _commandService = new CommandService<EquipmentModel>(model, messageBroker);
 
             _messageBroker.Subscribe<StatLevelUpMessage>(OnStatLevelUp);
+            _messageBroker.Subscribe<SkillBonusChangedMessage>(OnSkillBonusChanged);
 
             RecalculateAndApplyEffects();
         }
@@ -278,7 +280,8 @@ namespace IdleRPG.Equipment
 
         private void ApplyToHeroModel()
         {
-            BigNumber totalAttackPercent = TotalPossessionAttackPercent + EquippedAttackPercent;
+            BigNumber skillAttackPercent = _skillBonusProvider?.TotalPossessionAttackPercent ?? BigNumber.Zero;
+            BigNumber totalAttackPercent = TotalPossessionAttackPercent + EquippedAttackPercent + skillAttackPercent;
             BigNumber totalHpPercent = TotalPossessionHpPercent + EquippedHpPercent;
 
             BigNumber baseAttack = _growthService.GetCurrentStatValue(HeroStatType.Attack);
@@ -317,6 +320,21 @@ namespace IdleRPG.Equipment
             });
 
             return true;
+        }
+
+        /// <summary>
+        /// 스킬 보유효과 제공자를 설정한다. 스탯 재계산에 스킬 보유효과를 포함시킨다.
+        /// </summary>
+        /// <param name="provider">스킬 보너스 제공자</param>
+        public void SetSkillBonusProvider(ISkillBonusProvider provider)
+        {
+            _skillBonusProvider = provider;
+            RecalculateAndApplyEffects();
+        }
+
+        private void OnSkillBonusChanged(SkillBonusChangedMessage message)
+        {
+            RecalculateAndApplyEffects();
         }
 
         private void OnStatLevelUp(StatLevelUpMessage message)

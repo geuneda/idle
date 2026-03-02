@@ -1,6 +1,6 @@
 ---
 name: geuneda-inputextensions
-description: Unity Input System 확장 패키지(geuneda-inputextensions)의 코드를 작성하거나 수정할 때 사용하는 스킬. 포인터 드래그, 스와이프, 탭 제스처, 게임패드 입력 처리 코드를 구현할 때 활성화한다.
+description: Unity Input System 확장 패키지. TRIGGER when: 코드에 `using Geuneda.InputExtensions` 포함, 또는 PointerInputManager, GestureController, GamepadInputManager, 터치/드래그/스와이프/탭 제스처 입력 처리 코드를 작성하거나 수정할 때.
 ---
 
 # Geuneda Input Extensions

@@ -1,0 +1,22 @@
+Id,Grade,DisplayName,SpriteKey,BasePossessionEffect,PossessionEffectPerLevel,SkillType,Cooldown,BaseDamagePercent,DamagePercentPerLevel,HitCount,Duration,BuffValue,DescriptionTemplate,MaxLevel
+3001,0,요정소환,skill_fairy_summon,36,3.6,6,8,140,14,0,5,2.3,요정을 소환하여 {Duration}초간 초당 공격력의 {DamagePercent}% 데미지,0
+3002,0,검생성,skill_sword_creation,33,3.3,1,7,95,9.5,9,0,0,검을 생성하여 {HitCount}회 공격력의 {DamagePercent}% 데미지,0
+3003,0,거대한 돌,skill_giant_rock,36,3.6,2,6,780,78,0,0,0,거대한 돌로 모든 적에게 공격력의 {DamagePercent}% 데미지,0
+3004,1,공격속도 버프,skill_atk_speed_buff,180,18,4,10,0,0,0,10,30,{Duration}초 동안 공격속도 {BuffValue}% 증가,0
+3005,1,얼음조각,skill_ice_shard,180,18,1,5,230,23,5,0,0,얼음 조각으로 {HitCount}회 공격력의 {DamagePercent}% 데미지,0
+3006,1,번개,skill_lightning,180,18,1,6,400,40,4,0,0,번개로 {HitCount}회 공격력의 {DamagePercent}% 데미지,0
+3007,2,불사조,skill_phoenix,375,37.5,0,11,1460,146,0,0,0,불사조로 가장 가까운 적에게 공격력의 {DamagePercent}% 데미지,0
+3008,2,눈보라,skill_blizzard,375,37.5,3,10,275,27.5,0,5,0,눈보라로 {Duration}초간 매초 모든 적에게 공격력의 {DamagePercent}% 데미지,0
+3009,2,동물무리,skill_animal_pack,525,52.5,2,10,1050,105,0,0,0,동물 무리로 모든 적에게 공격력의 {DamagePercent}% 데미지,0
+3010,3,돌비,skill_rock_rain,600,60,2,10,1000,100,0,0,0,돌비로 모든 적에게 공격력의 {DamagePercent}% 데미지,0
+3011,3,운석,skill_meteor,600,60,2,10,1250,125,0,0,0,운석으로 모든 적에게 공격력의 {DamagePercent}% 데미지,0
+3012,3,통 던지기,skill_barrel_toss,600,60,2,12,5000,500,0,0,0,폭발 통으로 모든 적에게 공격력의 {DamagePercent}% 데미지,0
+3013,4,바람구체,skill_wind_orb,3000,300,1,13,2000,200,6,0,0,바람 구체를 {HitCount}번 폭발시켜 모든 적에게 공격력의 {DamagePercent}% 데미지,0
+3014,4,드래곤,skill_dragon,3000,300,6,14,400,40,0,5,3.5,드래곤을 소환하여 {Duration}초간 초당 모든 적에게 공격력의 {DamagePercent}% 데미지,0
+3015,4,큰검,skill_great_sword,3000,300,2,10,8500,850,0,0,0,거대한 검으로 모든 적에게 공격력의 {DamagePercent}% 데미지,0
+3016,5,마법서클,skill_magic_circle,15000,1500,1,13,6600,660,6,0,0,마법 구슬 {HitCount}개로 모든 적에게 공격력의 {DamagePercent}% 데미지,0
+3017,5,실체소환,skill_entity_summon,15000,1500,6,15,55000,5500,0,6,0,실체를 소환하여 {Duration}초간 매초 모든 적에게 공격력의 {DamagePercent}% 데미지,0
+3018,5,신소환,skill_god_summon,15000,1500,6,17,66000,6600,0,8,1.5,신을 소환하여 {Duration}초간 초당 모든 적에게 공격력의 {DamagePercent}% 데미지,0
+3019,6,어두운구체,skill_dark_orb,80000,8000,2,14,83000,8300,0,0,80,어두운 구체로 모든 적에게 공격력의 {DamagePercent}% 데미지 + 쿨타임 {BuffValue}% 감소,0
+3020,6,악마,skill_demon,80000,8000,6,90,180000,18000,0,10,1,악마를 소환하여 {Duration}초간 초당 모든 적에게 공격력의 {DamagePercent}% 데미지,0
+3021,6,에너지의 폭발,skill_energy_burst,80000,8000,2,15,92000,9200,0,0,50,에너지 폭발로 모든 적에게 공격력의 {DamagePercent}% 데미지 + HP {BuffValue}% 회복,0

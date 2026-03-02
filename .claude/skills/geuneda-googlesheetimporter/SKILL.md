@@ -1,6 +1,6 @@
 ---
 name: geuneda-googlesheetimporter
-description: Google 스프레드시트 데이터를 Unity ScriptableObject로 임포트하는 패키지. Unity 프로젝트에서 Google 시트 데이터를 파싱하거나, CSV 데이터를 역직렬화하거나, 시트 임포터를 작성/수정할 때 사용한다.
+description: Google 스프레드시트 데이터를 Unity ScriptableObject로 임포트하는 패키지. TRIGGER when: 코드에 `using Geuneda.GoogleSheetImporter` 포함, 또는 GoogleSheetScriptableObjectImportContainer, CsvParser, ParseIgnoreAttribute, 시트 Importer 클래스를 작성하거나 수정할 때. 새로운 Config Importer를 생성할 때 반드시 invoke한다.
 ---
 
 # Geuneda GoogleSheetImporter

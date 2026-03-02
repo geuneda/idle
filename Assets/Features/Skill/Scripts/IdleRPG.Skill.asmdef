@@ -1,0 +1,21 @@
+{
+    "name": "IdleRPG.Skill",
+    "rootNamespace": "IdleRPG.Skill",
+    "references": [
+        "IdleRPG.Core",
+        "IdleRPG.Hero",
+        "IdleRPG.Growth",
+        "IdleRPG.Stage",
+        "Geuneda.GameData",
+        "Geuneda.Services"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

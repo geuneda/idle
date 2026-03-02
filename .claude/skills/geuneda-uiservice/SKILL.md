@@ -1,6 +1,6 @@
 ---
 name: geuneda-uiservice
-description: Unity UI 관리 서비스 패키지(geuneda-uiservice)의 코드를 작성하거나 수정할 때 사용하는 스킬. MVP 패턴 기반 UI 프레젠터 생성, UI 생명주기 관리(로드/열기/닫기/언로드), 피처 조합 시스템, UI Toolkit 통합, Addressables 에셋 로딩, UI 세트 관리 코드를 구현할 때 활성화한다.
+description: Unity UI 관리 서비스 패키지. TRIGGER when: 코드에 `using Geuneda.UiService` 포함, 또는 UiPresenter/UiPresenter<T> 상속, IUiService.OpenUiAsync/CloseUi 호출, PresenterFeatureBase 구현, UiConfigs/UiSetConfig 설정, UI 생명주기(OnInitialized/OnOpened/OnClosed/OnSetData) 메서드를 사용하는 코드를 작성하거나 수정할 때. 새로운 Presenter 클래스 생성 시에도 반드시 invoke한다.
 ---
 
 # Geuneda UI Service

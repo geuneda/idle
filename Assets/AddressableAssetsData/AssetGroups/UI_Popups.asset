@@ -25,6 +25,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c457097e55270416cb6782ffbc41a198
+    m_Address: Assets/UI/Popup/Prefabs/SkillDetailPopupPresenter.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e096f7fe3284040bbb504d263d5fec0a
     m_Address: Assets/UI/Popup/Prefabs/EquipmentDetailPopupPresenter.prefab
     m_ReadOnly: 0

@@ -25,6 +25,10 @@ MonoBehaviour:
     Layer: 160
     UiType: IdleRPG.UI.EquipmentDetailPopupPresenter, IdleRPG.UI, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  - Address: Assets/UI/Popup/Prefabs/SkillDetailPopupPresenter.prefab
+    Layer: 160
+    UiType: IdleRPG.UI.SkillDetailPopupPresenter, IdleRPG.UI, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   - Address: Assets/UI/Common/Prefabs/BottomTabBarPresenter.prefab
     Layer: 100
     UiType: IdleRPG.UI.BottomTabBarPresenter, IdleRPG.UI, Version=0.0.0.0, Culture=neutral,

@@ -1,6 +1,6 @@
 ---
 name: geuneda-nativeui
-description: Unity에서 iOS/Android 네이티브 UI(알림 다이얼로그, 토스트 메시지)를 표시하는 패키지(geuneda-nativeui)의 코드를 작성하거나 수정할 때 사용하는 스킬. 네이티브 팝업, 토스트 메시지 구현 시 활성화한다.
+description: Unity iOS/Android 네이티브 UI 패키지. TRIGGER when: 코드에 `using Geuneda.NativeUi` 포함, 또는 NativeUiService, AlertButton, 네이티브 다이얼로그, 토스트 메시지를 사용하는 코드를 작성하거나 수정할 때.
 ---
 
 # Geuneda Native UI

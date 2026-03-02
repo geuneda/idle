@@ -1,6 +1,6 @@
 ---
 name: geuneda-dataextensions
-description: Unity 게임용 핵심 데이터 유틸리티 및 설정 관리 패키지. Observable 반응형 데이터 타입, 타입 안전 설정 저장소(ConfigsProvider), 결정론적 부동소수점(floatP), JSON 직렬화, Unity 직렬화 헬퍼 관련 코드를 작성하거나 수정할 때 사용한다.
+description: Unity 게임용 핵심 데이터 유틸리티 및 설정 관리 패키지. TRIGGER when: 코드에 `using Geuneda.DataExtensions` 포함, 또는 ObservableField, ObservableList, ObservableDictionary, ComputedField, ConfigsProvider, ConfigsSerializer, floatP, UnitySerializedDictionary를 사용하는 코드를 작성하거나 수정할 때. 새로운 Model 클래스에서 Observable 타입을 사용할 때 반드시 invoke한다.
 ---
 
 # Geuneda Data Extensions

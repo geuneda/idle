@@ -1,4 +1,5 @@
 using Geuneda.Services;
+using IdleRPG.Core;
 using UnityEngine;
 
 namespace IdleRPG.Battle
@@ -6,8 +7,9 @@ namespace IdleRPG.Battle
     /// <summary>
     /// 적의 시각적 표현과 이동/공격 로직을 담당하는 뷰 컴포넌트.
     /// <see cref="IPoolEntitySpawn{T}"/>을 구현하여 오브젝트 풀에서 재사용된다.
+    /// <see cref="ISkillTarget"/>을 구현하여 스킬 실행 시스템의 대상이 된다.
     /// </summary>
-    public class EnemyView : MonoBehaviour, IPoolEntitySpawn<EnemyModel>, IPoolEntityDespawn
+    public class EnemyView : MonoBehaviour, IPoolEntitySpawn<EnemyModel>, IPoolEntityDespawn, ISkillTarget
     {
         /// <summary>적 애니메이터</summary>
         [SerializeField] private Animator _animator;
@@ -117,5 +119,21 @@ namespace IdleRPG.Battle
         {
             SetState(EnemyState.Death);
         }
+
+        #region ISkillTarget
+
+        /// <inheritdoc/>
+        bool ISkillTarget.IsAlive => Model != null && Model.IsAlive;
+
+        /// <inheritdoc/>
+        Vector3 ISkillTarget.Position => transform.position;
+
+        /// <inheritdoc/>
+        void ISkillTarget.TakeDamage(BigNumber damage)
+        {
+            Model?.TakeDamage(damage);
+        }
+
+        #endregion
     }
 }

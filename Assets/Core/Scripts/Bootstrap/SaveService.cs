@@ -5,6 +5,7 @@ using Geuneda.Services;
 using IdleRPG.Economy;
 using IdleRPG.Equipment;
 using IdleRPG.Growth;
+using IdleRPG.Skill;
 using IdleRPG.Hero;
 using IdleRPG.OfflineReward;
 using IdleRPG.Stage;
@@ -26,6 +27,7 @@ namespace IdleRPG.Core
         private readonly HeroGrowthModel _growthModel;
         private readonly EquipmentModel _equipmentModel;
         private readonly EquipmentConfigCollection _equipmentConfig;
+        private readonly SkillModel _skillModel;
         private readonly IDataService _dataService;
         private readonly ITickService _tickService;
         private readonly ICoroutineService _coroutineService;
@@ -44,6 +46,7 @@ namespace IdleRPG.Core
         /// <param name="growthModel">영웅 성장 모델</param>
         /// <param name="equipmentModel">장비 모델</param>
         /// <param name="equipmentConfig">장비 설정 (장비 ID 열거용)</param>
+        /// <param name="skillModel">스킬 모델</param>
         /// <param name="dataService">데이터 영속성 서비스</param>
         /// <param name="tickService">주기적 업데이트 서비스</param>
         /// <param name="coroutineService">코루틴 호스트 서비스</param>
@@ -55,6 +58,7 @@ namespace IdleRPG.Core
             HeroGrowthModel growthModel,
             EquipmentModel equipmentModel,
             EquipmentConfigCollection equipmentConfig,
+            SkillModel skillModel,
             IDataService dataService,
             ITickService tickService,
             ICoroutineService coroutineService,
@@ -66,6 +70,7 @@ namespace IdleRPG.Core
             _growthModel = growthModel;
             _equipmentModel = equipmentModel;
             _equipmentConfig = equipmentConfig;
+            _skillModel = skillModel;
             _dataService = dataService;
             _tickService = tickService;
             _coroutineService = coroutineService;
@@ -150,6 +155,9 @@ namespace IdleRPG.Core
             _messageBroker.Subscribe<EquipmentEquippedMessage>(OnEquipmentChanged);
             _messageBroker.Subscribe<CurrencyChangedMessage>(OnCurrencyChanged);
             _messageBroker.Subscribe<OfflineRewardClaimedMessage>(OnOfflineRewardClaimed);
+            _messageBroker.Subscribe<SkillAcquiredMessage>(OnSkillChanged);
+            _messageBroker.Subscribe<SkillUpgradedMessage>(OnSkillChanged);
+            _messageBroker.Subscribe<SkillEquippedMessage>(OnSkillChanged);
 
             Debug.Log("[SaveService] 자동 저장 시작");
         }
@@ -169,6 +177,9 @@ namespace IdleRPG.Core
             _messageBroker.Unsubscribe<EquipmentEquippedMessage>(this);
             _messageBroker.Unsubscribe<CurrencyChangedMessage>(this);
             _messageBroker.Unsubscribe<OfflineRewardClaimedMessage>(this);
+            _messageBroker.Unsubscribe<SkillAcquiredMessage>(this);
+            _messageBroker.Unsubscribe<SkillUpgradedMessage>(this);
+            _messageBroker.Unsubscribe<SkillEquippedMessage>(this);
 
             CancelDebounce();
 
@@ -187,6 +198,7 @@ namespace IdleRPG.Core
             ApplyCurrencyData(saveData.Currency);
             ApplyGrowthData(saveData.Growth);
             ApplyEquipmentData(saveData.Equipment);
+            ApplySkillData(saveData.Skill);
 
             bool hasExisting = saveData.LastSaveTimestamp > 0;
 
@@ -215,7 +227,8 @@ namespace IdleRPG.Core
                 Stage = ExtractStageData(),
                 Currency = ExtractCurrencyData(),
                 Growth = ExtractGrowthData(),
-                Equipment = ExtractEquipmentData()
+                Equipment = ExtractEquipmentData(),
+                Skill = ExtractSkillData()
             };
         }
 
@@ -249,6 +262,32 @@ namespace IdleRPG.Core
             {
                 data.StatLevels[(int)type] = _growthModel.GetLevel(type);
             }
+            return data;
+        }
+
+        private SkillSaveData ExtractSkillData()
+        {
+            var data = new SkillSaveData();
+            foreach (var item in _skillModel.GetAllItems())
+            {
+                if (item.OwnedCount.Value <= 0 && item.Level.Value <= 0) continue;
+
+                data.Items[item.Id] = new SkillItemSaveEntry
+                {
+                    OwnedCount = item.OwnedCount.Value,
+                    Level = item.Level.Value
+                };
+            }
+
+            for (int i = 0; i < SkillModel.MAX_SLOTS; i++)
+            {
+                int skillId = _skillModel.GetEquippedSkillId(i);
+                if (skillId != SkillModel.UNEQUIPPED)
+                {
+                    data.Equipped[i] = skillId;
+                }
+            }
+
             return data;
         }
 
@@ -337,6 +376,24 @@ namespace IdleRPG.Core
             }
         }
 
+        private void ApplySkillData(SkillSaveData data)
+        {
+            if (data == null) return;
+
+            foreach (var pair in data.Items)
+            {
+                var state = _skillModel.GetOrCreateItemState(pair.Key);
+                state.OwnedCount.Value = pair.Value.OwnedCount;
+                state.Level.Value = pair.Value.Level;
+            }
+
+            foreach (var pair in data.Equipped)
+            {
+                if (pair.Key < 0 || pair.Key >= SkillModel.MAX_SLOTS) continue;
+                _skillModel.Equip(pair.Key, pair.Value);
+            }
+        }
+
         private void OnAutoSaveTick(float deltaTime)
         {
             Save();
@@ -370,6 +427,11 @@ namespace IdleRPG.Core
         private void OnOfflineRewardClaimed(OfflineRewardClaimedMessage message)
         {
             Save();
+        }
+
+        private void OnSkillChanged<T>(T message)
+        {
+            MarkDirty();
         }
 
         private IEnumerator DebounceSaveCoroutine()

@@ -1,6 +1,6 @@
 ---
 name: geuneda-frameworks
-description: Geuneda Unity 패키지 프레임워크 전체의 구조, 의존성, 개발/테스트 방법을 이해할 때 사용하는 스킬. 패키지 간 관계를 파악하고, 새 패키지를 추가하거나, 프레임워크 전체에 영향을 주는 변경을 할 때 활성화한다. 개별 패키지의 API 사용법은 해당 패키지의 스킬을 참조한다.
+description: Geuneda Unity 패키지 프레임워크 전체 구조 스킬. TRIGGER when: 새 Feature/asmdef 추가로 패키지 의존성이 변경될 때, 프레임워크 전체 아키텍처를 이해해야 할 때, 어떤 Geuneda 패키지를 사용해야 할지 결정해야 할 때. 개별 패키지 API는 해당 스킬 참조.
 ---
 
 # Geuneda Frameworks

@@ -1,6 +1,6 @@
 ---
 name: geuneda-statechart
-description: Unity 프로젝트에서 계층적 상태 머신(Statechart/HFSM)을 구성하고 사용하는 코드를 작성하거나 수정할 때 사용하는 스킬. Geuneda.StatechartMachine 네임스페이스의 상태, 전이, 이벤트, 중첩 상태 등의 API를 활용한 상태 머신 구현을 지원합니다.
+description: Unity 계층적 상태 머신(HFSM) 패키지. TRIGGER when: 코드에 `using Geuneda.StatechartMachine` 포함, 또는 Statechart, State, Transition, 상태 머신, HFSM, 비동기 상태 대기를 사용하는 코드를 작성하거나 수정할 때. 새로운 상태 머신 구현 시 반드시 invoke한다.
 ---
 
 # Geuneda Statechart

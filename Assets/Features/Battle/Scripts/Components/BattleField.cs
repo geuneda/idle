@@ -29,10 +29,12 @@ namespace IdleRPG.Battle
         private IBattleService _battleService;
         private IPoolService _poolService;
         private IMessageBrokerService _messageBroker;
+        private ISkillExecutionService _skillExecutionService;
 
         private readonly List<EnemyView> _activeEnemies = new List<EnemyView>();
         private readonly List<EnemyView> _dyingEnemies = new List<EnemyView>();
         private readonly Dictionary<EnemyView, float> _deathTimers = new Dictionary<EnemyView, float>();
+        private readonly List<ISkillTarget> _skillTargetCache = new List<ISkillTarget>();
 
         private float _heroAttackTimer;
         private float _restartTimer = -1f;
@@ -53,6 +55,7 @@ namespace IdleRPG.Battle
         private void OnAppFlowReady(AppFlowReadyMessage msg)
         {
             _battleService = MainInstaller.Resolve<IBattleService>();
+            _skillExecutionService = MainInstaller.Resolve<ISkillExecutionService>();
             _initialized = true;
             _battleService.StartBattle();
         }
@@ -96,6 +99,7 @@ namespace IdleRPG.Battle
 
             UpdateHeroAttack(dt);
             UpdateHeroRegen(dt);
+            UpdateSkillExecution(dt);
             UpdateEnemies(dt);
             UpdateDyingEnemies(dt);
         }
@@ -183,6 +187,39 @@ namespace IdleRPG.Battle
 
             BigNumber healAmount = regen * (double)dt;
             hero.Heal(healAmount);
+        }
+
+        /// <summary>
+        /// 스킬 실행 시스템에 현재 전투 상태를 전달하여 오토캐스트를 처리한다.
+        /// </summary>
+        /// <param name="dt">프레임 경과 시간</param>
+        private void UpdateSkillExecution(float dt)
+        {
+            if (_skillExecutionService == null) return;
+            if (_heroView.CurrentState == HeroState.Death) return;
+
+            BuildSkillTargetCache();
+            if (_skillTargetCache.Count == 0) return;
+
+            BigNumber heroAttack = _battleService.HeroModel.Attack.Value;
+            Vector3 heroPosition = _heroView.transform.position;
+
+            _skillExecutionService.Tick(dt, heroAttack, heroPosition, _skillTargetCache);
+        }
+
+        /// <summary>
+        /// 활성 적 목록을 <see cref="ISkillTarget"/> 캐시로 변환한다.
+        /// 매 프레임 재사용하여 GC 할당을 방지한다.
+        /// </summary>
+        private void BuildSkillTargetCache()
+        {
+            _skillTargetCache.Clear();
+            for (int i = 0; i < _activeEnemies.Count; i++)
+            {
+                var enemy = _activeEnemies[i];
+                if (enemy.Model != null && enemy.Model.IsAlive)
+                    _skillTargetCache.Add(enemy);
+            }
         }
 
         /// <summary>

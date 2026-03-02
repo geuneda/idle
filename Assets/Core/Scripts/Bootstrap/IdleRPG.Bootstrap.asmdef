@@ -11,6 +11,7 @@
         "IdleRPG.OfflineReward",
         "IdleRPG.Growth",
         "IdleRPG.Equipment",
+        "IdleRPG.Skill",
         "IdleRPG.UI",
         "Geuneda.GameData",
         "Geuneda.Services",

@@ -1,6 +1,6 @@
 ---
 name: geuneda-assetsimporter
-description: Unity Addressables 기반 에셋 로딩/관리 패키지. Unity 프로젝트에서 Addressables 에셋의 로드, 인스턴스화, 언로드, 씬 관리, 에셋 설정 임포트 관련 코드를 작성하거나 수정할 때 사용한다.
+description: Unity Addressables 기반 에셋 로딩/관리 패키지. TRIGGER when: 코드에 `using Geuneda.AssetsImporter` 포함, 또는 AssetResolverService, AssetConfigsScriptableObject, Addressable 에셋 로드/인스턴스화/언로드, 씬 비동기 로드를 사용하는 코드를 작성하거나 수정할 때. Addressables 기반 에셋 관리 코드 작성 시 반드시 invoke한다.
 ---
 
 # Geuneda AssetsImporter

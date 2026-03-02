@@ -1,6 +1,6 @@
 ---
 name: geuneda-notificationservice
-description: Unity 모바일 프로젝트에서 로컬/원격 알림을 예약, 취소, 관리하는 코드를 작성하거나 수정할 때 사용하는 스킬. Geuneda.NotificationService 네임스페이스의 API를 활용한 알림 시스템 구현을 지원합니다.
+description: Unity 모바일 알림 관리 패키지. TRIGGER when: 코드에 `using Geuneda.NotificationService` 포함, 또는 MobileNotificationService, 알림 채널 생성, 로컬/원격 푸시 알림 예약/취소를 사용하는 코드를 작성하거나 수정할 때.
 ---
 
 # Geuneda Notification Service

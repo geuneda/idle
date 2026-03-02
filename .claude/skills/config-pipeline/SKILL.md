@@ -1,6 +1,6 @@
 ---
 name: config-pipeline
-description: Google Sheets에서 Unity ScriptableObject까지의 Config 데이터 파이프라인을 구현하는 스킬. 새로운 Config 추가, Importer 작성, ConfigsProvider 등록 등 설정 데이터 관련 작업 시 자동으로 활성화된다. "Config 추가", "설정 데이터", "Google Sheets 임포트", "ConfigAsset", "Importer 작성" 등의 키워드에 반응한다.
+description: Google Sheets에서 Unity ScriptableObject까지의 Config 데이터 파이프라인. TRIGGER when: 새로운 Config POCO 클래스 생성, ConfigAsset ScriptableObject 래퍼 작성, Importer 클래스 작성, ConfigsProvider에 Config 등록, GameInstaller에서 Config 로드 코드 추가, Google Sheets 임포트 관련 작업 시. 새 Feature의 설정 데이터 파이프라인 구축 시 반드시 invoke한다.
 ---
 
 # Config Pipeline
