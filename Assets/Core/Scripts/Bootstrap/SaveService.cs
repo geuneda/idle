@@ -6,6 +6,7 @@ using IdleRPG.Economy;
 using IdleRPG.Equipment;
 using IdleRPG.Growth;
 using IdleRPG.Hero;
+using IdleRPG.OfflineReward;
 using IdleRPG.Stage;
 using UnityEngine;
 
@@ -147,6 +148,8 @@ namespace IdleRPG.Core
             _messageBroker.Subscribe<EquipmentAcquiredMessage>(OnEquipmentChanged);
             _messageBroker.Subscribe<EquipmentUpgradedMessage>(OnEquipmentChanged);
             _messageBroker.Subscribe<EquipmentEquippedMessage>(OnEquipmentChanged);
+            _messageBroker.Subscribe<CurrencyChangedMessage>(OnCurrencyChanged);
+            _messageBroker.Subscribe<OfflineRewardClaimedMessage>(OnOfflineRewardClaimed);
 
             Debug.Log("[SaveService] 자동 저장 시작");
         }
@@ -164,6 +167,8 @@ namespace IdleRPG.Core
             _messageBroker.Unsubscribe<EquipmentAcquiredMessage>(this);
             _messageBroker.Unsubscribe<EquipmentUpgradedMessage>(this);
             _messageBroker.Unsubscribe<EquipmentEquippedMessage>(this);
+            _messageBroker.Unsubscribe<CurrencyChangedMessage>(this);
+            _messageBroker.Unsubscribe<OfflineRewardClaimedMessage>(this);
 
             CancelDebounce();
 
@@ -355,6 +360,16 @@ namespace IdleRPG.Core
         private void OnEquipmentChanged<T>(T message)
         {
             MarkDirty();
+        }
+
+        private void OnCurrencyChanged(CurrencyChangedMessage message)
+        {
+            MarkDirty();
+        }
+
+        private void OnOfflineRewardClaimed(OfflineRewardClaimedMessage message)
+        {
+            Save();
         }
 
         private IEnumerator DebounceSaveCoroutine()
