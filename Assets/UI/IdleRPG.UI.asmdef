@@ -11,11 +11,14 @@
         "IdleRPG.OfflineReward",
         "IdleRPG.Equipment",
         "IdleRPG.Skill",
+        "IdleRPG.Pet",
         "Geuneda.UiService",
         "Geuneda.Services",
         "Geuneda.GameData",
         "Unity.TextMeshPro",
-        "UniTask"
+        "UniTask",
+        "Unity.Addressables",
+        "Unity.ResourceManager"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

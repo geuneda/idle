@@ -6,6 +6,7 @@ using IdleRPG.Economy;
 using IdleRPG.Equipment;
 using IdleRPG.Growth;
 using IdleRPG.Skill;
+using IdleRPG.Pet;
 using IdleRPG.Hero;
 using IdleRPG.OfflineReward;
 using IdleRPG.Stage;
@@ -28,6 +29,7 @@ namespace IdleRPG.Core
         private readonly EquipmentModel _equipmentModel;
         private readonly EquipmentConfigCollection _equipmentConfig;
         private readonly SkillModel _skillModel;
+        private readonly PetModel _petModel;
         private readonly IDataService _dataService;
         private readonly ITickService _tickService;
         private readonly ICoroutineService _coroutineService;
@@ -47,6 +49,7 @@ namespace IdleRPG.Core
         /// <param name="equipmentModel">장비 모델</param>
         /// <param name="equipmentConfig">장비 설정 (장비 ID 열거용)</param>
         /// <param name="skillModel">스킬 모델</param>
+        /// <param name="petModel">펫 모델</param>
         /// <param name="dataService">데이터 영속성 서비스</param>
         /// <param name="tickService">주기적 업데이트 서비스</param>
         /// <param name="coroutineService">코루틴 호스트 서비스</param>
@@ -59,6 +62,7 @@ namespace IdleRPG.Core
             EquipmentModel equipmentModel,
             EquipmentConfigCollection equipmentConfig,
             SkillModel skillModel,
+            PetModel petModel,
             IDataService dataService,
             ITickService tickService,
             ICoroutineService coroutineService,
@@ -71,6 +75,7 @@ namespace IdleRPG.Core
             _equipmentModel = equipmentModel;
             _equipmentConfig = equipmentConfig;
             _skillModel = skillModel;
+            _petModel = petModel;
             _dataService = dataService;
             _tickService = tickService;
             _coroutineService = coroutineService;
@@ -158,6 +163,9 @@ namespace IdleRPG.Core
             _messageBroker.Subscribe<SkillAcquiredMessage>(OnSkillChanged);
             _messageBroker.Subscribe<SkillUpgradedMessage>(OnSkillChanged);
             _messageBroker.Subscribe<SkillEquippedMessage>(OnSkillChanged);
+            _messageBroker.Subscribe<PetAcquiredMessage>(OnPetChanged);
+            _messageBroker.Subscribe<PetUpgradedMessage>(OnPetChanged);
+            _messageBroker.Subscribe<PetEquippedMessage>(OnPetChanged);
 
             Debug.Log("[SaveService] 자동 저장 시작");
         }
@@ -180,6 +188,9 @@ namespace IdleRPG.Core
             _messageBroker.Unsubscribe<SkillAcquiredMessage>(this);
             _messageBroker.Unsubscribe<SkillUpgradedMessage>(this);
             _messageBroker.Unsubscribe<SkillEquippedMessage>(this);
+            _messageBroker.Unsubscribe<PetAcquiredMessage>(this);
+            _messageBroker.Unsubscribe<PetUpgradedMessage>(this);
+            _messageBroker.Unsubscribe<PetEquippedMessage>(this);
 
             CancelDebounce();
 
@@ -199,6 +210,7 @@ namespace IdleRPG.Core
             ApplyGrowthData(saveData.Growth);
             ApplyEquipmentData(saveData.Equipment);
             ApplySkillData(saveData.Skill);
+            ApplyPetData(saveData.Pet);
 
             bool hasExisting = saveData.LastSaveTimestamp > 0;
 
@@ -228,7 +240,8 @@ namespace IdleRPG.Core
                 Currency = ExtractCurrencyData(),
                 Growth = ExtractGrowthData(),
                 Equipment = ExtractEquipmentData(),
-                Skill = ExtractSkillData()
+                Skill = ExtractSkillData(),
+                Pet = ExtractPetData()
             };
         }
 
@@ -285,6 +298,32 @@ namespace IdleRPG.Core
                 if (skillId != SkillModel.UNEQUIPPED)
                 {
                     data.Equipped[i] = skillId;
+                }
+            }
+
+            return data;
+        }
+
+        private PetSaveData ExtractPetData()
+        {
+            var data = new PetSaveData();
+            foreach (var item in _petModel.GetAllItems())
+            {
+                if (item.OwnedCount.Value <= 0 && item.Level.Value <= 0) continue;
+
+                data.Items[item.Id] = new PetItemSaveEntry
+                {
+                    OwnedCount = item.OwnedCount.Value,
+                    Level = item.Level.Value
+                };
+            }
+
+            for (int i = 0; i < PetModel.MAX_SLOTS; i++)
+            {
+                int petId = _petModel.GetEquippedPetId(i);
+                if (petId != PetModel.UNEQUIPPED)
+                {
+                    data.Equipped[i] = petId;
                 }
             }
 
@@ -394,6 +433,24 @@ namespace IdleRPG.Core
             }
         }
 
+        private void ApplyPetData(PetSaveData data)
+        {
+            if (data == null) return;
+
+            foreach (var pair in data.Items)
+            {
+                var state = _petModel.GetOrCreateItemState(pair.Key);
+                state.OwnedCount.Value = pair.Value.OwnedCount;
+                state.Level.Value = pair.Value.Level;
+            }
+
+            foreach (var pair in data.Equipped)
+            {
+                if (pair.Key < 0 || pair.Key >= PetModel.MAX_SLOTS) continue;
+                _petModel.Equip(pair.Key, pair.Value);
+            }
+        }
+
         private void OnAutoSaveTick(float deltaTime)
         {
             Save();
@@ -430,6 +487,11 @@ namespace IdleRPG.Core
         }
 
         private void OnSkillChanged<T>(T message)
+        {
+            MarkDirty();
+        }
+
+        private void OnPetChanged<T>(T message)
         {
             MarkDirty();
         }

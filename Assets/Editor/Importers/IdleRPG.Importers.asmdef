@@ -11,6 +11,7 @@
         "IdleRPG.OfflineReward",
         "IdleRPG.Equipment",
         "IdleRPG.Skill",
+        "IdleRPG.Pet",
         "Geuneda.GoogleSheetImporter",
         "Geuneda.GoogleSheetImporter.Editor",
         "Geuneda.GameData"

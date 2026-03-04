@@ -25,6 +25,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad41b4d334b224beb98b10ba2d82fcc9
+    m_Address: Assets/UI/Popup/Prefabs/PetDetailPopupPresenter.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c457097e55270416cb6782ffbc41a198
     m_Address: Assets/UI/Popup/Prefabs/SkillDetailPopupPresenter.prefab
     m_ReadOnly: 0

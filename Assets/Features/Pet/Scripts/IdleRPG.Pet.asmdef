@@ -1,0 +1,22 @@
+{
+    "name": "IdleRPG.Pet",
+    "rootNamespace": "IdleRPG.Pet",
+    "references": [
+        "IdleRPG.Core",
+        "IdleRPG.Battle",
+        "IdleRPG.Stage",
+        "Geuneda.GameData",
+        "Geuneda.Services",
+        "Unity.Addressables",
+        "Unity.ResourceManager"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

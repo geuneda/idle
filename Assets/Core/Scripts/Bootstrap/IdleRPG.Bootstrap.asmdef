@@ -12,6 +12,7 @@
         "IdleRPG.Growth",
         "IdleRPG.Equipment",
         "IdleRPG.Skill",
+        "IdleRPG.Pet",
         "IdleRPG.UI",
         "Geuneda.GameData",
         "Geuneda.Services",

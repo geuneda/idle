@@ -45,6 +45,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc5a9483af9ac4a219159cbc2679cfc6
+    m_Address: PetConfigAsset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: de0b8d8623f834f88b407cf0a08f039b
     m_Address: GrowthConfigAsset
     m_ReadOnly: 0

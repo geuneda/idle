@@ -18,6 +18,7 @@ namespace IdleRPG.Equipment
         private readonly IMessageBrokerService _messageBroker;
         private readonly CommandService<EquipmentModel> _commandService;
         private ISkillBonusProvider _skillBonusProvider;
+        private IPetBonusProvider _petBonusProvider;
 
         /// <inheritdoc />
         public EquipmentModel Model => _model;
@@ -61,6 +62,7 @@ namespace IdleRPG.Equipment
 
             _messageBroker.Subscribe<StatLevelUpMessage>(OnStatLevelUp);
             _messageBroker.Subscribe<SkillBonusChangedMessage>(OnSkillBonusChanged);
+            _messageBroker.Subscribe<PetBonusChangedMessage>(OnPetBonusChanged);
 
             RecalculateAndApplyEffects();
         }
@@ -281,7 +283,8 @@ namespace IdleRPG.Equipment
         private void ApplyToHeroModel()
         {
             BigNumber skillAttackPercent = _skillBonusProvider?.TotalPossessionAttackPercent ?? BigNumber.Zero;
-            BigNumber totalAttackPercent = TotalPossessionAttackPercent + EquippedAttackPercent + skillAttackPercent;
+            BigNumber petAttackPercent = _petBonusProvider?.TotalPossessionAttackPercent ?? BigNumber.Zero;
+            BigNumber totalAttackPercent = TotalPossessionAttackPercent + EquippedAttackPercent + skillAttackPercent + petAttackPercent;
             BigNumber totalHpPercent = TotalPossessionHpPercent + EquippedHpPercent;
 
             BigNumber baseAttack = _growthService.GetCurrentStatValue(HeroStatType.Attack);
@@ -332,7 +335,22 @@ namespace IdleRPG.Equipment
             RecalculateAndApplyEffects();
         }
 
+        /// <summary>
+        /// 펫 보유효과 제공자를 설정한다. 스탯 재계산에 펫 보유효과를 포함시킨다.
+        /// </summary>
+        /// <param name="provider">펫 보너스 제공자</param>
+        public void SetPetBonusProvider(IPetBonusProvider provider)
+        {
+            _petBonusProvider = provider;
+            RecalculateAndApplyEffects();
+        }
+
         private void OnSkillBonusChanged(SkillBonusChangedMessage message)
+        {
+            RecalculateAndApplyEffects();
+        }
+
+        private void OnPetBonusChanged(PetBonusChangedMessage message)
         {
             RecalculateAndApplyEffects();
         }

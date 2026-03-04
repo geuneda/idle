@@ -30,6 +30,7 @@ namespace IdleRPG.Battle
         private IPoolService _poolService;
         private IMessageBrokerService _messageBroker;
         private ISkillExecutionService _skillExecutionService;
+        private IPetCombatService _petCombatService;
 
         private readonly List<EnemyView> _activeEnemies = new List<EnemyView>();
         private readonly List<EnemyView> _dyingEnemies = new List<EnemyView>();
@@ -56,12 +57,14 @@ namespace IdleRPG.Battle
         {
             _battleService = MainInstaller.Resolve<IBattleService>();
             _skillExecutionService = MainInstaller.Resolve<ISkillExecutionService>();
+            _petCombatService = MainInstaller.Resolve<IPetCombatService>();
             _initialized = true;
             _battleService.StartBattle();
         }
 
         private void OnBattleStarted(BattleStartedMessage msg)
         {
+            _petCombatService?.OnBattleStarted();
             SpawnEnemies();
         }
 
@@ -99,7 +102,9 @@ namespace IdleRPG.Battle
 
             UpdateHeroAttack(dt);
             UpdateHeroRegen(dt);
+            BuildSkillTargetCache();
             UpdateSkillExecution(dt);
+            UpdatePetAttacks(dt);
             UpdateEnemies(dt);
             UpdateDyingEnemies(dt);
         }
@@ -190,6 +195,23 @@ namespace IdleRPG.Battle
         }
 
         /// <summary>
+        /// 장착된 펫의 공격 타이머를 갱신하고 투사체를 발사한다.
+        /// </summary>
+        /// <param name="dt">프레임 경과 시간</param>
+        private void UpdatePetAttacks(float dt)
+        {
+            if (_petCombatService == null) return;
+            if (_heroView.CurrentState == HeroState.Death) return;
+            if (_skillTargetCache.Count == 0) return;
+
+            BigNumber heroAttack = _battleService.HeroModel.Attack.Value;
+            Vector3 heroPosition = _heroView.transform.position;
+            float heroAttackRange = _battleService.HeroModel.AttackRange;
+
+            _petCombatService.Tick(dt, heroAttack, heroPosition, heroAttackRange, _skillTargetCache);
+        }
+
+        /// <summary>
         /// 스킬 실행 시스템에 현재 전투 상태를 전달하여 오토캐스트를 처리한다.
         /// </summary>
         /// <param name="dt">프레임 경과 시간</param>
@@ -197,8 +219,6 @@ namespace IdleRPG.Battle
         {
             if (_skillExecutionService == null) return;
             if (_heroView.CurrentState == HeroState.Death) return;
-
-            BuildSkillTargetCache();
             if (_skillTargetCache.Count == 0) return;
 
             BigNumber heroAttack = _battleService.HeroModel.Attack.Value;
@@ -357,6 +377,7 @@ namespace IdleRPG.Battle
             {
                 _heroView.SetState(HeroState.Death);
                 _battleService.OnHeroDied();
+                _petCombatService?.OnBattleEnded();
                 _restartTimer = RestartDelay;
             }
         }

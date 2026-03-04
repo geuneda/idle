@@ -30,6 +30,32 @@ namespace IdleRPG.Core
     }
 
     /// <summary>
+    /// 펫 보유/장착 상태 DTO.
+    /// </summary>
+    [Serializable]
+    public class PetSaveData
+    {
+        /// <summary>펫ID(int) -> 보유 수량 및 레벨 매핑</summary>
+        public Dictionary<int, PetItemSaveEntry> Items = new Dictionary<int, PetItemSaveEntry>();
+
+        /// <summary>슬롯 인덱스(int) -> 장착된 펫 ID 매핑. 미장착 슬롯은 키가 없다</summary>
+        public Dictionary<int, int> Equipped = new Dictionary<int, int>();
+    }
+
+    /// <summary>
+    /// 개별 펫 아이템의 저장 항목.
+    /// </summary>
+    [Serializable]
+    public class PetItemSaveEntry
+    {
+        /// <summary>보유 수량</summary>
+        public int OwnedCount;
+
+        /// <summary>강화 레벨</summary>
+        public int Level;
+    }
+
+    /// <summary>
     /// 스킬 보유/장착 상태 DTO.
     /// </summary>
     [Serializable]
@@ -82,6 +108,9 @@ namespace IdleRPG.Core
 
         /// <summary>스킬 보유 및 장착 상태</summary>
         public SkillSaveData Skill = new SkillSaveData();
+
+        /// <summary>펫 보유 및 장착 상태</summary>
+        public PetSaveData Pet = new PetSaveData();
     }
 
     /// <summary>
