@@ -101,16 +101,16 @@ namespace IdleRPG.UI
             LoadIconSprite(entry.SpriteKey);
         }
 
-        private void RefreshInfo(PetEntry entry, PetItemState state, bool isUnlocked)
+        private void RefreshInfo(PetEntry entry, CollectibleItemState state, bool isUnlocked)
         {
             if (_nameText != null)
                 _nameText.text = entry.DisplayName;
 
             if (_gradeText != null)
-                _gradeText.text = PetGradeHelper.GetGradeText(entry.Grade);
+                _gradeText.text = ItemGradeHelper.GetGradeText(entry.Grade);
 
             if (_gradeBgImage != null)
-                _gradeBgImage.color = PetGradeHelper.GetBackgroundColor(entry.Grade);
+                _gradeBgImage.color = ItemGradeHelper.GetBackgroundColor(entry.Grade);
 
             if (isUnlocked)
             {
@@ -130,7 +130,7 @@ namespace IdleRPG.UI
                 _speciesText.text = entry.Species;
         }
 
-        private void RefreshEffects(PetEntry entry, PetItemState state, bool isUnlocked)
+        private void RefreshEffects(PetEntry entry, CollectibleItemState state, bool isUnlocked)
         {
             if (_possessionEffectText != null)
             {
@@ -138,13 +138,13 @@ namespace IdleRPG.UI
                 {
                     BigNumber possEffect = _petService.GetPossessionEffect(Data.PetId);
                     _possessionEffectText.text =
-                        $"공격력 +<color=#FFD700>{possEffect.ToFormattedString(2)}%</color>";
+                        $"공격력 +{UiColorConstants.GoldTagOpen}{possEffect.ToFormattedString(2)}%{UiColorConstants.GoldTagClose}";
                 }
                 else
                 {
                     BigNumber basePoss = new BigNumber(entry.BasePossessionEffect, 0);
                     _possessionEffectText.text =
-                        $"공격력 +<color=#FFD700>{basePoss.ToFormattedString(2)}%</color>";
+                        $"공격력 +{UiColorConstants.GoldTagOpen}{basePoss.ToFormattedString(2)}%{UiColorConstants.GoldTagClose}";
                 }
             }
 
@@ -159,7 +159,7 @@ namespace IdleRPG.UI
             }
         }
 
-        private void RefreshCombat(PetEntry entry, PetItemState state, bool isUnlocked)
+        private void RefreshCombat(PetEntry entry, CollectibleItemState state, bool isUnlocked)
         {
             if (_attackPowerText != null)
             {
@@ -176,7 +176,7 @@ namespace IdleRPG.UI
             }
         }
 
-        private void RefreshButtons(PetEntry entry, PetItemState state, bool isUnlocked)
+        private void RefreshButtons(PetEntry entry, CollectibleItemState state, bool isUnlocked)
         {
             if (!isUnlocked)
             {

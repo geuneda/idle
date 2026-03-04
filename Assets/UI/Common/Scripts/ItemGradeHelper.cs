@@ -1,12 +1,13 @@
-using IdleRPG.Pet;
+using IdleRPG.Core;
 using UnityEngine;
 
 namespace IdleRPG.UI
 {
     /// <summary>
-    /// 펫 등급에 따른 색상 및 텍스트를 제공하는 유틸리티.
+    /// 아이템 등급에 따른 색상 및 텍스트를 제공하는 유틸리티.
+    /// 장비, 스킬, 펫이 공유하는 공통 등급 색상을 관리한다.
     /// </summary>
-    public static class PetGradeHelper
+    public static class ItemGradeHelper
     {
         private static readonly Color NormalBorderColor = new(0.76f, 0.76f, 0.76f);
         private static readonly Color AdvancedBorderColor = new(0.30f, 0.75f, 0.30f);
@@ -25,61 +26,61 @@ namespace IdleRPG.UI
         private static readonly Color SpecialBgColor = new(0.75f, 0.65f, 0.20f, 0.8f);
 
         /// <summary>
-        /// 펫 등급에 대응하는 테두리 색상을 반환한다.
+        /// 등급에 대응하는 테두리 색상을 반환한다.
         /// </summary>
-        /// <param name="grade">펫 등급</param>
+        /// <param name="grade">아이템 등급</param>
         /// <returns>등급에 해당하는 테두리 색상</returns>
-        public static Color GetBorderColor(PetGrade grade)
+        public static Color GetBorderColor(ItemGrade grade)
         {
             return grade switch
             {
-                PetGrade.Normal => NormalBorderColor,
-                PetGrade.Advanced => AdvancedBorderColor,
-                PetGrade.Rare => RareBorderColor,
-                PetGrade.Epic => EpicBorderColor,
-                PetGrade.Legend => LegendBorderColor,
-                PetGrade.Myth => MythBorderColor,
-                PetGrade.Special => SpecialBorderColor,
+                ItemGrade.Normal => NormalBorderColor,
+                ItemGrade.Advanced => AdvancedBorderColor,
+                ItemGrade.Rare => RareBorderColor,
+                ItemGrade.Epic => EpicBorderColor,
+                ItemGrade.Legend => LegendBorderColor,
+                ItemGrade.Myth => MythBorderColor,
+                ItemGrade.Special => SpecialBorderColor,
                 _ => NormalBorderColor
             };
         }
 
         /// <summary>
-        /// 펫 등급에 대응하는 배경 색상을 반환한다.
+        /// 등급에 대응하는 배경 색상을 반환한다.
         /// </summary>
-        /// <param name="grade">펫 등급</param>
+        /// <param name="grade">아이템 등급</param>
         /// <returns>등급에 해당하는 배경 색상</returns>
-        public static Color GetBackgroundColor(PetGrade grade)
+        public static Color GetBackgroundColor(ItemGrade grade)
         {
             return grade switch
             {
-                PetGrade.Normal => NormalBgColor,
-                PetGrade.Advanced => AdvancedBgColor,
-                PetGrade.Rare => RareBgColor,
-                PetGrade.Epic => EpicBgColor,
-                PetGrade.Legend => LegendBgColor,
-                PetGrade.Myth => MythBgColor,
-                PetGrade.Special => SpecialBgColor,
+                ItemGrade.Normal => NormalBgColor,
+                ItemGrade.Advanced => AdvancedBgColor,
+                ItemGrade.Rare => RareBgColor,
+                ItemGrade.Epic => EpicBgColor,
+                ItemGrade.Legend => LegendBgColor,
+                ItemGrade.Myth => MythBgColor,
+                ItemGrade.Special => SpecialBgColor,
                 _ => NormalBgColor
             };
         }
 
         /// <summary>
-        /// 펫 등급에 대응하는 한국어 등급 텍스트를 반환한다.
+        /// 등급에 대응하는 한국어 등급 텍스트를 반환한다.
         /// </summary>
-        /// <param name="grade">펫 등급</param>
+        /// <param name="grade">아이템 등급</param>
         /// <returns>등급 표시 문자열</returns>
-        public static string GetGradeText(PetGrade grade)
+        public static string GetGradeText(ItemGrade grade)
         {
             return grade switch
             {
-                PetGrade.Normal => "일반",
-                PetGrade.Advanced => "고급",
-                PetGrade.Rare => "희귀",
-                PetGrade.Epic => "영웅",
-                PetGrade.Legend => "전설",
-                PetGrade.Myth => "신화",
-                PetGrade.Special => "특별",
+                ItemGrade.Normal => "일반",
+                ItemGrade.Advanced => "고급",
+                ItemGrade.Rare => "희귀",
+                ItemGrade.Epic => "영웅",
+                ItemGrade.Legend => "전설",
+                ItemGrade.Myth => "신화",
+                ItemGrade.Special => "특별",
                 _ => grade.ToString()
             };
         }

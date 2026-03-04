@@ -44,13 +44,13 @@ namespace IdleRPG.Tests.EditMode
                             new OfflineDropEntry
                             {
                                 DropType = OfflineDropType.Pet,
-                                Grade = ItemGrade.Common,
+                                Grade = OfflineDropGrade.Common,
                                 DropChancePerMinute = 0.05f
                             },
                             new OfflineDropEntry
                             {
                                 DropType = OfflineDropType.Equipment,
-                                Grade = ItemGrade.Common,
+                                Grade = OfflineDropGrade.Common,
                                 DropChancePerMinute = 0.03f
                             }
                         }
@@ -64,13 +64,13 @@ namespace IdleRPG.Tests.EditMode
                             new OfflineDropEntry
                             {
                                 DropType = OfflineDropType.Pet,
-                                Grade = ItemGrade.Uncommon,
+                                Grade = OfflineDropGrade.Uncommon,
                                 DropChancePerMinute = 0.04f
                             },
                             new OfflineDropEntry
                             {
                                 DropType = OfflineDropType.Skill,
-                                Grade = ItemGrade.Rare,
+                                Grade = OfflineDropGrade.Rare,
                                 DropChancePerMinute = 0.01f
                             }
                         }
@@ -215,7 +215,7 @@ namespace IdleRPG.Tests.EditMode
                 new OfflineDropResult
                 {
                     DropType = OfflineDropType.Pet,
-                    Grade = ItemGrade.Common,
+                    Grade = OfflineDropGrade.Common,
                     Count = 5
                 }
             };

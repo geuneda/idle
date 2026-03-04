@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 
-namespace IdleRPG.Skill
+namespace IdleRPG.Core
 {
     /// <summary>
-    /// 스킬 강화 비용 설정. 레벨별 필요 소재 수를 정의한다.
+    /// 수집형 아이템 강화 비용 설정. 레벨별 필요 소재 수를 정의한다.
+    /// 장비, 스킬, 펫이 공유하는 공통 설정이다.
     /// </summary>
     [Serializable]
-    public class SkillUpgradeConfig
+    public class UpgradeConfig
     {
         /// <summary>레벨별 필요 소재 수. 인덱스 0은 레벨 1->2 강화 비용</summary>
         public List<int> RequiredCountPerLevel = new()

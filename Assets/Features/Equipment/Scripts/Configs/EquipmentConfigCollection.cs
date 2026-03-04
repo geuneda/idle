@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using IdleRPG.Core;
 
 namespace IdleRPG.Equipment
 {
@@ -13,7 +14,7 @@ namespace IdleRPG.Equipment
         public List<EquipmentEntry> Entries = new();
 
         /// <summary>강화 비용 설정 (모든 장비 공용)</summary>
-        public EquipmentUpgradeConfig UpgradeConfig = new();
+        public UpgradeConfig UpgradeConfig = new();
 
         private Dictionary<int, EquipmentEntry> _lookup;
         private Dictionary<EquipmentType, List<EquipmentEntry>> _byType;

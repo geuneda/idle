@@ -1,12 +1,12 @@
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Geuneda.Services;
 using Geuneda.UiService;
 using IdleRPG.Core;
 using IdleRPG.Pet;
 using TMPro;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 
 namespace IdleRPG.UI
@@ -35,8 +35,8 @@ namespace IdleRPG.UI
         private IMessageBrokerService _messageBroker;
         private readonly List<PetCollectionItemView> _itemViews = new();
         private readonly List<PetEntry> _sortedEntries = new();
-        private readonly List<AsyncOperationHandle<Sprite>> _spriteHandles = new();
-        private int _refreshSession;
+        private SpriteCache _spriteCache;
+        private CancellationTokenSource _refreshCts;
 
         protected override void OnInitialized()
         {
@@ -51,6 +51,8 @@ namespace IdleRPG.UI
 
         protected override void OnOpened()
         {
+            _spriteCache = new SpriteCache();
+
             _messageBroker.Subscribe<PetAcquiredMessage>(OnPetAcquired);
             _messageBroker.Subscribe<PetUpgradedMessage>(OnPetUpgraded);
             _messageBroker.Subscribe<PetEquippedMessage>(OnPetEquipped);
@@ -63,13 +65,15 @@ namespace IdleRPG.UI
 
         protected override void OnClosed()
         {
+            CancelRefresh();
             _messageBroker?.Unsubscribe<PetAcquiredMessage>(this);
             _messageBroker?.Unsubscribe<PetUpgradedMessage>(this);
             _messageBroker?.Unsubscribe<PetEquippedMessage>(this);
             _messageBroker?.Unsubscribe<PetUnequippedMessage>(this);
             _messageBroker?.Unsubscribe<PetEffectsChangedMessage>(this);
 
-            ReleaseSpriteHandles();
+            _spriteCache?.Dispose();
+            _spriteCache = null;
             ClearGrid();
         }
 
@@ -120,10 +124,32 @@ namespace IdleRPG.UI
             _itemViews.Clear();
         }
 
+        /// <summary>
+        /// 디바운스된 새로고침을 요청한다. 동일 프레임 내 여러 호출은 1회로 통합된다.
+        /// </summary>
+        private void RequestRefresh()
+        {
+            CancelRefresh();
+            _refreshCts = new CancellationTokenSource();
+            DebouncedRefreshAsync(_refreshCts.Token).Forget();
+        }
+
+        private async UniTaskVoid DebouncedRefreshAsync(CancellationToken token)
+        {
+            await UniTask.Yield(PlayerLoopTiming.PostLateUpdate, token);
+            if (token.IsCancellationRequested) return;
+            RefreshAll();
+        }
+
+        private void CancelRefresh()
+        {
+            _refreshCts?.Cancel();
+            _refreshCts?.Dispose();
+            _refreshCts = null;
+        }
+
         private void RefreshAll()
         {
-            _refreshSession++;
-            ReleaseSpriteHandles();
             RefreshSlots();
             RefreshGridItems();
             RefreshTotalEffect();
@@ -166,7 +192,7 @@ namespace IdleRPG.UI
                     {
                         _slotViews[i].SetEquipped(null);
                         var slotView = _slotViews[i];
-                        LoadSpriteAsync(entry.SpriteKey, sprite => slotView.UpdateIcon(sprite));
+                        LoadSpriteIntoAsync(entry.SpriteKey, sprite => slotView.UpdateIcon(sprite)).Forget();
                     }
 
                     _slotViews[i].SetOnClickListener(() => OnSlotClicked(slotIndex));
@@ -191,7 +217,7 @@ namespace IdleRPG.UI
 
             var state = _petService.Model.GetItemState(petId);
             bool isUnlocked = state != null && state.IsUnlocked;
-            Color gradeColor = PetGradeHelper.GetBorderColor(entry.Grade);
+            Color gradeColor = ItemGradeHelper.GetBorderColor(entry.Grade);
 
             if (isUnlocked && _petService.Model.IsEquipped(petId))
             {
@@ -210,7 +236,7 @@ namespace IdleRPG.UI
                     canUpgrade);
             }
 
-            LoadSpriteAsync(entry.SpriteKey, sprite => view.UpdateIcon(sprite));
+            LoadSpriteIntoAsync(entry.SpriteKey, sprite => view.UpdateIcon(sprite)).Forget();
         }
 
         private void RefreshTotalEffect()
@@ -219,7 +245,7 @@ namespace IdleRPG.UI
 
             BigNumber totalEffect = _petService.TotalPossessionAttackPercent;
             _totalPossessionEffectText.text =
-                $"모든 보유효과 : 공격 +<color=#FFD700>{totalEffect.ToFormattedString(2)}</color>%";
+                $"모든 보유효과 : 공격 +{UiColorConstants.GoldTagOpen}{totalEffect.ToFormattedString(2)}{UiColorConstants.GoldTagClose}%";
         }
 
         private void OnSlotClicked(int slotIndex)
@@ -255,25 +281,13 @@ namespace IdleRPG.UI
             _petService.UpgradeAll();
         }
 
-        private void OnPetAcquired(PetAcquiredMessage msg)
-        {
-            RefreshAll();
-        }
+        private void OnPetAcquired(PetAcquiredMessage msg) => RequestRefresh();
 
-        private void OnPetUpgraded(PetUpgradedMessage msg)
-        {
-            RefreshAll();
-        }
+        private void OnPetUpgraded(PetUpgradedMessage msg) => RequestRefresh();
 
-        private void OnPetEquipped(PetEquippedMessage msg)
-        {
-            RefreshAll();
-        }
+        private void OnPetEquipped(PetEquippedMessage msg) => RequestRefresh();
 
-        private void OnPetUnequipped(PetUnequippedMessage msg)
-        {
-            RefreshAll();
-        }
+        private void OnPetUnequipped(PetUnequippedMessage msg) => RequestRefresh();
 
         private void OnEffectsChanged(PetEffectsChangedMessage msg)
         {
@@ -281,41 +295,27 @@ namespace IdleRPG.UI
         }
 
         /// <summary>
-        /// Addressable 스프라이트를 비동기로 로드하고 완료 시 콜백을 호출한다.
+        /// SpriteCache를 통해 스프라이트를 로드하고 콜백을 호출한다.
+        /// 캐시 히트 시 즉시 반환되어 중복 로드를 방지한다.
         /// </summary>
-        /// <param name="spriteKey">Addressable 스프라이트 키</param>
-        /// <param name="onLoaded">로드 완료 콜백</param>
-        private async void LoadSpriteAsync(string spriteKey, System.Action<Sprite> onLoaded)
+        private async UniTaskVoid LoadSpriteIntoAsync(string spriteKey, System.Action<Sprite> onLoaded)
         {
-            if (string.IsNullOrEmpty(spriteKey)) return;
-
-            int session = _refreshSession;
+            if (_spriteCache == null || string.IsNullOrEmpty(spriteKey)) return;
 
             try
             {
-                var handle = Addressables.LoadAssetAsync<Sprite>(spriteKey);
-                _spriteHandles.Add(handle);
-                var sprite = await handle.Task;
-
-                if (this == null || session != _refreshSession) return;
+                var sprite = await _spriteCache.LoadAsync(spriteKey, destroyCancellationToken);
+                if (this == null) return;
                 onLoaded?.Invoke(sprite);
+            }
+            catch (System.OperationCanceledException)
+            {
+                // 정상 취소
             }
             catch (System.Exception ex)
             {
                 DevLog.LogWarning($"[PetTab] 스프라이트 로드 실패: {ex.Message}");
             }
-        }
-
-        /// <summary>
-        /// 로드된 스프라이트 핸들을 모두 해제한다.
-        /// </summary>
-        private void ReleaseSpriteHandles()
-        {
-            foreach (var handle in _spriteHandles)
-            {
-                if (handle.IsValid()) Addressables.Release(handle);
-            }
-            _spriteHandles.Clear();
         }
     }
 }

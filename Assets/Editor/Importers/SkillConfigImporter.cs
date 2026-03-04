@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Geuneda.GoogleSheetImporter;
 using GeunedaEditor.GoogleSheetImporter;
+using IdleRPG.Core;
 using IdleRPG.Skill;
 
 namespace IdleRPG.Editor.Importers
@@ -34,7 +35,7 @@ namespace IdleRPG.Editor.Importers
             var config = new SkillConfigCollection
             {
                 Entries = entries,
-                UpgradeConfig = existingUpgradeConfig ?? new SkillUpgradeConfig(),
+                UpgradeConfig = existingUpgradeConfig ?? new UpgradeConfig(),
                 SlotConfigs = existingSlotConfigs ?? new List<SkillSlotConfig>()
             };
             config.BuildLookup();

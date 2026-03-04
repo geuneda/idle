@@ -1,4 +1,3 @@
-using System;
 using IdleRPG.Core;
 
 namespace IdleRPG.Skill
@@ -16,9 +15,7 @@ namespace IdleRPG.Skill
         /// </summary>
         public static BigNumber CalcPossessionEffect(SkillEntry entry, int level)
         {
-            if (level <= 0) return BigNumber.Zero;
-            double value = entry.BasePossessionEffect + entry.PossessionEffectPerLevel * (level - 1);
-            return new BigNumber(value, 0);
+            return CollectibleFormula.CalcPossessionEffect(entry, level);
         }
 
         /// <summary>
@@ -41,17 +38,9 @@ namespace IdleRPG.Skill
         /// <summary>
         /// 강화에 필요한 소재 수를 반환한다.
         /// </summary>
-        public static int GetRequiredCount(SkillUpgradeConfig config, int currentLevel)
+        public static int GetRequiredCount(UpgradeConfig config, int currentLevel)
         {
-            if (currentLevel <= 0) return 0;
-            int index = currentLevel - 1;
-
-            if (index < config.RequiredCountPerLevel.Count)
-                return config.RequiredCountPerLevel[index];
-
-            int overflow = index - config.RequiredCountPerLevel.Count;
-            double value = config.OverflowBase * Math.Pow(1.0 + config.OverflowGrowthRate, overflow + 1);
-            return (int)Math.Ceiling(value);
+            return CollectibleFormula.GetRequiredCount(config, currentLevel);
         }
 
         /// <summary>
@@ -59,8 +48,7 @@ namespace IdleRPG.Skill
         /// </summary>
         public static bool IsMaxLevel(SkillEntry entry, int currentLevel)
         {
-            if (entry.MaxLevel <= 0) return false;
-            return currentLevel >= entry.MaxLevel;
+            return CollectibleFormula.IsMaxLevel(entry, currentLevel);
         }
 
         /// <summary>

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Geuneda.Services;
 using Geuneda.UiService;
 using IdleRPG.Core;
@@ -41,6 +43,7 @@ namespace IdleRPG.UI
         private IEquipmentService _equipmentService;
         private IMessageBrokerService _messageBroker;
         private readonly List<EquipmentCollectionItemView> _itemViews = new();
+        private CancellationTokenSource _refreshCts;
 
         protected override void OnInitialized()
         {
@@ -70,6 +73,7 @@ namespace IdleRPG.UI
 
         protected override void OnClosed()
         {
+            CancelRefresh();
             _messageBroker?.Unsubscribe<EquipmentAcquiredMessage>(this);
             _messageBroker?.Unsubscribe<EquipmentUpgradedMessage>(this);
             _messageBroker?.Unsubscribe<EquipmentEquippedMessage>(this);
@@ -107,6 +111,30 @@ namespace IdleRPG.UI
             _itemViews.Clear();
         }
 
+        /// <summary>
+        /// 디바운스된 새로고침을 요청한다. 동일 프레임 내 여러 호출은 1회로 통합된다.
+        /// </summary>
+        private void RequestRefresh()
+        {
+            CancelRefresh();
+            _refreshCts = new CancellationTokenSource();
+            DebouncedRefreshAsync(_refreshCts.Token).Forget();
+        }
+
+        private async UniTaskVoid DebouncedRefreshAsync(CancellationToken token)
+        {
+            await UniTask.Yield(PlayerLoopTiming.PostLateUpdate, token);
+            if (token.IsCancellationRequested) return;
+            RefreshAll();
+        }
+
+        private void CancelRefresh()
+        {
+            _refreshCts?.Cancel();
+            _refreshCts?.Dispose();
+            _refreshCts = null;
+        }
+
         private void RefreshAll()
         {
             RefreshCurrentEquip();
@@ -131,7 +159,7 @@ namespace IdleRPG.UI
             if (entry == null || state == null) return;
 
             if (_currentEquipIconBg != null)
-                _currentEquipIconBg.color = EquipmentGradeHelper.GetColor(entry.Grade);
+                _currentEquipIconBg.color = ItemGradeHelper.GetBorderColor(entry.Grade);
 
             if (_currentEquipNameText != null)
                 _currentEquipNameText.text = entry.DisplayName;
@@ -199,20 +227,14 @@ namespace IdleRPG.UI
             Close(true);
         }
 
-        private void OnEquipmentChanged(EquipmentAcquiredMessage msg)
-        {
-            RefreshAll();
-        }
+        private void OnEquipmentChanged(EquipmentAcquiredMessage msg) => RequestRefresh();
 
-        private void OnEquipmentUpgraded(EquipmentUpgradedMessage msg)
-        {
-            RefreshAll();
-        }
+        private void OnEquipmentUpgraded(EquipmentUpgradedMessage msg) => RequestRefresh();
 
         private void OnEquipmentEquipped(EquipmentEquippedMessage msg)
         {
             if (msg.SlotType == Data.SlotType)
-                RefreshAll();
+                RequestRefresh();
         }
     }
 }

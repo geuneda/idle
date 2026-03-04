@@ -182,7 +182,7 @@ namespace IdleRPG.Skill
         public void QuickEquip()
         {
             // 해금된 스킬을 레벨 내림차순으로 정렬
-            var sorted = new List<SkillItemState>();
+            var sorted = new List<CollectibleItemState>();
             foreach (var item in _model.GetAllUnlockedItems())
             {
                 if (!_model.IsEquipped(item.Id))

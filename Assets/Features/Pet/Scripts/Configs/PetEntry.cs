@@ -1,18 +1,20 @@
 using System;
+using IdleRPG.Core;
 
 namespace IdleRPG.Pet
 {
     /// <summary>
     /// 개별 펫의 설정 데이터. Google Sheets에서 임포트된다.
+    /// <see cref="ICollectibleEntry"/>를 구현하여 공통 수집형 계산에 사용된다.
     /// </summary>
     [Serializable]
-    public class PetEntry
+    public class PetEntry : ICollectibleEntry
     {
         /// <summary>고유 식별자 (4001~)</summary>
         public int Id;
 
         /// <summary>펫 등급</summary>
-        public PetGrade Grade;
+        public ItemGrade Grade;
 
         /// <summary>UI 표시 이름</summary>
         public string DisplayName;
@@ -49,5 +51,14 @@ namespace IdleRPG.Pet
 
         /// <summary>최대 레벨. 0이면 무제한</summary>
         public int MaxLevel;
+
+        // -- ICollectibleEntry 명시적 구현 (직렬화 필드를 속성으로 노출) --
+        int ICollectibleEntry.Id => Id;
+        ItemGrade ICollectibleEntry.Grade => Grade;
+        string ICollectibleEntry.DisplayName => DisplayName;
+        string ICollectibleEntry.SpriteKey => SpriteKey;
+        double ICollectibleEntry.BasePossessionEffect => BasePossessionEffect;
+        double ICollectibleEntry.PossessionEffectPerLevel => PossessionEffectPerLevel;
+        int ICollectibleEntry.MaxLevel => MaxLevel;
     }
 }

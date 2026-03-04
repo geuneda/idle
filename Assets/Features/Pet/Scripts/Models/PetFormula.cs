@@ -1,21 +1,20 @@
-using System;
 using IdleRPG.Core;
 
 namespace IdleRPG.Pet
 {
     /// <summary>
     /// 펫 관련 순수 계산 함수 모음. 상태를 갖지 않으며 결정론적 결과를 보장한다.
+    /// 공통 계산은 <see cref="CollectibleFormula"/>에 위임한다.
     /// </summary>
     public static class PetFormula
     {
         /// <summary>
         /// 보유효과 공격력 퍼센트를 계산한다.
+        /// <see cref="CollectibleFormula.CalcPossessionEffect"/>에 위임한다.
         /// </summary>
         public static BigNumber CalcPossessionEffect(PetEntry entry, int level)
         {
-            if (level <= 0) return BigNumber.Zero;
-            double value = entry.BasePossessionEffect + entry.PossessionEffectPerLevel * (level - 1);
-            return new BigNumber(value, 0);
+            return CollectibleFormula.CalcPossessionEffect(entry, level);
         }
 
         /// <summary>
@@ -46,27 +45,20 @@ namespace IdleRPG.Pet
 
         /// <summary>
         /// 강화에 필요한 소재 수를 반환한다.
+        /// <see cref="CollectibleFormula.GetRequiredCount"/>에 위임한다.
         /// </summary>
-        public static int GetRequiredCount(PetUpgradeConfig config, int currentLevel)
+        public static int GetRequiredCount(UpgradeConfig config, int currentLevel)
         {
-            if (currentLevel <= 0) return 0;
-            int index = currentLevel - 1;
-
-            if (index < config.RequiredCountPerLevel.Count)
-                return config.RequiredCountPerLevel[index];
-
-            int overflow = index - config.RequiredCountPerLevel.Count;
-            double value = config.OverflowBase * Math.Pow(1.0 + config.OverflowGrowthRate, overflow + 1);
-            return (int)Math.Ceiling(value);
+            return CollectibleFormula.GetRequiredCount(config, currentLevel);
         }
 
         /// <summary>
         /// 최대 레벨에 도달했는지 확인한다.
+        /// <see cref="CollectibleFormula.IsMaxLevel"/>에 위임한다.
         /// </summary>
         public static bool IsMaxLevel(PetEntry entry, int currentLevel)
         {
-            if (entry.MaxLevel <= 0) return false;
-            return currentLevel >= entry.MaxLevel;
+            return CollectibleFormula.IsMaxLevel(entry, currentLevel);
         }
 
         /// <summary>

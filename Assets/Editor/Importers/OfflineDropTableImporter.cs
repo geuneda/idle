@@ -78,7 +78,7 @@ namespace IdleRPG.Editor.Importers
             public int MinGlobalStageIndex;
             public int MaxGlobalStageIndex;
             public OfflineDropType DropType;
-            public ItemGrade Grade;
+            public OfflineDropGrade Grade;
             public float DropChancePerMinute;
         }
     }

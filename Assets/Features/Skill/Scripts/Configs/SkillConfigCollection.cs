@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using IdleRPG.Core;
 
 namespace IdleRPG.Skill
 {
@@ -13,13 +14,13 @@ namespace IdleRPG.Skill
         public List<SkillEntry> Entries = new();
 
         /// <summary>강화 비용 설정</summary>
-        public SkillUpgradeConfig UpgradeConfig = new();
+        public UpgradeConfig UpgradeConfig = new();
 
         /// <summary>슬롯 해금 설정</summary>
         public List<SkillSlotConfig> SlotConfigs = new();
 
         private Dictionary<int, SkillEntry> _lookup;
-        private Dictionary<SkillGrade, List<SkillEntry>> _byGrade;
+        private Dictionary<ItemGrade, List<SkillEntry>> _byGrade;
         private Dictionary<int, SkillSlotConfig> _slotLookup;
 
         /// <summary>
@@ -28,7 +29,7 @@ namespace IdleRPG.Skill
         public void BuildLookup()
         {
             _lookup = new Dictionary<int, SkillEntry>(Entries.Count);
-            _byGrade = new Dictionary<SkillGrade, List<SkillEntry>>();
+            _byGrade = new Dictionary<ItemGrade, List<SkillEntry>>();
 
             foreach (var entry in Entries)
             {
@@ -62,7 +63,7 @@ namespace IdleRPG.Skill
         }
 
         /// <summary>등급별 스킬 항목을 반환한다.</summary>
-        public IReadOnlyList<SkillEntry> GetEntriesByGrade(SkillGrade grade)
+        public IReadOnlyList<SkillEntry> GetEntriesByGrade(ItemGrade grade)
         {
             if (_byGrade != null && _byGrade.TryGetValue(grade, out var list))
                 return list;

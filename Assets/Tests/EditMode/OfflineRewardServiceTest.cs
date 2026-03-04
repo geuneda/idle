@@ -45,7 +45,7 @@ namespace IdleRPG.Tests.EditMode
                             new OfflineDropEntry
                             {
                                 DropType = OfflineDropType.Pet,
-                                Grade = ItemGrade.Common,
+                                Grade = OfflineDropGrade.Common,
                                 DropChancePerMinute = 0.05f
                             }
                         }

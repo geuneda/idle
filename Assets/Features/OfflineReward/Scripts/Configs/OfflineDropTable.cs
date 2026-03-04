@@ -19,9 +19,9 @@ namespace IdleRPG.OfflineReward
     }
 
     /// <summary>
-    /// 아이템 등급.
+    /// 오프라인 드롭 아이템 등급.
     /// </summary>
-    public enum ItemGrade
+    public enum OfflineDropGrade
     {
         /// <summary>일반</summary>
         Common = 0,
@@ -49,7 +49,7 @@ namespace IdleRPG.OfflineReward
         public OfflineDropType DropType;
 
         /// <summary>아이템 등급</summary>
-        public ItemGrade Grade;
+        public OfflineDropGrade Grade;
 
         /// <summary>분당 드롭 확률 (0.0~1.0). 매 분마다 이 확률로 드롭 판정한다.</summary>
         public float DropChancePerMinute;

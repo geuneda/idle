@@ -1,13 +1,14 @@
 using Geuneda.DataExtensions;
 
-namespace IdleRPG.Skill
+namespace IdleRPG.Core
 {
     /// <summary>
-    /// 개별 스킬의 런타임 상태. 보유 수량과 강화 레벨을 <see cref="ObservableField{T}"/>로 관리한다.
+    /// 수집형 아이템의 런타임 상태. 보유 수량과 강화 레벨을 <see cref="ObservableField{T}"/>로 관리한다.
+    /// 장비, 스킬, 펫이 공유하는 공통 상태 클래스이다.
     /// </summary>
-    public class SkillItemState
+    public class CollectibleItemState
     {
-        /// <summary>스킬 고유 식별자</summary>
+        /// <summary>아이템 고유 식별자</summary>
         public int Id { get; }
 
         /// <summary>보유 수량</summary>
@@ -19,7 +20,7 @@ namespace IdleRPG.Skill
         /// <summary>해금 여부. 레벨이 1 이상이면 해금된 상태</summary>
         public bool IsUnlocked => Level.Value > 0;
 
-        public SkillItemState(int id, int ownedCount = 0, int level = 0)
+        public CollectibleItemState(int id, int ownedCount = 0, int level = 0)
         {
             Id = id;
             OwnedCount = new ObservableField<int>(ownedCount);

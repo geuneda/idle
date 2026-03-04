@@ -1,4 +1,3 @@
-using System;
 using IdleRPG.Core;
 
 namespace IdleRPG.Equipment
@@ -17,10 +16,7 @@ namespace IdleRPG.Equipment
         /// <returns>보유효과 수치 (%)</returns>
         public static BigNumber CalcPossessionEffect(EquipmentEntry entry, int level)
         {
-            if (level <= 0) return BigNumber.Zero;
-
-            double value = entry.BasePossessionEffect + entry.PossessionEffectPerLevel * (level - 1);
-            return new BigNumber(value, 0);
+            return CollectibleFormula.CalcPossessionEffect(entry, level);
         }
 
         /// <summary>
@@ -44,17 +40,9 @@ namespace IdleRPG.Equipment
         /// <param name="config">강화 비용 설정</param>
         /// <param name="currentLevel">현재 레벨</param>
         /// <returns>필요한 소재 개수</returns>
-        public static int GetRequiredCount(EquipmentUpgradeConfig config, int currentLevel)
+        public static int GetRequiredCount(UpgradeConfig config, int currentLevel)
         {
-            if (currentLevel <= 0) return 0;
-
-            int index = currentLevel - 1;
-            if (index < config.RequiredCountPerLevel.Count)
-                return config.RequiredCountPerLevel[index];
-
-            int overflow = index - config.RequiredCountPerLevel.Count;
-            double cost = config.OverflowBase * Math.Pow(1.0 + config.OverflowGrowthRate, overflow + 1);
-            return (int)Math.Ceiling(cost);
+            return CollectibleFormula.GetRequiredCount(config, currentLevel);
         }
 
         /// <summary>
@@ -65,7 +53,7 @@ namespace IdleRPG.Equipment
         /// <returns>최대 레벨이면 true</returns>
         public static bool IsMaxLevel(EquipmentEntry entry, int currentLevel)
         {
-            return entry.MaxLevel > 0 && currentLevel >= entry.MaxLevel;
+            return CollectibleFormula.IsMaxLevel(entry, currentLevel);
         }
 
         /// <summary>

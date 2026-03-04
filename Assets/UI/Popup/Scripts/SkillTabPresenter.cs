@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Geuneda.Services;
 using Geuneda.UiService;
 using IdleRPG.Core;
@@ -33,6 +35,7 @@ namespace IdleRPG.UI
         private IMessageBrokerService _messageBroker;
         private readonly List<SkillCollectionItemView> _itemViews = new();
         private readonly List<SkillEntry> _sortedEntries = new();
+        private CancellationTokenSource _refreshCts;
 
         protected override void OnInitialized()
         {
@@ -59,6 +62,7 @@ namespace IdleRPG.UI
 
         protected override void OnClosed()
         {
+            CancelRefresh();
             _messageBroker?.Unsubscribe<SkillAcquiredMessage>(this);
             _messageBroker?.Unsubscribe<SkillUpgradedMessage>(this);
             _messageBroker?.Unsubscribe<SkillEquippedMessage>(this);
@@ -115,6 +119,30 @@ namespace IdleRPG.UI
             _itemViews.Clear();
         }
 
+        /// <summary>
+        /// 디바운스된 새로고침을 요청한다. 동일 프레임 내 여러 호출은 1회로 통합된다.
+        /// </summary>
+        private void RequestRefresh()
+        {
+            CancelRefresh();
+            _refreshCts = new CancellationTokenSource();
+            DebouncedRefreshAsync(_refreshCts.Token).Forget();
+        }
+
+        private async UniTaskVoid DebouncedRefreshAsync(CancellationToken token)
+        {
+            await UniTask.Yield(PlayerLoopTiming.PostLateUpdate, token);
+            if (token.IsCancellationRequested) return;
+            RefreshAll();
+        }
+
+        private void CancelRefresh()
+        {
+            _refreshCts?.Cancel();
+            _refreshCts?.Dispose();
+            _refreshCts = null;
+        }
+
         private void RefreshAll()
         {
             RefreshSlots();
@@ -157,7 +185,7 @@ namespace IdleRPG.UI
                     var state = _skillService.Model.GetItemState(equippedId);
                     if (entry != null && state != null)
                     {
-                        Color gradeColor = SkillGradeHelper.GetBackgroundColor(entry.Grade);
+                        Color gradeColor = ItemGradeHelper.GetBackgroundColor(entry.Grade);
                         // TODO: 스프라이트는 Addressable로 로드해야 하므로 null 전달, 프리팹에서 기본 아이콘 사용
                         _slotViews[i].SetEquipped(null);
                     }
@@ -184,7 +212,7 @@ namespace IdleRPG.UI
 
             var state = _skillService.Model.GetItemState(skillId);
             bool isUnlocked = state != null && state.IsUnlocked;
-            Color gradeColor = SkillGradeHelper.GetBorderColor(entry.Grade);
+            Color gradeColor = ItemGradeHelper.GetBorderColor(entry.Grade);
 
             if (isUnlocked && _skillService.Model.IsEquipped(skillId))
             {
@@ -210,7 +238,7 @@ namespace IdleRPG.UI
 
             BigNumber totalEffect = _skillService.TotalPossessionAttackPercent;
             _totalPossessionEffectText.text =
-                $"모든 보유효과 : 공격 +<color=#FFD700>{totalEffect.ToFormattedString(2)}</color>%";
+                $"모든 보유효과 : 공격 +{UiColorConstants.GoldTagOpen}{totalEffect.ToFormattedString(2)}{UiColorConstants.GoldTagClose}%";
         }
 
         private void OnSlotClicked(int slotIndex)
@@ -246,25 +274,13 @@ namespace IdleRPG.UI
             _skillService.UpgradeAll();
         }
 
-        private void OnSkillAcquired(SkillAcquiredMessage msg)
-        {
-            RefreshAll();
-        }
+        private void OnSkillAcquired(SkillAcquiredMessage msg) => RequestRefresh();
 
-        private void OnSkillUpgraded(SkillUpgradedMessage msg)
-        {
-            RefreshAll();
-        }
+        private void OnSkillUpgraded(SkillUpgradedMessage msg) => RequestRefresh();
 
-        private void OnSkillEquipped(SkillEquippedMessage msg)
-        {
-            RefreshAll();
-        }
+        private void OnSkillEquipped(SkillEquippedMessage msg) => RequestRefresh();
 
-        private void OnSkillUnequipped(SkillUnequippedMessage msg)
-        {
-            RefreshAll();
-        }
+        private void OnSkillUnequipped(SkillUnequippedMessage msg) => RequestRefresh();
 
         private void OnEffectsChanged(SkillEffectsChangedMessage msg)
         {

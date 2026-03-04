@@ -182,7 +182,7 @@ namespace IdleRPG.Pet
         public void QuickEquip()
         {
             // 해금된 펫을 유효 DPS 내림차순으로 정렬
-            var sorted = new List<(PetItemState state, double dps)>();
+            var sorted = new List<(CollectibleItemState state, double dps)>();
             foreach (var item in _model.GetAllUnlockedItems())
             {
                 if (_model.IsEquipped(item.Id)) continue;

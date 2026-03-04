@@ -104,7 +104,7 @@ namespace IdleRPG.Pet
                 PetEntry entry = _petService.Config.GetEntry(petId);
                 if (entry == null) continue;
 
-                PetItemState state = _petService.Model.GetItemState(petId);
+                CollectibleItemState state = _petService.Model.GetItemState(petId);
                 if (state == null || !state.IsUnlocked) continue;
 
                 Vector3 petPosition = heroPosition + SlotOffsets[slot];

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using IdleRPG.Core;
 
 namespace IdleRPG.Pet
 {
@@ -13,13 +14,13 @@ namespace IdleRPG.Pet
         public List<PetEntry> Entries = new();
 
         /// <summary>강화 비용 설정</summary>
-        public PetUpgradeConfig UpgradeConfig = new();
+        public UpgradeConfig UpgradeConfig = new();
 
         /// <summary>슬롯 해금 설정</summary>
         public List<PetSlotConfig> SlotConfigs = new();
 
         private Dictionary<int, PetEntry> _lookup;
-        private Dictionary<PetGrade, List<PetEntry>> _byGrade;
+        private Dictionary<ItemGrade, List<PetEntry>> _byGrade;
         private Dictionary<int, PetSlotConfig> _slotLookup;
 
         /// <summary>
@@ -28,7 +29,7 @@ namespace IdleRPG.Pet
         public void BuildLookup()
         {
             _lookup = new Dictionary<int, PetEntry>(Entries.Count);
-            _byGrade = new Dictionary<PetGrade, List<PetEntry>>();
+            _byGrade = new Dictionary<ItemGrade, List<PetEntry>>();
 
             foreach (var entry in Entries)
             {
@@ -62,7 +63,7 @@ namespace IdleRPG.Pet
         }
 
         /// <summary>등급별 펫 항목을 반환한다.</summary>
-        public IReadOnlyList<PetEntry> GetEntriesByGrade(PetGrade grade)
+        public IReadOnlyList<PetEntry> GetEntriesByGrade(ItemGrade grade)
         {
             if (_byGrade != null && _byGrade.TryGetValue(grade, out var list))
                 return list;

@@ -1,9 +1,9 @@
-namespace IdleRPG.Equipment
+namespace IdleRPG.Core
 {
     /// <summary>
-    /// 장비 등급. 숫자가 클수록 높은 등급이다.
+    /// 수집형 아이템(장비, 스킬, 펫)의 공통 등급. 숫자가 클수록 높은 등급이다.
     /// </summary>
-    public enum EquipmentGrade
+    public enum ItemGrade
     {
         /// <summary>일반</summary>
         Normal = 0,

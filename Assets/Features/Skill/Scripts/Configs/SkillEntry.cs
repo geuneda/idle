@@ -1,18 +1,20 @@
 using System;
+using IdleRPG.Core;
 
 namespace IdleRPG.Skill
 {
     /// <summary>
     /// 개별 스킬의 설정 데이터. Google Sheets에서 임포트된다.
+    /// <see cref="ICollectibleEntry"/>를 구현하여 공통 수집형 추상화를 지원한다.
     /// </summary>
     [Serializable]
-    public class SkillEntry
+    public class SkillEntry : ICollectibleEntry
     {
         /// <summary>고유 식별자 (3001~3021)</summary>
         public int Id;
 
         /// <summary>스킬 등급</summary>
-        public SkillGrade Grade;
+        public ItemGrade Grade;
 
         /// <summary>UI 표시 이름</summary>
         public string DisplayName;
@@ -52,5 +54,14 @@ namespace IdleRPG.Skill
 
         /// <summary>최대 레벨. 0이면 무제한</summary>
         public int MaxLevel;
+
+        // -- ICollectibleEntry 명시적 구현 --
+        int ICollectibleEntry.Id => Id;
+        ItemGrade ICollectibleEntry.Grade => Grade;
+        string ICollectibleEntry.DisplayName => DisplayName;
+        string ICollectibleEntry.SpriteKey => SpriteKey;
+        double ICollectibleEntry.BasePossessionEffect => BasePossessionEffect;
+        double ICollectibleEntry.PossessionEffectPerLevel => PossessionEffectPerLevel;
+        int ICollectibleEntry.MaxLevel => MaxLevel;
     }
 }

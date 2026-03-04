@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Geuneda.GoogleSheetImporter;
 using GeunedaEditor.GoogleSheetImporter;
+using IdleRPG.Core;
 using IdleRPG.Pet;
 
 namespace IdleRPG.Editor.Importers
@@ -34,7 +35,7 @@ namespace IdleRPG.Editor.Importers
             var config = new PetConfigCollection
             {
                 Entries = entries,
-                UpgradeConfig = existingUpgradeConfig ?? new PetUpgradeConfig(),
+                UpgradeConfig = existingUpgradeConfig ?? new UpgradeConfig(),
                 SlotConfigs = existingSlotConfigs ?? new List<PetSlotConfig>()
             };
             config.BuildLookup();

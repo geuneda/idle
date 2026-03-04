@@ -14,7 +14,7 @@ namespace IdleRPG.OfflineReward
         public OfflineDropType DropType;
 
         /// <summary>아이템 등급</summary>
-        public ItemGrade Grade;
+        public OfflineDropGrade Grade;
 
         /// <summary>드롭 수량</summary>
         public int Count;

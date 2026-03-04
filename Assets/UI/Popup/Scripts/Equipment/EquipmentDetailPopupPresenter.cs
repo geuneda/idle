@@ -80,7 +80,7 @@ namespace IdleRPG.UI
             RefreshButtons(entry, state, isUnlocked);
         }
 
-        private void RefreshInfo(EquipmentEntry entry, EquipmentItemState state, bool isUnlocked)
+        private void RefreshInfo(EquipmentEntry entry, CollectibleItemState state, bool isUnlocked)
         {
             if (_nameText != null)
                 _nameText.text = entry.DisplayName;
@@ -106,7 +106,7 @@ namespace IdleRPG.UI
             }
         }
 
-        private void RefreshEffects(EquipmentEntry entry, EquipmentItemState state, bool isUnlocked)
+        private void RefreshEffects(EquipmentEntry entry, CollectibleItemState state, bool isUnlocked)
         {
             string statName = entry.Type == EquipmentType.Weapon ? "공격력" : "체력";
 
@@ -134,10 +134,10 @@ namespace IdleRPG.UI
 
         private static string FormatEffectText(string statName, BigNumber value)
         {
-            return $"{statName} <color=#FFD700>+{value.ToFormattedString(2)}%</color>";
+            return $"{statName} {UiColorConstants.GoldTagOpen}+{value.ToFormattedString(2)}%{UiColorConstants.GoldTagClose}";
         }
 
-        private void RefreshButtons(EquipmentEntry entry, EquipmentItemState state, bool isUnlocked)
+        private void RefreshButtons(EquipmentEntry entry, CollectibleItemState state, bool isUnlocked)
         {
             if (_equipButton != null)
             {
@@ -156,17 +156,17 @@ namespace IdleRPG.UI
             }
         }
 
-        private static string FormatGrade(EquipmentGrade grade)
+        private static string FormatGrade(ItemGrade grade)
         {
             return grade switch
             {
-                EquipmentGrade.Normal => "일반",
-                EquipmentGrade.Advanced => "고급",
-                EquipmentGrade.Rare => "희귀",
-                EquipmentGrade.Epic => "영웅",
-                EquipmentGrade.Legend => "전설",
-                EquipmentGrade.Myth => "신화",
-                EquipmentGrade.Special => "특별",
+                ItemGrade.Normal => "일반",
+                ItemGrade.Advanced => "고급",
+                ItemGrade.Rare => "희귀",
+                ItemGrade.Epic => "영웅",
+                ItemGrade.Legend => "전설",
+                ItemGrade.Myth => "신화",
+                ItemGrade.Special => "특별",
                 _ => grade.ToString()
             };
         }

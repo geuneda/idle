@@ -89,16 +89,16 @@ namespace IdleRPG.UI
             RefreshButtons(entry, state, isUnlocked);
         }
 
-        private void RefreshInfo(SkillEntry entry, SkillItemState state, bool isUnlocked)
+        private void RefreshInfo(SkillEntry entry, CollectibleItemState state, bool isUnlocked)
         {
             if (_nameText != null)
                 _nameText.text = entry.DisplayName;
 
             if (_gradeText != null)
-                _gradeText.text = SkillGradeHelper.GetGradeText(entry.Grade);
+                _gradeText.text = ItemGradeHelper.GetGradeText(entry.Grade);
 
             if (_gradeBgImage != null)
-                _gradeBgImage.color = SkillGradeHelper.GetBackgroundColor(entry.Grade);
+                _gradeBgImage.color = ItemGradeHelper.GetBackgroundColor(entry.Grade);
 
             if (isUnlocked)
             {
@@ -112,7 +112,7 @@ namespace IdleRPG.UI
             }
         }
 
-        private void RefreshDescription(SkillEntry entry, SkillItemState state, bool isUnlocked)
+        private void RefreshDescription(SkillEntry entry, CollectibleItemState state, bool isUnlocked)
         {
             if (_descriptionText == null) return;
 
@@ -120,7 +120,7 @@ namespace IdleRPG.UI
             _descriptionText.text = SkillFormula.FormatDescription(entry, level);
         }
 
-        private void RefreshEffects(SkillEntry entry, SkillItemState state, bool isUnlocked)
+        private void RefreshEffects(SkillEntry entry, CollectibleItemState state, bool isUnlocked)
         {
             if (_possessionEffectText != null)
             {
@@ -128,13 +128,13 @@ namespace IdleRPG.UI
                 {
                     BigNumber possEffect = _skillService.GetPossessionEffect(Data.SkillId);
                     _possessionEffectText.text =
-                        $"공격력 +<color=#FFD700>{possEffect.ToFormattedString(2)}%</color>";
+                        $"공격력 +{UiColorConstants.GoldTagOpen}{possEffect.ToFormattedString(2)}%{UiColorConstants.GoldTagClose}";
                 }
                 else
                 {
                     BigNumber basePoss = new BigNumber(entry.BasePossessionEffect, 0);
                     _possessionEffectText.text =
-                        $"공격력 +<color=#FFD700>{basePoss.ToFormattedString(2)}%</color>";
+                        $"공격력 +{UiColorConstants.GoldTagOpen}{basePoss.ToFormattedString(2)}%{UiColorConstants.GoldTagClose}";
                 }
             }
 
@@ -157,7 +157,7 @@ namespace IdleRPG.UI
             _cooldownText.text = cd % 1f == 0f ? $"{(int)cd}s" : $"{cd:0.#}s";
         }
 
-        private void RefreshButtons(SkillEntry entry, SkillItemState state, bool isUnlocked)
+        private void RefreshButtons(SkillEntry entry, CollectibleItemState state, bool isUnlocked)
         {
             if (!isUnlocked)
             {

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Geuneda.GoogleSheetImporter;
 using GeunedaEditor.GoogleSheetImporter;
+using IdleRPG.Core;
 using IdleRPG.Equipment;
 
 namespace IdleRPG.Editor.Importers
@@ -33,7 +34,7 @@ namespace IdleRPG.Editor.Importers
             var config = new EquipmentConfigCollection
             {
                 Entries = entries,
-                UpgradeConfig = existingUpgradeConfig ?? new EquipmentUpgradeConfig()
+                UpgradeConfig = existingUpgradeConfig ?? new UpgradeConfig()
             };
             config.BuildLookup();
 
