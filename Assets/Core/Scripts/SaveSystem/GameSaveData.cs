@@ -95,22 +95,22 @@ namespace IdleRPG.Core
         public long LastSaveTimestamp;
 
         /// <summary>스테이지 진행 상태</summary>
-        public StageSaveData Stage = new StageSaveData();
+        public StageSaveData Stage;
 
         /// <summary>재화 보유량</summary>
-        public CurrencySaveData Currency = new CurrencySaveData();
+        public CurrencySaveData Currency;
 
         /// <summary>영웅 성장 레벨</summary>
-        public GrowthSaveData Growth = new GrowthSaveData();
+        public GrowthSaveData Growth;
 
         /// <summary>장비 보유 및 장착 상태</summary>
-        public EquipmentSaveData Equipment = new EquipmentSaveData();
+        public EquipmentSaveData Equipment;
 
         /// <summary>스킬 보유 및 장착 상태</summary>
-        public SkillSaveData Skill = new SkillSaveData();
+        public SkillSaveData Skill;
 
         /// <summary>펫 보유 및 장착 상태</summary>
-        public PetSaveData Pet = new PetSaveData();
+        public PetSaveData Pet;
     }
 
     /// <summary>

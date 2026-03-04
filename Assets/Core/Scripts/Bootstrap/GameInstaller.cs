@@ -324,10 +324,18 @@ namespace IdleRPG.Core
             var skillModel = new SkillModel();
             var petModel = new PetModel();
 
+            var collectors = new List<ISaveDataCollector>
+            {
+                new StageSaveCollector(stageModel),
+                new CurrencySaveCollector(currencyModel),
+                new GrowthSaveCollector(growthModel),
+                new EquipmentSaveCollector(equipmentModel),
+                new SkillSaveCollector(skillModel),
+                new PetSaveCollector(petModel)
+            };
+
             _saveService = new SaveService(
-                stageModel, currencyModel, growthModel,
-                equipmentModel, equipmentConfig, skillModel, petModel,
-                dataService, tickService, coroutineService, messageBroker, timeService);
+                collectors, dataService, tickService, coroutineService, messageBroker, timeService);
 
             var saveData = _saveService.Load();
             _lastSaveTimestamp = saveData.LastSaveTimestamp;

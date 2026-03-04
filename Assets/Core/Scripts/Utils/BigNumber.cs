@@ -318,6 +318,28 @@ namespace IdleRPG.Core
             return $"{Coefficient.ToString("G", CultureInfo.InvariantCulture)}e{Exponent}";
         }
 
+        /// <summary>
+        /// 과학적 표기법 문자열("1.5e6")을 <see cref="BigNumber"/>로 파싱한다.
+        /// <see cref="ToString"/>의 역변환이다.
+        /// </summary>
+        /// <param name="str">파싱할 문자열</param>
+        /// <returns>파싱된 BigNumber. null 또는 빈 문자열이면 <see cref="Zero"/></returns>
+        public static BigNumber Parse(string str)
+        {
+            if (string.IsNullOrEmpty(str)) return Zero;
+
+            int eIndex = str.IndexOf('e');
+            if (eIndex >= 0)
+            {
+                double c = double.Parse(str.Substring(0, eIndex), CultureInfo.InvariantCulture);
+                int e = int.Parse(str.Substring(eIndex + 1), CultureInfo.InvariantCulture);
+                return new BigNumber(c, e);
+            }
+
+            double val = double.Parse(str, CultureInfo.InvariantCulture);
+            return new BigNumber(val, 0);
+        }
+
         #endregion
     }
 
@@ -365,20 +387,6 @@ namespace IdleRPG.Core
             writer.WriteValue(value.ToString());
         }
 
-        private static BigNumber ParseString(string str)
-        {
-            if (string.IsNullOrEmpty(str)) return BigNumber.Zero;
-
-            int eIndex = str.IndexOf('e');
-            if (eIndex >= 0)
-            {
-                double c = double.Parse(str.Substring(0, eIndex), CultureInfo.InvariantCulture);
-                int e = int.Parse(str.Substring(eIndex + 1), CultureInfo.InvariantCulture);
-                return new BigNumber(c, e);
-            }
-
-            double val = double.Parse(str, CultureInfo.InvariantCulture);
-            return new BigNumber(val, 0);
-        }
+        private static BigNumber ParseString(string str) => BigNumber.Parse(str);
     }
 }

@@ -18,42 +18,42 @@ MonoBehaviour:
       Grade: 0
       DisplayName: "\uAF2C\uB9C8\uC694\uC815"
       SpriteKey: pet_fairy
-      AnimatorKey: anim_pet_fairy
+      AnimatorKey: anim_pet_temp
       Species: "\uC694\uC815"
       BasePossessionEffect: 30
       PossessionEffectPerLevel: 3
       BaseDamagePercent: 50
       DamagePercentPerLevel: 5
       AttackSpeed: 1
-      ProjectileAnimatorKey: anim_proj_fairy
+      ProjectileAnimatorKey: anim_pet_proj_temp
       ProjectileSpeed: 10
       MaxLevel: 0
     - Id: 4002
       Grade: 1
       DisplayName: "\uC740\uBE5B\uB291\uB300"
       SpriteKey: pet_wolf
-      AnimatorKey: anim_pet_wolf
+      AnimatorKey: anim_pet_temp
       Species: "\uC57C\uC218"
       BasePossessionEffect: 45
       PossessionEffectPerLevel: 4.5
       BaseDamagePercent: 75
       DamagePercentPerLevel: 7.5
       AttackSpeed: 0.8
-      ProjectileAnimatorKey: anim_proj_wolf
+      ProjectileAnimatorKey: anim_pet_proj_temp
       ProjectileSpeed: 12
       MaxLevel: 0
     - Id: 4003
       Grade: 2
       DisplayName: "\uBD88\uAF43\uB4DC\uB798\uACE4"
       SpriteKey: pet_dragon
-      AnimatorKey: anim_pet_dragon
+      AnimatorKey: anim_pet_temp
       Species: "\uB4DC\uB798\uACE4"
       BasePossessionEffect: 60
       PossessionEffectPerLevel: 6
       BaseDamagePercent: 100
       DamagePercentPerLevel: 10
       AttackSpeed: 0.6
-      ProjectileAnimatorKey: anim_proj_dragon
+      ProjectileAnimatorKey: anim_pet_proj_temp
       ProjectileSpeed: 8
       MaxLevel: 0
     UpgradeConfig:
