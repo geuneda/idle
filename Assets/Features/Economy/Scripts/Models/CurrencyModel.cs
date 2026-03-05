@@ -27,7 +27,8 @@ namespace IdleRPG.Economy
             var initial = new Dictionary<CurrencyType, BigNumber>
             {
                 { CurrencyType.Gold, BigNumber.Zero },
-                { CurrencyType.Gem, BigNumber.Zero }
+                { CurrencyType.Gem, BigNumber.Zero },
+                { CurrencyType.Relic, BigNumber.Zero }
             };
             _currencies = new ObservableDictionary<CurrencyType, BigNumber>(initial);
         }

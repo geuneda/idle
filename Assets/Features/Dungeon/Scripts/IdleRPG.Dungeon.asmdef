@@ -1,0 +1,21 @@
+{
+    "name": "IdleRPG.Dungeon",
+    "rootNamespace": "IdleRPG.Dungeon",
+    "references": [
+        "IdleRPG.Core",
+        "IdleRPG.Economy",
+        "IdleRPG.Battle",
+        "Geuneda.GameData",
+        "Geuneda.Services",
+        "UniTask"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

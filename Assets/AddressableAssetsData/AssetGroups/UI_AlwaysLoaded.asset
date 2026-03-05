@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: UI_AlwaysLoaded
   m_GUID: 3e1f41dc9c6574b69b0e22fd1c21561c
   m_SerializeEntries:
+  - m_GUID: 440050fd2888348388fd394147d4fbdc
+    m_Address: Assets/UI/Common/Prefabs/ToastPresenter.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 885756fee02044d4ab6d2ed417362744
     m_Address: Assets/UI/Common/Prefabs/BottomTabBarPresenter.prefab
     m_ReadOnly: 0

@@ -71,5 +71,28 @@ namespace IdleRPG.Battle
         /// </summary>
         /// <returns>추가로 발사할 투사체 수 (0, 1, 또는 2)</returns>
         int RollExtraShots();
+
+        /// <summary>
+        /// 전투 컨텍스트를 교체한다. 던전 진입/퇴장 시 사용한다.
+        /// </summary>
+        /// <param name="context">새 전투 컨텍스트</param>
+        void SetBattleContext(IBattleContext context);
+
+        /// <summary>
+        /// 현재 웨이브가 보스 웨이브인지 확인한다.
+        /// </summary>
+        /// <returns>보스 웨이브이면 true</returns>
+        bool IsBossWave();
+
+        /// <summary>
+        /// 영웅 사망 후 자동으로 전투를 재시작할지 여부를 반환한다.
+        /// </summary>
+        bool ShouldAutoRestart { get; }
+
+        /// <summary>
+        /// 매 프레임 호출되어 컨텍스트 타이머를 갱신한다.
+        /// </summary>
+        /// <param name="deltaTime">경과 시간</param>
+        void Tick(float deltaTime);
     }
 }

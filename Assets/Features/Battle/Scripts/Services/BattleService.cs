@@ -2,7 +2,6 @@ using System;
 using Geuneda.Services;
 using IdleRPG.Core;
 using IdleRPG.Hero;
-using IdleRPG.Stage;
 
 namespace IdleRPG.Battle
 {
@@ -12,8 +11,7 @@ namespace IdleRPG.Battle
     /// </summary>
     public class BattleService : IBattleService
     {
-        private readonly IStageService _stageService;
-        private readonly StageConfig _stageConfig;
+        private IBattleContext _context;
         private readonly IMessageBrokerService _messageBroker;
         private readonly Random _random = new Random();
 
@@ -29,25 +27,25 @@ namespace IdleRPG.Battle
         /// <inheritdoc />
         public EnemyConfig BossEnemyConfig { get; }
 
+        /// <inheritdoc />
+        public bool ShouldAutoRestart => _context.ShouldAutoRestart;
+
         /// <summary>
         /// <see cref="BattleService"/>를 생성한다.
         /// </summary>
-        /// <param name="stageService">스테이지 진행 서비스</param>
-        /// <param name="stageConfig">스테이지 구조 설정</param>
+        /// <param name="context">초기 전투 컨텍스트 (스테이지)</param>
         /// <param name="heroModel">영웅 상태 모델</param>
         /// <param name="normalEnemyConfig">일반 적 설정</param>
         /// <param name="bossEnemyConfig">보스 적 설정</param>
         /// <param name="messageBroker">이벤트 발행용 메시지 브로커</param>
         public BattleService(
-            IStageService stageService,
-            StageConfig stageConfig,
+            IBattleContext context,
             HeroModel heroModel,
             EnemyConfig normalEnemyConfig,
             EnemyConfig bossEnemyConfig,
             IMessageBrokerService messageBroker)
         {
-            _stageService = stageService;
-            _stageConfig = stageConfig;
+            _context = context;
             _messageBroker = messageBroker;
             HeroModel = heroModel;
             NormalEnemyConfig = normalEnemyConfig;
@@ -56,23 +54,29 @@ namespace IdleRPG.Battle
         }
 
         /// <inheritdoc />
+        public void SetBattleContext(IBattleContext context)
+        {
+            _context = context;
+        }
+
+        /// <inheritdoc />
+        public bool IsBossWave()
+        {
+            return _context.IsBossWave();
+        }
+
+        /// <inheritdoc />
         public void StartBattle()
         {
             HeroModel.FullHeal();
-            _stageService.StartWave();
+            _context.OnWaveStarted();
 
             int enemyCount = GetCurrentWaveEnemyCount();
             Model.CurrentWaveEnemyCount = enemyCount;
             Model.AliveEnemyCount = enemyCount;
             Model.IsBattleActive.Value = true;
 
-            var stageModel = _stageService.Model;
-            _messageBroker.Publish(new BattleStartedMessage
-            {
-                Chapter = stageModel.CurrentChapter.Value,
-                Stage = stageModel.CurrentStage.Value,
-                Wave = stageModel.CurrentWave.Value
-            });
+            _messageBroker.Publish(new BattleStartedMessage());
         }
 
         /// <inheritdoc />
@@ -97,7 +101,7 @@ namespace IdleRPG.Battle
         {
             Model.IsBattleActive.Value = false;
             _messageBroker.Publish(new HeroDiedMessage());
-            _stageService.FailWave();
+            _context.OnHeroDied();
         }
 
         /// <inheritdoc />
@@ -152,41 +156,43 @@ namespace IdleRPG.Battle
         /// <inheritdoc />
         public BigNumber GetCurrentHpMultiplier()
         {
-            var m = _stageService.Model;
-            return _stageConfig.GetHpMultiplier(m.CurrentChapter.Value, m.CurrentStage.Value);
+            return _context.GetHpMultiplier();
         }
 
         /// <inheritdoc />
         public BigNumber GetCurrentAttackMultiplier()
         {
-            var m = _stageService.Model;
-            return _stageConfig.GetAttackMultiplier(m.CurrentChapter.Value, m.CurrentStage.Value);
+            return _context.GetAttackMultiplier();
         }
 
         /// <inheritdoc />
         public int GetCurrentWaveEnemyCount()
         {
-            return _stageConfig.GetEnemyCount(_stageService.Model.CurrentWave.Value);
+            return _context.GetWaveEnemyCount();
+        }
+
+        /// <inheritdoc />
+        public void Tick(float deltaTime)
+        {
+            _context.Tick(deltaTime);
         }
 
         /// <summary>
         /// 현재 웨이브의 모든 적이 처치되었을 때 호출된다.
-        /// 클리어 메시지를 발행하고 다음 전투를 시작한다.
+        /// 컨텍스트에 위임하고 반환값에 따라 다음 전투를 시작하거나 전투를 종료한다.
         /// </summary>
         private void OnAllEnemiesCleared()
         {
-            var stageModel = _stageService.Model;
+            bool continueNext = _context.OnAllEnemiesCleared();
 
-            _messageBroker.Publish(new AllEnemiesClearedMessage
+            if (continueNext)
             {
-                Chapter = stageModel.CurrentChapter.Value,
-                Stage = stageModel.CurrentStage.Value,
-                Wave = stageModel.CurrentWave.Value
-            });
-
-            _stageService.CompleteWave();
-
-            StartBattle();
+                StartBattle();
+            }
+            else
+            {
+                Model.IsBattleActive.Value = false;
+            }
         }
     }
 }

@@ -111,6 +111,9 @@ namespace IdleRPG.Core
 
         /// <summary>펫 보유 및 장착 상태</summary>
         public PetSaveData Pet;
+
+        /// <summary>던전 진행 상태</summary>
+        public DungeonSaveData Dungeon;
     }
 
     /// <summary>
@@ -147,6 +150,22 @@ namespace IdleRPG.Core
     {
         /// <summary>재화 종류(int) → 보유량(BigNumber 문자열) 매핑</summary>
         public Dictionary<int, string> Currencies = new Dictionary<int, string>();
+    }
+
+    /// <summary>
+    /// 던전 진행 상태 DTO.
+    /// </summary>
+    [Serializable]
+    public class DungeonSaveData
+    {
+        /// <summary>던전 타입(int) -> 최고 클리어 레벨 매핑</summary>
+        public Dictionary<int, int> ClearedLevels = new Dictionary<int, int>();
+
+        /// <summary>던전 타입(int) -> 오늘 사용한 입장 횟수 매핑</summary>
+        public Dictionary<int, int> DailyUsedEntries = new Dictionary<int, int>();
+
+        /// <summary>마지막 일일 리셋 시각 (UTC 밀리초)</summary>
+        public long LastDailyResetTimestamp;
     }
 
     /// <summary>

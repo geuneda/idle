@@ -98,6 +98,8 @@ namespace IdleRPG.Battle
                 return;
             }
 
+            _battleService.Tick(dt);
+
             if (!_battleService.Model.IsBattleActive.Value) return;
 
             UpdateHeroAttack(dt);
@@ -117,7 +119,7 @@ namespace IdleRPG.Battle
             ClearActiveEnemies();
 
             int count = _battleService.GetCurrentWaveEnemyCount();
-            bool isBossWave = MainInstaller.Resolve<IdleRPG.Stage.IStageService>().IsBossWave();
+            bool isBossWave = _battleService.IsBossWave();
 
             BigNumber hpMul = _battleService.GetCurrentHpMultiplier();
             BigNumber atkMul = _battleService.GetCurrentAttackMultiplier();
@@ -378,7 +380,10 @@ namespace IdleRPG.Battle
                 _heroView.SetState(HeroState.Death);
                 _battleService.OnHeroDied();
                 _petCombatService?.OnBattleEnded();
-                _restartTimer = RestartDelay;
+                if (_battleService.ShouldAutoRestart)
+                {
+                    _restartTimer = RestartDelay;
+                }
             }
         }
 

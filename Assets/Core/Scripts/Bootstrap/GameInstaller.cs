@@ -12,6 +12,7 @@ using IdleRPG.Pet;
 using IdleRPG.Hero;
 using IdleRPG.OfflineReward;
 using IdleRPG.Reward;
+using IdleRPG.Dungeon;
 using IdleRPG.Stage;
 using IdleRPG.UI;
 using UnityEngine;
@@ -46,6 +47,7 @@ namespace IdleRPG.Core
         private EquipmentConfigAsset _equipmentConfigAsset;
         private SkillConfigAsset _skillConfigAsset;
         private PetConfigAsset _petConfigAsset;
+        private DungeonConfigAsset _dungeonConfigAsset;
         private readonly List<AsyncOperationHandle> _configHandles = new List<AsyncOperationHandle>();
 
         private void Awake()
@@ -185,6 +187,7 @@ namespace IdleRPG.Core
             var equipmentOp = Addressables.LoadAssetAsync<EquipmentConfigAsset>("EquipmentConfigAsset");
             var skillOp = Addressables.LoadAssetAsync<SkillConfigAsset>("SkillConfigAsset");
             var petOp = Addressables.LoadAssetAsync<PetConfigAsset>("PetConfigAsset");
+            var dungeonOp = Addressables.LoadAssetAsync<DungeonConfigAsset>("DungeonConfigAsset");
 
             _configHandles.Add(heroOp);
             _configHandles.Add(enemyOp);
@@ -195,6 +198,7 @@ namespace IdleRPG.Core
             _configHandles.Add(equipmentOp);
             _configHandles.Add(skillOp);
             _configHandles.Add(petOp);
+            _configHandles.Add(dungeonOp);
 
             _heroConfigAsset = await heroOp.Task;
             _enemyConfigsAsset = await enemyOp.Task;
@@ -205,6 +209,7 @@ namespace IdleRPG.Core
             _equipmentConfigAsset = await equipmentOp.Task;
             _skillConfigAsset = await skillOp.Task;
             _petConfigAsset = await petOp.Task;
+            _dungeonConfigAsset = await dungeonOp.Task;
         }
 
         /// <summary>
@@ -223,6 +228,7 @@ namespace IdleRPG.Core
             provider.AddSingletonConfig(_equipmentConfigAsset.Config);
             provider.AddSingletonConfig(_skillConfigAsset.Config);
             provider.AddSingletonConfig(_petConfigAsset.Config);
+            provider.AddSingletonConfig(_dungeonConfigAsset.Config);
             provider.AddConfigs(config => config.Id, _enemyConfigsAsset.Configs);
 
             return provider;
@@ -323,6 +329,7 @@ namespace IdleRPG.Core
             var equipmentConfig = configsProvider.GetConfig<EquipmentConfigCollection>();
             var skillModel = new SkillModel();
             var petModel = new PetModel();
+            var dungeonModel = new DungeonModel();
 
             var collectors = new List<ISaveDataCollector>
             {
@@ -331,7 +338,8 @@ namespace IdleRPG.Core
                 new GrowthSaveCollector(growthModel),
                 new EquipmentSaveCollector(equipmentModel),
                 new SkillSaveCollector(skillModel),
-                new PetSaveCollector(petModel)
+                new PetSaveCollector(petModel),
+                new DungeonSaveCollector(dungeonModel)
             };
 
             _saveService = new SaveService(
@@ -385,10 +393,17 @@ namespace IdleRPG.Core
             var normalEnemy = configsProvider.GetConfig<EnemyConfig>(1);
             var bossEnemy = configsProvider.GetConfig<EnemyConfig>(100);
 
+            var stageBattleContext = new StageBattleContext(stageService, stageConfig, messageBroker);
             var battleService = new BattleService(
-                stageService, stageConfig, heroModel,
+                stageBattleContext, heroModel,
                 normalEnemy, bossEnemy, messageBroker);
             MainInstaller.Bind<IBattleService>(battleService);
+
+            var dungeonConfig = configsProvider.GetConfig<DungeonConfigCollection>();
+            var dungeonService = new DungeonService(
+                dungeonConfig, dungeonModel, battleService, currencyService,
+                timeService, messageBroker, stageBattleContext);
+            MainInstaller.Bind<IDungeonService>(dungeonService);
 
             var rewardConfig = configsProvider.GetConfig<RewardConfig>();
             var rewardService = new RewardService(

@@ -20,11 +20,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 15dd3cb18c2414656bd9d45ecc9b7045
-    m_Address: Assets/UI/Popup/Prefabs/DungeonTabPresenter.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 336971e07bd5c407f9ac10a80846543a
     m_Address: Assets/UI/Popup/Prefabs/BaseTabPresenter.prefab
     m_ReadOnly: 0

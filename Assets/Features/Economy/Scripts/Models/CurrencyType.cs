@@ -9,6 +9,9 @@ namespace IdleRPG.Economy
         Gold = 0,
 
         /// <summary>프리미엄 재화 (하드 커런시). 주로 과금이나 특별 보상으로 획득한다.</summary>
-        Gem = 1
+        Gem = 1,
+
+        /// <summary>유물 재화. 던전에서 획득하며 유물 강화에 사용한다.</summary>
+        Relic = 2
     }
 }
