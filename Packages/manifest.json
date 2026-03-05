@@ -2,11 +2,11 @@
   "dependencies": {
     "com.boxqkrtm.ide.cursor": "https://github.com/boxqkrtm/com.unity.ide.cursor.git",
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
-    "com.gamelovers.mcp-unity": "https://github.com/CoderGamester/mcp-unity.git",
     "com.geuneda.assetsimporter": "https://github.com/geuneda/geuneda-assetsimporter.git",
     "com.geuneda.gamedata": "https://github.com/geuneda/geuneda-gamedata.git",
     "com.geuneda.googlesheetimporter": "https://github.com/geuneda/geuneda-googlesheetimporter.git",
     "com.geuneda.inputextensions": "https://github.com/geuneda/geuneda-inputextensions.git",
+    "com.geuneda.mcp-unity": "https://github.com/geuneda/geuneda-mcp-unity.git",
     "com.geuneda.nativeui": "https://github.com/geuneda/geuneda-nativeui.git",
     "com.geuneda.notificationservice": "https://github.com/geuneda/geuneda-notificationservice.git",
     "com.geuneda.services": "https://github.com/geuneda/geuneda-services.git",
