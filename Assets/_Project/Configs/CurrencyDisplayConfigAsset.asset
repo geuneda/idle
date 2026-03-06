@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffe93c8a94c8046b09075e29cbbb5ca7, type: 3}
+  m_Name: CurrencyDisplayConfigAsset
+  m_EditorClassIdentifier: IdleRPG.Economy::IdleRPG.Economy.CurrencyDisplayConfigAsset
+  _config:
+    Entries:
+    - Type: 0
+      DisplayName: "\uACE8\uB4DC"
+      Description: "\uC801 \uCC98\uCE58\uC640 \uC2A4\uD14C\uC774\uC9C0 \uD074\uB9AC\uC5B4\uB85C
+        \uD68D\uB4DD\uD558\uB294 \uAE30\uBCF8 \uC7AC\uD654"
+      IconSpriteKey: icon_currency_gold
+      BackgroundColorHex: '#FFD700'
+    - Type: 1
+      DisplayName: "\uBCF4\uC11D"
+      Description: "\uACFC\uAE08\uC774\uB098 \uD2B9\uBCC4 \uBCF4\uC0C1\uC73C\uB85C
+        \uD68D\uB4DD\uD558\uB294 \uD504\uB9AC\uBBF8\uC5C4 \uC7AC\uD654"
+      IconSpriteKey: icon_currency_gem
+      BackgroundColorHex: '#6A5ACD'
+    - Type: 2
+      DisplayName: "\uC720\uBB3C"
+      Description: "\uB358\uC804\uC5D0\uC11C \uD68D\uB4DD\uD558\uBA70 \uC720\uBB3C
+        \uAC15\uD654\uC5D0 \uC0AC\uC6A9\uD558\uB294 \uC7AC\uD654"
+      IconSpriteKey: icon_currency_relic
+      BackgroundColorHex: '#CD853F'

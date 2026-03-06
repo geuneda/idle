@@ -11,7 +11,7 @@ namespace IdleRPG.Editor.Importers
     public class DungeonConfigImporter : GoogleSheetScriptableObjectImportContainer<DungeonConfigAsset>
     {
         /// <inheritdoc />
-        public override string GoogleSheetUrl => ConfigImporterHelper.BuildSheetUrl("1782579787");
+        public override string GoogleSheetUrl => ConfigImporterHelper.BuildSheetUrl("1118804460");
 
         /// <inheritdoc />
         protected override void OnImport(DungeonConfigAsset asset, List<Dictionary<string, string>> data)

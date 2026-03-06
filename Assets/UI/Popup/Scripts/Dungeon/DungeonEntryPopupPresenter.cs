@@ -1,4 +1,7 @@
+using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
+using Geuneda.DataExtensions;
 using Geuneda.Services;
 using Geuneda.UiService;
 using IdleRPG.Battle;
@@ -28,7 +31,7 @@ namespace IdleRPG.UI
         [Header("UI Elements")]
         [SerializeField] private TMP_Text _titleText;
         [SerializeField] private TMP_Text _levelText;
-        [SerializeField] private TMP_Text _rewardText;
+        [SerializeField] private CurrencySlotView _rewardSlotView;
         [SerializeField] private TMP_Text _entryCountText;
         [SerializeField] private Button _prevLevelButton;
         [SerializeField] private Button _nextLevelButton;
@@ -39,6 +42,10 @@ namespace IdleRPG.UI
 
         private IDungeonService _dungeonService;
         private IBattleService _battleService;
+        private IConfigsProvider _configsProvider;
+        private CurrencyDisplayConfigCollection _displayCollection;
+        private SpriteCache _spriteCache;
+        private CancellationTokenSource _cts;
         private int _selectedLevel;
 
         /// <inheritdoc />
@@ -46,6 +53,7 @@ namespace IdleRPG.UI
         {
             _dungeonService = MainInstaller.Resolve<IDungeonService>();
             _battleService = MainInstaller.Resolve<IBattleService>();
+            _configsProvider = MainInstaller.Resolve<IConfigsProvider>();
 
             if (_prevLevelButton != null) _prevLevelButton.onClick.AddListener(OnPrevLevel);
             if (_nextLevelButton != null) _nextLevelButton.onClick.AddListener(OnNextLevel);
@@ -55,8 +63,21 @@ namespace IdleRPG.UI
         }
 
         /// <inheritdoc />
+        protected override void OnOpened()
+        {
+            if (_rewardSlotView != null) _rewardSlotView.Clicked += OnRewardSlotClicked;
+        }
+
+        /// <inheritdoc />
         protected override void OnSetData()
         {
+            _spriteCache?.Dispose();
+            _spriteCache = new SpriteCache();
+            _cts?.Cancel();
+            _cts?.Dispose();
+            _cts = new CancellationTokenSource();
+            _displayCollection = _configsProvider.GetConfig<CurrencyDisplayConfigCollection>();
+
             _selectedLevel = _dungeonService.GetAvailableMaxLevel(Data.Type);
             RefreshDisplay();
         }
@@ -142,14 +163,13 @@ namespace IdleRPG.UI
             if (_levelText != null)
                 _levelText.text = $"Lv.{_selectedLevel}";
 
-            if (config != null)
+            if (config != null && _rewardSlotView != null)
             {
                 var rewardType = DungeonConfigCollection.GetRewardCurrencyType(type);
-                if (_rewardText != null)
-                {
-                    var rewardAmount = (BigNumber)config.RewardAmount;
-                    _rewardText.text = $"{GetCurrencyName(rewardType)} x{rewardAmount.ToFormattedString()}";
-                }
+                var rewardAmount = (BigNumber)config.RewardAmount;
+                var displayConfig = _displayCollection?.GetConfig(rewardType);
+                var token = _cts?.Token ?? destroyCancellationToken;
+                _rewardSlotView.Setup(rewardType, rewardAmount, displayConfig, _spriteCache, token);
             }
 
             int remaining = _dungeonService.GetRemainingEntries(type);
@@ -171,6 +191,30 @@ namespace IdleRPG.UI
                 _sweepButton.interactable = _dungeonService.CanSweep(type, _selectedLevel);
             if (_battleButton != null)
                 _battleButton.interactable = _dungeonService.CanEnter(type, _selectedLevel);
+        }
+
+        /// <inheritdoc />
+        protected override void OnClosed()
+        {
+            if (_rewardSlotView != null) _rewardSlotView.Clicked -= OnRewardSlotClicked;
+
+            _cts?.Cancel();
+            _cts?.Dispose();
+            _cts = null;
+
+            _spriteCache?.Dispose();
+            _spriteCache = null;
+            _displayCollection = null;
+        }
+
+        private async void OnRewardSlotClicked(CurrencyType currencyType)
+        {
+            try
+            {
+                var popupData = new CurrencyDetailPopupData { CurrencyType = currencyType };
+                await _uiService.OpenUiAsync<CurrencyDetailPopupPresenter, CurrencyDetailPopupData>(popupData);
+            }
+            catch (OperationCanceledException) { }
         }
 
         private async void ShowToast(string message)

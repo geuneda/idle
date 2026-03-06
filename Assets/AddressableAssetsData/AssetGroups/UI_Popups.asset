@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: UI_Popups
   m_GUID: 1c9113637ec514d6db91ca0997c0791b
   m_SerializeEntries:
+  - m_GUID: 1a330ac4110a0444aa5c7977e65f027c
+    m_Address: Assets/UI/Popup/Prefabs/DungeonEntryPopupPresenter.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5df610108c71f4da39020c389e743aa9
     m_Address: Assets/UI/Popup/Prefabs/OfflineRewardPopup.prefab
     m_ReadOnly: 0

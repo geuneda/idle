@@ -1,0 +1,4 @@
+Type,DisplayName,Description,IconSpriteKey,BackgroundColorHex
+Gold,골드,적 처치와 스테이지 클리어로 획득하는 기본 재화,icon_currency_gold,#FFD700
+Gem,보석,과금이나 특별 보상으로 획득하는 프리미엄 재화,icon_currency_gem,#6A5ACD
+Relic,유물,던전에서 획득하며 유물 강화에 사용하는 재화,icon_currency_relic,#CD853F

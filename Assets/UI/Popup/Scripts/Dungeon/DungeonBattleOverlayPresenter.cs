@@ -1,7 +1,6 @@
 using Geuneda.Services;
 using Geuneda.UiService;
 using IdleRPG.Battle;
-using IdleRPG.Core;
 using IdleRPG.Dungeon;
 using TMPro;
 using UnityEngine;

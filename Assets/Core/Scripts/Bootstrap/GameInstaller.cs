@@ -48,6 +48,7 @@ namespace IdleRPG.Core
         private SkillConfigAsset _skillConfigAsset;
         private PetConfigAsset _petConfigAsset;
         private DungeonConfigAsset _dungeonConfigAsset;
+        private CurrencyDisplayConfigAsset _currencyDisplayConfigAsset;
         private readonly List<AsyncOperationHandle> _configHandles = new List<AsyncOperationHandle>();
 
         private void Awake()
@@ -173,7 +174,7 @@ namespace IdleRPG.Core
         }
 
         /// <summary>
-        /// Addressables를 통해 5개 Config ScriptableObject 에셋을 병렬 로딩한다.
+        /// Addressables를 통해 모든 Config ScriptableObject 에셋을 병렬 로딩한다.
         /// 로딩된 핸들은 <see cref="OnDestroy"/>에서 해제된다.
         /// </summary>
         private async UniTask LoadConfigAssetsAsync()
@@ -188,6 +189,7 @@ namespace IdleRPG.Core
             var skillOp = Addressables.LoadAssetAsync<SkillConfigAsset>("SkillConfigAsset");
             var petOp = Addressables.LoadAssetAsync<PetConfigAsset>("PetConfigAsset");
             var dungeonOp = Addressables.LoadAssetAsync<DungeonConfigAsset>("DungeonConfigAsset");
+            var currencyDisplayOp = Addressables.LoadAssetAsync<CurrencyDisplayConfigAsset>("CurrencyDisplayConfigAsset");
 
             _configHandles.Add(heroOp);
             _configHandles.Add(enemyOp);
@@ -199,6 +201,7 @@ namespace IdleRPG.Core
             _configHandles.Add(skillOp);
             _configHandles.Add(petOp);
             _configHandles.Add(dungeonOp);
+            _configHandles.Add(currencyDisplayOp);
 
             _heroConfigAsset = await heroOp.Task;
             _enemyConfigsAsset = await enemyOp.Task;
@@ -210,6 +213,7 @@ namespace IdleRPG.Core
             _skillConfigAsset = await skillOp.Task;
             _petConfigAsset = await petOp.Task;
             _dungeonConfigAsset = await dungeonOp.Task;
+            _currencyDisplayConfigAsset = await currencyDisplayOp.Task;
         }
 
         /// <summary>
@@ -229,6 +233,7 @@ namespace IdleRPG.Core
             provider.AddSingletonConfig(_skillConfigAsset.Config);
             provider.AddSingletonConfig(_petConfigAsset.Config);
             provider.AddSingletonConfig(_dungeonConfigAsset.Config);
+            provider.AddSingletonConfig(_currencyDisplayConfigAsset.Config);
             provider.AddConfigs(config => config.Id, _enemyConfigsAsset.Configs);
 
             return provider;
