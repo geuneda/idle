@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: AddressablesUiConfigs
   m_EditorClassIdentifier: Geuneda.UiService::Geuneda.UiService.AddressablesUiConfigs
   _configs:
+  - Address: Assets/UI/Popup/Prefabs/DungeonEntryPopupPresenter.prefab
+    Layer: 160
+    UiType: IdleRPG.UI.DungeonEntryPopupPresenter, IdleRPG.UI, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   - Address: Assets/UI/Popup/Prefabs/OfflineRewardPopup.prefab
     Layer: 150
     UiType: IdleRPG.UI.OfflineRewardPopupPresenter, IdleRPG.UI, Version=0.0.0.0,
@@ -33,6 +37,22 @@ MonoBehaviour:
     Layer: 160
     UiType: IdleRPG.UI.EquipmentDetailPopupPresenter, IdleRPG.UI, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  - Address: Assets/UI/Popup/Prefabs/DungeonTabPresenter.prefab
+    Layer: 10
+    UiType: IdleRPG.UI.DungeonTabPresenter, IdleRPG.UI, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Address: Assets/UI/Popup/Prefabs/DungeonBattleOverlayPresenter.prefab
+    Layer: 10
+    UiType: IdleRPG.UI.DungeonBattleOverlayPresenter, IdleRPG.UI, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - Address: Assets/UI/Popup/Prefabs/CurrencyDetailPopup.prefab
+    Layer: 160
+    UiType: IdleRPG.UI.CurrencyDetailPopupPresenter, IdleRPG.UI, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - Address: Assets/UI/Common/Prefabs/ToastPresenter.prefab
+    Layer: 200
+    UiType: IdleRPG.UI.ToastPresenter, IdleRPG.UI, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   - Address: Assets/UI/Common/Prefabs/BottomTabBarPresenter.prefab
     Layer: 100
     UiType: IdleRPG.UI.BottomTabBarPresenter, IdleRPG.UI, Version=0.0.0.0, Culture=neutral,
@@ -52,10 +72,6 @@ MonoBehaviour:
   - Address: Assets/UI/Popup/Prefabs/PetTabPresenter.prefab
     Layer: 10
     UiType: IdleRPG.UI.PetTabPresenter, IdleRPG.UI, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-  - Address: Assets/UI/Popup/Prefabs/DungeonTabPresenter.prefab
-    Layer: 10
-    UiType: IdleRPG.UI.DungeonTabPresenter, IdleRPG.UI, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
   - Address: Assets/UI/Popup/Prefabs/BaseTabPresenter.prefab
     Layer: 10
