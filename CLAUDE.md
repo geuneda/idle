@@ -1,6 +1,6 @@
 # Idle RPG
 
-Unity 6.3 (6000.3.10f1) + URP 17.3.0 방치형 RPG 모바일 2D 게임. C# 9.0, 명시적 네임스페이스.
+Unity 6.3 (6000.3.11f1) + URP 17.3.0 방치형 RPG 모바일 2D 게임. C# 9.0, 명시적 네임스페이스.
 
 ## 금지 패턴
 
@@ -31,36 +31,36 @@ Unity 6.3 (6000.3.10f1) + URP 17.3.0 방치형 RPG 모바일 2D 게임. C# 9.0, 
 
 Geuneda API 코드 작성/수정 전 반드시 해당 스킬을 invoke하여 API 사양 확인.
 
-| using 네임스페이스 | 필수 스킬 |
-|-------------------|----------|
-| `Geuneda.DataExtensions` | `/geuneda-gamedata` |
-| `Geuneda.Services` | `/geuneda-services` |
-| `Geuneda.UiService` | `/geuneda-uiservice` |
-| `Geuneda.StatechartMachine` | `/geuneda-statechart` |
-| `Geuneda.AssetsImporter` | `/geuneda-assetsimporter` |
+| using 네임스페이스            | 필수 스킬                      |
+| ----------------------------- | ------------------------------ |
+| `Geuneda.DataExtensions`      | `/geuneda-gamedata`            |
+| `Geuneda.Services`            | `/geuneda-services`            |
+| `Geuneda.UiService`           | `/geuneda-uiservice`           |
+| `Geuneda.StatechartMachine`   | `/geuneda-statechart`          |
+| `Geuneda.AssetsImporter`      | `/geuneda-assetsimporter`      |
 | `Geuneda.GoogleSheetImporter` | `/geuneda-googlesheetimporter` |
-| `Geuneda.InputExtensions` | `/geuneda-inputextensions` |
-| `Geuneda.NativeUi` | `/geuneda-nativeui` |
+| `Geuneda.InputExtensions`     | `/geuneda-inputextensions`     |
+| `Geuneda.NativeUi`            | `/geuneda-nativeui`            |
 | `Geuneda.NotificationService` | `/geuneda-notificationservice` |
 
-| 작업 유형 | 필수 스킬 |
-|----------|----------|
-| Config/Importer/ConfigAsset 생성 | `/config-pipeline` |
-| 프레임워크 구조/의존성 변경 | `/geuneda-frameworks` |
+| 작업 유형                        | 필수 스킬             |
+| -------------------------------- | --------------------- |
+| Config/Importer/ConfigAsset 생성 | `/config-pipeline`    |
+| 프레임워크 구조/의존성 변경      | `/geuneda-frameworks` |
 
 - 하나의 파일이 여러 네임스페이스 사용 시 관련 스킬 모두 invoke
 - 에이전트 위임 시 스킬 invoke를 명시
 
 ## 핵심 디렉토리
 
-| 경로 | 용도 |
-|------|------|
-| `Core/Scripts/Bootstrap/` | MainInstaller, 게임 진입점 |
-| `Core/Scripts/SaveSystem/` | 저장/로드 시스템 |
-| `Features/{Feature}/Scripts/` | 비즈니스 로직 (Service, Model, Config) |
-| `UI/{Common,HUD,Popup}/Scripts/` | UI Presenter, View |
-| `_Project/Configs/` | ConfigsProvider 설정 데이터 |
-| `Editor/Importers/` | Google Sheets Importer |
+| 경로                             | 용도                                   |
+| -------------------------------- | -------------------------------------- |
+| `Core/Scripts/Bootstrap/`        | MainInstaller, 게임 진입점             |
+| `Core/Scripts/SaveSystem/`       | 저장/로드 시스템                       |
+| `Features/{Feature}/Scripts/`    | 비즈니스 로직 (Service, Model, Config) |
+| `UI/{Common,HUD,Popup}/Scripts/` | UI Presenter, View                     |
+| `_Project/Configs/`              | ConfigsProvider 설정 데이터            |
+| `Editor/Importers/`              | Google Sheets Importer                 |
 
 ## 문서화 규칙
 
