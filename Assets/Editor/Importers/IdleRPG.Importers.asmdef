@@ -13,6 +13,7 @@
         "IdleRPG.Skill",
         "IdleRPG.Pet",
         "IdleRPG.Dungeon",
+        "IdleRPG.Mine",
         "IdleRPG.Economy",
         "Geuneda.GoogleSheetImporter",
         "Geuneda.GoogleSheetImporter.Editor",

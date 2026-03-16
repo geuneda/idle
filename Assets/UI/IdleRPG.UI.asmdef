@@ -13,6 +13,7 @@
         "IdleRPG.Skill",
         "IdleRPG.Pet",
         "IdleRPG.Dungeon",
+        "IdleRPG.Mine",
         "Geuneda.UiService",
         "Geuneda.Services",
         "Geuneda.GameData",

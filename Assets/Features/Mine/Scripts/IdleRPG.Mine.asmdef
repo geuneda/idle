@@ -1,0 +1,20 @@
+{
+    "name": "IdleRPG.Mine",
+    "rootNamespace": "IdleRPG.Mine",
+    "references": [
+        "IdleRPG.Core",
+        "IdleRPG.Economy",
+        "Geuneda.GameData",
+        "Geuneda.Services",
+        "UniTask"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

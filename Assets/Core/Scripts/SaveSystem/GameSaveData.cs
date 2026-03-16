@@ -114,6 +114,52 @@ namespace IdleRPG.Core
 
         /// <summary>던전 진행 상태</summary>
         public DungeonSaveData Dungeon;
+
+        /// <summary>광산 진행 상태</summary>
+        public MineSaveData Mine;
+    }
+
+    /// <summary>
+    /// 광산 진행 상태 DTO.
+    /// </summary>
+    [Serializable]
+    public class MineSaveData
+    {
+        /// <summary>현재 층 번호 (1-based)</summary>
+        public int CurrentFloor = 1;
+
+        /// <summary>보드 블록 상태 배열 (MineBlockState as int, 길이 36)</summary>
+        public int[] BoardStates;
+
+        /// <summary>보드 블록 보상 타입 배열 (MineBlockRewardType as int, 길이 36)</summary>
+        public int[] BoardRewardTypes;
+
+        /// <summary>보드 블록 보상 수량 배열 (길이 36)</summary>
+        public int[] BoardRewardAmounts;
+
+        /// <summary>보물상자 위치 인덱스 (-1이면 없음)</summary>
+        public int ChestIndex = -1;
+
+        /// <summary>보물상자 현재 등급 (ItemGrade as int)</summary>
+        public int ChestGrade = 1;
+
+        /// <summary>보물상자 강화 완료 횟수 (0~4)</summary>
+        public int ChestUpgradesDone;
+
+        /// <summary>보물상자 강화 결과 배열 (길이 4)</summary>
+        public bool[] ChestUpgradeResults;
+
+        /// <summary>보물상자 강화 완료 여부</summary>
+        public bool ChestCompleted;
+
+        /// <summary>보물상자 보상 수령 여부</summary>
+        public bool ChestRewardClaimed;
+
+        /// <summary>수령 완료한 진행도 보상 층 목록</summary>
+        public List<int> ClaimedProgressFloors = new List<int>();
+
+        /// <summary>마지막 곡괭이 충전 시각 (UTC 밀리초)</summary>
+        public long LastPickaxeRechargeTimestamp;
     }
 
     /// <summary>

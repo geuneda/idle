@@ -33,7 +33,7 @@ Geuneda API 코드 작성/수정 전 반드시 해당 스킬을 invoke하여 API
 
 | using 네임스페이스 | 필수 스킬 |
 |-------------------|----------|
-| `Geuneda.DataExtensions` | `/geuneda-dataextensions` |
+| `Geuneda.DataExtensions` | `/geuneda-gamedata` |
 | `Geuneda.Services` | `/geuneda-services` |
 | `Geuneda.UiService` | `/geuneda-uiservice` |
 | `Geuneda.StatechartMachine` | `/geuneda-statechart` |

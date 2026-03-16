@@ -13,6 +13,7 @@ using IdleRPG.Hero;
 using IdleRPG.OfflineReward;
 using IdleRPG.Reward;
 using IdleRPG.Dungeon;
+using IdleRPG.Mine;
 using IdleRPG.Stage;
 using IdleRPG.UI;
 using UnityEngine;
@@ -48,7 +49,9 @@ namespace IdleRPG.Core
         private SkillConfigAsset _skillConfigAsset;
         private PetConfigAsset _petConfigAsset;
         private DungeonConfigAsset _dungeonConfigAsset;
+        private MineConfigAsset _mineConfigAsset;
         private CurrencyDisplayConfigAsset _currencyDisplayConfigAsset;
+        private MineService _mineServiceInstance;
         private readonly List<AsyncOperationHandle> _configHandles = new List<AsyncOperationHandle>();
 
         private void Awake()
@@ -189,6 +192,7 @@ namespace IdleRPG.Core
             var skillOp = Addressables.LoadAssetAsync<SkillConfigAsset>("SkillConfigAsset");
             var petOp = Addressables.LoadAssetAsync<PetConfigAsset>("PetConfigAsset");
             var dungeonOp = Addressables.LoadAssetAsync<DungeonConfigAsset>("DungeonConfigAsset");
+            var mineOp = Addressables.LoadAssetAsync<MineConfigAsset>("MineConfigAsset");
             var currencyDisplayOp = Addressables.LoadAssetAsync<CurrencyDisplayConfigAsset>("CurrencyDisplayConfigAsset");
 
             _configHandles.Add(heroOp);
@@ -201,6 +205,7 @@ namespace IdleRPG.Core
             _configHandles.Add(skillOp);
             _configHandles.Add(petOp);
             _configHandles.Add(dungeonOp);
+            _configHandles.Add(mineOp);
             _configHandles.Add(currencyDisplayOp);
 
             _heroConfigAsset = await heroOp.Task;
@@ -213,6 +218,7 @@ namespace IdleRPG.Core
             _skillConfigAsset = await skillOp.Task;
             _petConfigAsset = await petOp.Task;
             _dungeonConfigAsset = await dungeonOp.Task;
+            _mineConfigAsset = await mineOp.Task;
             _currencyDisplayConfigAsset = await currencyDisplayOp.Task;
         }
 
@@ -233,6 +239,7 @@ namespace IdleRPG.Core
             provider.AddSingletonConfig(_skillConfigAsset.Config);
             provider.AddSingletonConfig(_petConfigAsset.Config);
             provider.AddSingletonConfig(_dungeonConfigAsset.Config);
+            provider.AddSingletonConfig(_mineConfigAsset.Config);
             provider.AddSingletonConfig(_currencyDisplayConfigAsset.Config);
             provider.AddConfigs(config => config.Id, _enemyConfigsAsset.Configs);
 
@@ -335,6 +342,7 @@ namespace IdleRPG.Core
             var skillModel = new SkillModel();
             var petModel = new PetModel();
             var dungeonModel = new DungeonModel();
+            var mineModel = new MineModel();
 
             var collectors = new List<ISaveDataCollector>
             {
@@ -344,7 +352,8 @@ namespace IdleRPG.Core
                 new EquipmentSaveCollector(equipmentModel),
                 new SkillSaveCollector(skillModel),
                 new PetSaveCollector(petModel),
-                new DungeonSaveCollector(dungeonModel)
+                new DungeonSaveCollector(dungeonModel),
+                new MineSaveCollector(mineModel)
             };
 
             _saveService = new SaveService(
@@ -421,6 +430,11 @@ namespace IdleRPG.Core
                 stageService, currencyService, timeService, messageBroker);
             MainInstaller.Bind<IOfflineRewardService>(offlineRewardService);
 
+            var mineConfig = configsProvider.GetConfig<MineConfigCollection>();
+            _mineServiceInstance = new MineService(
+                mineConfig, mineModel, currencyService, timeService, tickService, messageBroker);
+            MainInstaller.Bind<IMineService>(_mineServiceInstance);
+
             _saveService.StartAutoSave();
         }
 
@@ -448,6 +462,7 @@ namespace IdleRPG.Core
             }
 
             _configHandles.Clear();
+            _mineServiceInstance?.Dispose();
             _uiService?.Dispose();
             _saveService?.Dispose();
             MainInstaller.Clean();

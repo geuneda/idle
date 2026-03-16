@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0ea90b892e2f149df97c894ae0d3ec36
+    m_Address: Assets/UI/Popup/Prefabs/MinePresenter.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 15dd3cb18c2414656bd9d45ecc9b7045
     m_Address: Assets/UI/Popup/Prefabs/DungeonTabPresenter.prefab
     m_ReadOnly: 0
@@ -42,6 +47,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 94187dbab7ed64fffa2c87f6c68231a1
     m_Address: Assets/UI/Popup/Prefabs/EquipmentPopupPresenter.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9ed53d1549c324996b1dcade30ab72e6
+    m_Address: Assets/UI/Popup/Prefabs/MineChestUpgradePopupPresenter.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

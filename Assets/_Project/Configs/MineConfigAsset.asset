@@ -1,0 +1,249 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec22ace41841149b7867f040276060f5, type: 3}
+  m_Name: MineConfigAsset
+  m_EditorClassIdentifier: IdleRPG.Mine::IdleRPG.Mine.MineConfigAsset
+  _config:
+    BlockWeightEntries:
+    - FloorStart: 1
+      WeightEmpty: 40
+      WeightOre: 25
+      OreMinAmount: 1
+      OreMaxAmount: 3
+      WeightPickaxe: 15
+      PickaxeAmount: 1
+      WeightBomb: 8
+      BombAmount: 1
+      WeightDynamite: 4
+      DynamiteAmount: 1
+      WeightExpFragment: 8
+      ExpFragmentAmount: 1
+    - FloorStart: 10
+      WeightEmpty: 35
+      WeightOre: 25
+      OreMinAmount: 2
+      OreMaxAmount: 5
+      WeightPickaxe: 15
+      PickaxeAmount: 1
+      WeightBomb: 10
+      BombAmount: 1
+      WeightDynamite: 5
+      DynamiteAmount: 1
+      WeightExpFragment: 10
+      ExpFragmentAmount: 2
+    - FloorStart: 20
+      WeightEmpty: 30
+      WeightOre: 25
+      OreMinAmount: 3
+      OreMaxAmount: 7
+      WeightPickaxe: 15
+      PickaxeAmount: 2
+      WeightBomb: 10
+      BombAmount: 1
+      WeightDynamite: 5
+      DynamiteAmount: 1
+      WeightExpFragment: 15
+      ExpFragmentAmount: 3
+    - FloorStart: 50
+      WeightEmpty: 25
+      WeightOre: 25
+      OreMinAmount: 5
+      OreMaxAmount: 10
+      WeightPickaxe: 15
+      PickaxeAmount: 2
+      WeightBomb: 12
+      BombAmount: 2
+      WeightDynamite: 8
+      DynamiteAmount: 1
+      WeightExpFragment: 15
+      ExpFragmentAmount: 4
+    - FloorStart: 100
+      WeightEmpty: 20
+      WeightOre: 28
+      OreMinAmount: 8
+      OreMaxAmount: 15
+      WeightPickaxe: 15
+      PickaxeAmount: 3
+      WeightBomb: 12
+      BombAmount: 2
+      WeightDynamite: 8
+      DynamiteAmount: 2
+      WeightExpFragment: 17
+      ExpFragmentAmount: 5
+    - FloorStart: 200
+      WeightEmpty: 18
+      WeightOre: 28
+      OreMinAmount: 10
+      OreMaxAmount: 20
+      WeightPickaxe: 14
+      PickaxeAmount: 3
+      WeightBomb: 13
+      BombAmount: 2
+      WeightDynamite: 9
+      DynamiteAmount: 2
+      WeightExpFragment: 18
+      ExpFragmentAmount: 6
+    - FloorStart: 500
+      WeightEmpty: 15
+      WeightOre: 28
+      OreMinAmount: 15
+      OreMaxAmount: 30
+      WeightPickaxe: 14
+      PickaxeAmount: 4
+      WeightBomb: 13
+      BombAmount: 3
+      WeightDynamite: 10
+      DynamiteAmount: 2
+      WeightExpFragment: 20
+      ExpFragmentAmount: 8
+    - FloorStart: 1000
+      WeightEmpty: 12
+      WeightOre: 30
+      OreMinAmount: 20
+      OreMaxAmount: 50
+      WeightPickaxe: 14
+      PickaxeAmount: 5
+      WeightBomb: 14
+      BombAmount: 3
+      WeightDynamite: 10
+      DynamiteAmount: 3
+      WeightExpFragment: 20
+      ExpFragmentAmount: 10
+    - FloorStart: 2000
+      WeightEmpty: 10
+      WeightOre: 30
+      OreMinAmount: 30
+      OreMaxAmount: 70
+      WeightPickaxe: 14
+      PickaxeAmount: 5
+      WeightBomb: 14
+      BombAmount: 4
+      WeightDynamite: 12
+      DynamiteAmount: 3
+      WeightExpFragment: 20
+      ExpFragmentAmount: 12
+    - FloorStart: 3000
+      WeightEmpty: 8
+      WeightOre: 30
+      OreMinAmount: 50
+      OreMaxAmount: 100
+      WeightPickaxe: 14
+      PickaxeAmount: 6
+      WeightBomb: 14
+      BombAmount: 4
+      WeightDynamite: 12
+      DynamiteAmount: 4
+      WeightExpFragment: 22
+      ExpFragmentAmount: 15
+    ChestRewardEntries:
+    - Grade: 1
+      OreAmount: 10
+      ExpFragmentAmount: 5
+      GemAmount: 0
+    - Grade: 2
+      OreAmount: 25
+      ExpFragmentAmount: 10
+      GemAmount: 5
+    - Grade: 3
+      OreAmount: 50
+      ExpFragmentAmount: 20
+      GemAmount: 10
+    - Grade: 4
+      OreAmount: 100
+      ExpFragmentAmount: 40
+      GemAmount: 25
+    - Grade: 5
+      OreAmount: 200
+      ExpFragmentAmount: 80
+      GemAmount: 50
+    ProgressRewardEntries:
+    - Floor: 1
+      RewardType: 10
+      RewardAmount: 10
+    - Floor: 3
+      RewardType: 11
+      RewardAmount: 5
+    - Floor: 5
+      RewardType: 10
+      RewardAmount: 30
+    - Floor: 10
+      RewardType: 12
+      RewardAmount: 3
+    - Floor: 20
+      RewardType: 10
+      RewardAmount: 80
+    - Floor: 30
+      RewardType: 13
+      RewardAmount: 2
+    - Floor: 50
+      RewardType: 14
+      RewardAmount: 20
+    - Floor: 75
+      RewardType: 12
+      RewardAmount: 5
+    - Floor: 100
+      RewardType: 10
+      RewardAmount: 200
+    - Floor: 150
+      RewardType: 13
+      RewardAmount: 3
+    - Floor: 200
+      RewardType: 14
+      RewardAmount: 50
+    - Floor: 300
+      RewardType: 10
+      RewardAmount: 500
+    - Floor: 400
+      RewardType: 12
+      RewardAmount: 8
+    - Floor: 500
+      RewardType: 14
+      RewardAmount: 100
+    - Floor: 600
+      RewardType: 13
+      RewardAmount: 5
+    - Floor: 700
+      RewardType: 10
+      RewardAmount: 1000
+    - Floor: 800
+      RewardType: 12
+      RewardAmount: 10
+    - Floor: 900
+      RewardType: 14
+      RewardAmount: 200
+    - Floor: 1000
+      RewardType: 10
+      RewardAmount: 2000
+    - Floor: 1500
+      RewardType: 13
+      RewardAmount: 8
+    - Floor: 2000
+      RewardType: 14
+      RewardAmount: 500
+    - Floor: 2500
+      RewardType: 10
+      RewardAmount: 5000
+    - Floor: 3000
+      RewardType: 12
+      RewardAmount: 15
+    - Floor: 3500
+      RewardType: 13
+      RewardAmount: 10
+    - Floor: 4000
+      RewardType: 10
+      RewardAmount: 10000
+    Settings:
+      MaxPickaxe: 50
+      PickaxeRechargeSeconds: 900
+      MaxFloor: 4000
+      ChestUpgradeChance: 0.25
+      ChestUpgradeSlots: 4

@@ -28,7 +28,12 @@ namespace IdleRPG.Economy
             {
                 { CurrencyType.Gold, BigNumber.Zero },
                 { CurrencyType.Gem, BigNumber.Zero },
-                { CurrencyType.Relic, BigNumber.Zero }
+                { CurrencyType.Relic, BigNumber.Zero },
+                { CurrencyType.MineOre, BigNumber.Zero },
+                { CurrencyType.Pickaxe, BigNumber.Zero },
+                { CurrencyType.Bomb, BigNumber.Zero },
+                { CurrencyType.Dynamite, BigNumber.Zero },
+                { CurrencyType.ExpFragment, BigNumber.Zero }
             };
             _currencies = new ObservableDictionary<CurrencyType, BigNumber>(initial);
         }
