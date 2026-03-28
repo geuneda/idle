@@ -1,0 +1,16 @@
+{
+    "name": "IdleRPG.Physics",
+    "rootNamespace": "IdleRPG.Physics",
+    "references": [
+        "IdleRPG.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

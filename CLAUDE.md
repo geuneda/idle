@@ -11,6 +11,7 @@ Unity 6.3 (6000.3.11f1) + URP 17.3.0 방치형 RPG 모바일 2D 게임. C# 9.0, 
 - God class 금지 (단일 책임 원칙)
 - Debug.Log/Debug.LogWarning 직접 호출 금지 (`DevLog` 사용, `Core/Scripts/Utils/DevLog.cs` 참조)
 - Resources 폴더 사용 최소화 (Addressables 사용)
+- Collider2D/Rigidbody2D 등 기존 Physics 2D 컴포넌트 사용 금지 (PhysicsCore 2D API 사용)
 
 ## CBD 설계 원칙
 
@@ -43,10 +44,11 @@ Geuneda API 코드 작성/수정 전 반드시 해당 스킬을 invoke하여 API
 | `Geuneda.NativeUi`            | `/geuneda-nativeui`            |
 | `Geuneda.NotificationService` | `/geuneda-notificationservice` |
 
-| 작업 유형                        | 필수 스킬             |
-| -------------------------------- | --------------------- |
-| Config/Importer/ConfigAsset 생성 | `/config-pipeline`    |
-| 프레임워크 구조/의존성 변경      | `/geuneda-frameworks` |
+| 작업 유형                        | 필수 스킬                  |
+| -------------------------------- | -------------------------- |
+| Config/Importer/ConfigAsset 생성 | `/config-pipeline`         |
+| 프레임워크 구조/의존성 변경      | `/geuneda-frameworks`      |
+| PhysicsCore 2D 충돌/물리 코드    | `/unity-lowlevel-physics2d`|
 
 - 하나의 파일이 여러 네임스페이스 사용 시 관련 스킬 모두 invoke
 - 에이전트 위임 시 스킬 invoke를 명시
@@ -81,3 +83,23 @@ Geuneda API 코드 작성/수정 전 반드시 해당 스킬을 invoke하여 API
 - 밸런스 데이터는 Google Sheets -> ConfigsProvider 파이프라인
 - UI는 Addressables 비동기 로딩
 - 전투 결정론이 필요하면 floatP 사용
+
+## PhysicsCore 2D (LowLevel Physics 2D)
+
+충돌/물리는 PhysicsCore 2D 핸들 기반 API만 사용. 기존 Collider2D/Rigidbody2D 금지.
+
+- **네임스페이스 조건부 컴파일 필수**:
+  ```csharp
+  #if UNITY_6000_5_OR_NEWER
+  using Unity.U2D.Physics;
+  #else
+  using UnityEngine.LowLevelPhysics2D;
+  #endif
+  ```
+- **설정 에셋**: `Assets/_Project/Settings/PhysicsLowLevelSettings2D.asset` (Project Settings > Physics 2D > Low Level에 할당)
+- **서비스**: `IPhysicsService` (MainInstaller 프레임워크 서비스, `Features/Physics/Scripts/`)
+- **레이어 상수**: `PhysicsLayers` 클래스 (`Features/Physics/Scripts/PhysicsLayers.cs`)
+- **DrawOptions enum**: `Off`, `AllBodies`, `AllShapes`, `AllShapeBounds`, `AllJoints`, `AllContactPoints`, `DefaultAll`, `DefaultSelected`
+- **PhysicsBody 생성 시 반드시 Shape 부착** (Shape 없으면 에디터에서 보이지 않음)
+- **Edit Mode Gizmo**: PhysicsCore 컴포넌트 작성 시 `OnDrawGizmosSelected`로 Gizmo 시각화 필수
+- **NativeArray 결과는 반드시 Dispose** (`using var` 사용)

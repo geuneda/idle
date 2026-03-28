@@ -15,6 +15,7 @@
         "IdleRPG.Pet",
         "IdleRPG.Dungeon",
         "IdleRPG.Mine",
+        "IdleRPG.Physics",
         "IdleRPG.UI",
         "Geuneda.GameData",
         "Geuneda.Services",

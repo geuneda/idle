@@ -14,6 +14,7 @@ using IdleRPG.OfflineReward;
 using IdleRPG.Reward;
 using IdleRPG.Dungeon;
 using IdleRPG.Mine;
+using IdleRPG.Physics;
 using IdleRPG.Stage;
 using IdleRPG.UI;
 using UnityEngine;
@@ -304,6 +305,9 @@ namespace IdleRPG.Core
             var timeService = new TimeService();
             MainInstaller.Bind<ITimeService>(timeService);
             MainInstaller.Bind<ITimeManipulator>(timeService);
+
+            var physicsService = new PhysicsService(enableDebugDraw: UnityEngine.Debug.isDebugBuild);
+            MainInstaller.Bind<IPhysicsService>(physicsService);
 
             InitializeUiService();
         }
