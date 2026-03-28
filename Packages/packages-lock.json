@@ -101,6 +101,17 @@
       },
       "hash": "93f174d0dc90addd103a5f32fc64bc601116fe1a"
     },
+    "com.geuneda.unity-cli-connector": {
+      "version": "https://github.com/geuneda/unity-cli.git?path=unity-connector",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0",
+        "com.unity.test-framework": "1.6.0",
+        "com.unity.nuget.newtonsoft-json": "3.2.1"
+      },
+      "hash": "3bd85e78a4ae501ff0208ad5a2d9e12306d7e30c"
+    },
     "com.heroiclabs.nakama-unity": {
       "version": "https://github.com/heroiclabs/nakama-unity.git?path=/Packages/Nakama#v3.21.1",
       "depth": 0,

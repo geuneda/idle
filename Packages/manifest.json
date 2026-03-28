@@ -4,6 +4,7 @@
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.geuneda.assetsimporter": "https://github.com/geuneda/geuneda-assetsimporter.git",
     "com.geuneda.gamedata": "https://github.com/geuneda/geuneda-gamedata.git",
+    "com.geuneda.unity-cli-connector": "https://github.com/geuneda/unity-cli.git?path=unity-connector",
     "com.geuneda.googlesheetimporter": "https://github.com/geuneda/geuneda-googlesheetimporter.git",
     "com.geuneda.inputextensions": "https://github.com/geuneda/geuneda-inputextensions.git",
     "com.geuneda.nativeui": "https://github.com/geuneda/geuneda-nativeui.git",
