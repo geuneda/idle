@@ -4,7 +4,7 @@ namespace IdleRPG.Core
 {
     /// <summary>
     /// 앱 생명주기 흐름을 관리하는 Statechart.
-    /// Bootstrap -> Loading -> PostLoadChoice -> InGame 상태를 순차 전이한다.
+    /// Bootstrap -> Authentication -> Loading -> PostLoadChoice -> InGame 상태를 순차 전이한다.
     /// </summary>
     /// <remarks>
     /// <para>POCO 클래스로, <see cref="GameInstaller"/>에서 생성하여 <see cref="Run"/>으로 실행한다.</para>
@@ -44,6 +44,7 @@ namespace IdleRPG.Core
         {
             var initial = factory.Initial("Initial");
             var bootstrap = factory.Transition("Bootstrap");
+            var authentication = factory.TaskWait("Authentication");
             var loading = factory.TaskWait("Loading");
             var postLoadChoice = factory.Choice("PostLoadChoice");
             var offlineReward = factory.TaskWait("OfflineReward");
@@ -54,7 +55,12 @@ namespace IdleRPG.Core
 
             // Bootstrap: 비차단 통과 상태
             bootstrap.OnEnter(() => callbacks.OnBootstrapEnter?.Invoke());
-            bootstrap.Transition().Target(loading);
+            bootstrap.Transition().Target(authentication);
+
+            // Authentication: 서버 인증 대기
+            authentication.OnEnter(() => callbacks.OnAuthenticationEnter?.Invoke());
+            authentication.WaitingFor(callbacks.AuthenticationTask).Target(loading);
+            authentication.OnExit(() => callbacks.OnAuthenticationExit?.Invoke());
 
             // Loading: 비동기 작업 대기
             loading.OnEnter(() => callbacks.OnLoadingEnter?.Invoke());

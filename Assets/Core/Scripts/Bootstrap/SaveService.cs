@@ -1,16 +1,18 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using Geuneda.Services;
 using IdleRPG.OfflineReward;
-using UnityEngine;
+using Newtonsoft.Json;
 using static IdleRPG.Core.DevLog;
 
 namespace IdleRPG.Core
 {
     /// <summary>
-    /// <see cref="ISaveService"/>의 구현체.
+    /// <see cref="ISaveService"/>의 서버 기반 구현체.
     /// 2-Tier 저장(즉시 + Dirty Debounce), 30초 주기 자동 저장, 이벤트 기반 dirty 마킹을 처리한다.
+    /// 모든 저장/로드는 Nakama 서버를 통해 수행된다. 로컬 폴백은 없다.
     /// 피처별 저장 로직은 <see cref="ISaveDataCollector"/>에 위임한다.
     /// </summary>
     public class SaveService : ISaveService, IDisposable
@@ -19,57 +21,42 @@ namespace IdleRPG.Core
         private const float DebounceDuration = 5f;
 
         private readonly IReadOnlyList<ISaveDataCollector> _collectors;
-        private readonly IDataService _dataService;
+        private readonly INakamaService _nakamaService;
         private readonly ITickService _tickService;
-        private readonly ICoroutineService _coroutineService;
         private readonly IMessageBrokerService _messageBroker;
         private readonly ITimeService _timeService;
 
         private bool _isDirty;
-        private Coroutine _debounceCoroutine;
         private bool _isAutoSaveActive;
+        private bool _isSaving;
+        private CancellationTokenSource _debounceCts;
 
         /// <summary>
         /// <see cref="SaveService"/>를 생성한다.
         /// </summary>
         /// <param name="collectors">피처별 저장 데이터 수집기 목록</param>
-        /// <param name="dataService">데이터 영속성 서비스</param>
+        /// <param name="nakamaService">Nakama 서버 통신 서비스</param>
         /// <param name="tickService">주기적 업데이트 서비스</param>
-        /// <param name="coroutineService">코루틴 호스트 서비스</param>
         /// <param name="messageBroker">이벤트 통신 서비스</param>
         /// <param name="timeService">시간 관리 서비스</param>
         public SaveService(
             IReadOnlyList<ISaveDataCollector> collectors,
-            IDataService dataService,
+            INakamaService nakamaService,
             ITickService tickService,
-            ICoroutineService coroutineService,
             IMessageBrokerService messageBroker,
             ITimeService timeService)
         {
             _collectors = collectors;
-            _dataService = dataService;
+            _nakamaService = nakamaService;
             _tickService = tickService;
-            _coroutineService = coroutineService;
             _messageBroker = messageBroker;
             _timeService = timeService;
         }
 
         /// <inheritdoc />
-        public void Save()
+        public async UniTask SaveAsync()
         {
-            CancelDebounce();
-            _isDirty = false;
-
-            var saveData = ExtractSaveData();
-            _dataService.AddOrReplaceData(saveData);
-            _dataService.SaveData<GameSaveData>();
-
-            _messageBroker.Publish(new GameSavedMessage
-            {
-                Timestamp = saveData.LastSaveTimestamp
-            });
-
-            Log($"[SaveService] 게임 데이터 저장 완료 (timestamp: {saveData.LastSaveTimestamp})");
+            await SaveInternalAsync();
         }
 
         /// <inheritdoc />
@@ -77,7 +64,7 @@ namespace IdleRPG.Core
         {
             if (_isDirty)
             {
-                Save();
+                SaveSilentAsync().Forget();
             }
         }
 
@@ -86,33 +73,34 @@ namespace IdleRPG.Core
         {
             _isDirty = true;
 
-            if (_debounceCoroutine == null)
+            if (_debounceCts != null) return;
+
+            _debounceCts = new CancellationTokenSource();
+            RunDebounceSaveAsync(_debounceCts.Token).Forget();
+        }
+
+        /// <inheritdoc />
+        public async UniTask<GameSaveData> LoadAsync()
+        {
+            var result = await _nakamaService.LoadGameDataAsync();
+
+            if (!result.HasData)
             {
-                _debounceCoroutine = _coroutineService.StartCoroutine(DebounceSaveCoroutine());
+                Log("[SaveService] 서버에 저장 데이터 없음 - 신규 게임 시작");
+                return new GameSaveData();
             }
-        }
 
-        /// <inheritdoc />
-        public GameSaveData Load()
-        {
-            return _dataService.LoadData<GameSaveData>();
-        }
-
-        /// <inheritdoc />
-        public bool HasSaveData()
-        {
-            return _dataService.HasData<GameSaveData>();
-        }
-
-        /// <inheritdoc />
-        public void DeleteSaveData()
-        {
-            _dataService.AddOrReplaceData(new GameSaveData());
-            _dataService.SaveData<GameSaveData>();
-            _isDirty = false;
-            CancelDebounce();
-
-            Log("[SaveService] 저장 데이터 삭제 완료");
+            try
+            {
+                var saveData = JsonConvert.DeserializeObject<GameSaveData>(result.JsonData);
+                Log($"[SaveService] 서버 데이터 로드 완료 (timestamp: {saveData.LastSaveTimestamp})");
+                return saveData;
+            }
+            catch (JsonException ex)
+            {
+                Log($"[SaveService] 저장 데이터 역직렬화 실패 - 신규 게임 시작: {ex.Message}");
+                return new GameSaveData();
+            }
         }
 
         /// <inheritdoc />
@@ -123,8 +111,6 @@ namespace IdleRPG.Core
 
             _tickService.SubscribeOnUpdate(OnAutoSaveTick, AutoSaveInterval, false, true);
 
-            // OfflineRewardClaimedMessage: 보상 수령 후 데이터 손실 방지를 위해 즉시 저장한다.
-            // 자체 저장 필드가 없으므로 Collector가 아닌 SaveService에서 직접 처리한다.
             _messageBroker.Subscribe<OfflineRewardClaimedMessage>(OnOfflineRewardClaimed);
 
             for (int i = 0; i < _collectors.Count; i++)
@@ -185,6 +171,59 @@ namespace IdleRPG.Core
             StopAutoSave();
         }
 
+        /// <summary>
+        /// 서버 저장을 수행한다. 실패 시 dirty 플래그를 복원하고 예외를 전파한다.
+        /// </summary>
+        private async UniTask SaveInternalAsync()
+        {
+            if (_isSaving) return;
+            _isSaving = true;
+
+            try
+            {
+                CancelDebounce();
+                _isDirty = false;
+
+                var saveData = ExtractSaveData();
+                var json = JsonConvert.SerializeObject(saveData);
+
+                await _nakamaService.SaveGameDataAsync(json);
+
+                _messageBroker.Publish(new GameSavedMessage
+                {
+                    Timestamp = _nakamaService.ServerTimeMillis
+                });
+
+                Log("[SaveService] 서버 저장 완료");
+            }
+            catch (Exception ex)
+            {
+                _isDirty = true;
+                Log($"[SaveService] 서버 저장 실패: {ex.Message}");
+                throw;
+            }
+            finally
+            {
+                _isSaving = false;
+            }
+        }
+
+        /// <summary>
+        /// 서버 저장을 시도하되 실패 시 예외를 삼킨다.
+        /// 자동 저장, debounce, OnApplicationPause 등 fire-and-forget 상황에서 사용한다.
+        /// </summary>
+        private async UniTaskVoid SaveSilentAsync()
+        {
+            try
+            {
+                await SaveInternalAsync();
+            }
+            catch (Exception ex)
+            {
+                Log($"[SaveService] 서버 저장 실패 (자동 재시도 예정): {ex.Message}");
+            }
+        }
+
         private GameSaveData ExtractSaveData()
         {
             var saveData = new GameSaveData
@@ -203,33 +242,49 @@ namespace IdleRPG.Core
 
         private void OnAutoSaveTick(float deltaTime)
         {
-            Save();
+            if (!_isDirty) return;
+            SaveSilentAsync().Forget();
         }
 
         private void OnOfflineRewardClaimed(OfflineRewardClaimedMessage message)
         {
-            Save();
+            SaveSilentAsync().Forget();
         }
 
-        private IEnumerator DebounceSaveCoroutine()
+        private async UniTaskVoid RunDebounceSaveAsync(CancellationToken ct)
         {
-            // 의도적으로 캐싱하지 않음. - StopCoroutine 이후 재사용시 타이밍 오류 방지
-            yield return new WaitForSecondsRealtime(DebounceDuration);
-
-            _debounceCoroutine = null;
-
-            if (_isDirty)
+            try
             {
-                Save();
+                await UniTask.Delay(
+                    TimeSpan.FromSeconds(DebounceDuration),
+                    ignoreTimeScale: true,
+                    cancellationToken: ct);
+
+                _debounceCts?.Dispose();
+                _debounceCts = null;
+
+                if (_isDirty)
+                {
+                    await SaveInternalAsync();
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                // debounce 취소 - 정상 동작 (Save 또는 CancelDebounce에 의해)
+            }
+            catch (Exception ex)
+            {
+                Log($"[SaveService] Debounce 저장 실패: {ex.Message}");
             }
         }
 
         private void CancelDebounce()
         {
-            if (_debounceCoroutine != null)
+            if (_debounceCts != null)
             {
-                _coroutineService.StopCoroutine(_debounceCoroutine);
-                _debounceCoroutine = null;
+                _debounceCts.Cancel();
+                _debounceCts.Dispose();
+                _debounceCts = null;
             }
         }
     }

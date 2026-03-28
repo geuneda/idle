@@ -76,6 +76,13 @@ Geuneda API 코드 작성/수정 전 반드시 해당 스킬을 invoke하여 API
 - 컴파일 에러 시 즉시 수정 후 재컴파일
 - IDE 린트가 아닌 Unity 컴파일러 빌드 결과 기준
 
+## 게임 서버
+
+- **레포**: https://github.com/geuneda/idle-server (private)
+- **로컬 경로**: `/Users/geuneda/Documents/GitHub/idle-server/`
+- Nakama 3.25.0 + Go 런타임, Docker Compose
+- 서버 코드 참조/수정 필요 시 idle-server 레포의 CLAUDE.md 확인
+
 ## 프로젝트 고유 규칙
 
 - 시간 계산은 TimeService 기준

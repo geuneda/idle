@@ -56,7 +56,7 @@ namespace IdleRPG.UI
         /// <inheritdoc />
         protected override void OnOpened()
         {
-            _currencyService.Currencies.Observe(OnCurrencyChanged);
+            _currencyService.Currencies.Observe(Data.CurrencyType, OnCurrencyChanged);
         }
 
         /// <inheritdoc />

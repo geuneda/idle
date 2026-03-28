@@ -3,14 +3,17 @@
     "rootNamespace": "IdleRPG.Core",
     "references": [
         "Geuneda.GameData",
-        "Geuneda.Services"
+        "Geuneda.Services",
+        "NakamaRuntime",
+        "UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "Newtonsoft.Json.dll"
+        "Newtonsoft.Json.dll",
+        "Nakama.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],

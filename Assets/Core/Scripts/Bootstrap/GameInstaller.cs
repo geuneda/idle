@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Geuneda.DataExtensions;
@@ -28,7 +29,7 @@ namespace IdleRPG.Core
     /// </summary>
     /// <remarks>
     /// <para>씬에 배치되며 <c>DontDestroyOnLoad</c>로 앱 생명주기 동안 유지된다.</para>
-    /// <para>초기화 흐름: Awake(프레임워크 서비스) → Loading 단계(Config 로드 + 게임 서비스) → InGame</para>
+    /// <para>초기화 흐름: Awake(프레임워크) -> Authentication(서버 인증) -> Loading(Config+서버데이터) -> InGame</para>
     /// </remarks>
     public class GameInstaller : MonoBehaviour
     {
@@ -63,7 +64,7 @@ namespace IdleRPG.Core
 
         /// <summary>
         /// 프레임워크 서비스 초기화 후 앱 흐름 상태 머신을 시작한다.
-        /// Loading 단계에서 Config 에셋 로드와 게임 서비스 초기화가 수행된다.
+        /// Authentication -> Loading -> PostLoadChoice -> InGame 순서로 전이한다.
         /// </summary>
         private void Start()
         {
@@ -72,7 +73,7 @@ namespace IdleRPG.Core
 
         /// <summary>
         /// 앱 흐름 상태 머신을 구성하고 실행한다.
-        /// Bootstrap -> Loading -> PostLoadChoice -> InGame 순서로 전이한다.
+        /// Bootstrap -> Authentication -> Loading -> PostLoadChoice -> InGame 순서로 전이한다.
         /// </summary>
         private void StartAppFlow()
         {
@@ -85,6 +86,18 @@ namespace IdleRPG.Core
             var callbacks = new AppFlowCallbacks
             {
                 OnBootstrapEnter = () => DevLog.Log("[AppFlow] Bootstrap 시작"),
+                OnAuthenticationEnter = () => DevLog.Log("[AppFlow] Authentication 시작"),
+                AuthenticationTask = async () =>
+                {
+                    // Statechart OnEnter 콜백이 완료된 뒤 실행되도록 1프레임 양보
+                    await UniTask.Yield();
+
+                    var nakama = MainInstaller.Resolve<INakamaService>();
+                    await nakama.AuthenticateAsync();
+
+                    DevLog.Log("[AppFlow] 서버 인증 완료");
+                },
+                OnAuthenticationExit = () => DevLog.Log("[AppFlow] Authentication 완료"),
                 OnLoadingEnter = () => DevLog.Log("[AppFlow] Loading 시작"),
                 LoadingTask = async () =>
                 {
@@ -150,7 +163,7 @@ namespace IdleRPG.Core
 
         /// <summary>
         /// 로딩 단계 목록을 생성한다.
-        /// Config 에셋 로드 → 게임 서비스 초기화 → 에셋 프리로드 순서로 실행된다.
+        /// Config 에셋 로드 -> 게임 서비스 초기화(서버 데이터 로드 포함) -> 에셋 프리로드 순서로 실행된다.
         /// </summary>
         /// <returns>순차 실행할 로딩 단계 목록</returns>
         private List<LoadingStep> CreateLoadingSteps()
@@ -162,12 +175,11 @@ namespace IdleRPG.Core
                     await LoadConfigAssetsAsync();
                     DevLog.Log("[Loading] Config 에셋 로드 완료");
                 }),
-                new LoadingStep("게임 초기화", () =>
+                new LoadingStep("게임 초기화", async () =>
                 {
                     var configsProvider = InitializeConfigsProvider();
-                    InitializeGameServices(configsProvider);
+                    await InitializeGameServicesAsync(configsProvider);
                     DevLog.Log("[Loading] 게임 서비스 초기화 완료");
-                    return UniTask.CompletedTask;
                 }),
                 new LoadingStep("에셋 프리로드", async () =>
                 {
@@ -264,7 +276,7 @@ namespace IdleRPG.Core
             }
             catch (System.Exception ex)
             {
-                Debug.LogError($"[AppFlow] 초기 UI 오픈 실패: {ex}");
+                DevLog.Log($"[AppFlow] 초기 UI 오픈 실패: {ex}");
             }
 
             messageBroker.Publish(new AppFlowReadyMessage());
@@ -309,6 +321,10 @@ namespace IdleRPG.Core
             var physicsService = new PhysicsService(enableDebugDraw: UnityEngine.Debug.isDebugBuild);
             MainInstaller.Bind<IPhysicsService>(physicsService);
 
+            var nakamaConfig = new NakamaConfig();
+            var nakamaService = new NakamaService(nakamaConfig);
+            MainInstaller.Bind<INakamaService>(nakamaService);
+
             InitializeUiService();
         }
 
@@ -325,17 +341,16 @@ namespace IdleRPG.Core
 
         /// <summary>
         /// 게임 고유 서비스를 생성하고 <see cref="MainInstaller"/>에 바인딩한다.
-        /// <see cref="ConfigsProvider"/>에서 Config를 조회하여 서비스에 주입한다.
+        /// 서버에서 게임 데이터를 로드하고 모델에 적용한 뒤, 나머지 서비스를 초기화한다.
         /// </summary>
         /// <param name="configsProvider">Config가 등록된 프로바이더</param>
-        private void InitializeGameServices(ConfigsProvider configsProvider)
+        private async UniTask InitializeGameServicesAsync(ConfigsProvider configsProvider)
         {
             MainInstaller.Bind<IConfigsProvider>(configsProvider);
 
             var messageBroker = MainInstaller.Resolve<IMessageBrokerService>();
             var tickService = MainInstaller.Resolve<ITickService>();
-            var coroutineService = MainInstaller.Resolve<ICoroutineService>();
-            var dataService = MainInstaller.Resolve<IDataService>();
+            var nakamaService = MainInstaller.Resolve<INakamaService>();
             var timeService = MainInstaller.Resolve<ITimeService>();
 
             var currencyModel = new CurrencyModel();
@@ -361,11 +376,16 @@ namespace IdleRPG.Core
             };
 
             _saveService = new SaveService(
-                collectors, dataService, tickService, coroutineService, messageBroker, timeService);
+                collectors, nakamaService, tickService, messageBroker, timeService);
 
-            var saveData = _saveService.Load();
+            var saveData = await _saveService.LoadAsync();
             _lastSaveTimestamp = saveData.LastSaveTimestamp;
             _saveService.ApplyLoadedData(saveData);
+
+            var timeManip = MainInstaller.Resolve<ITimeManipulator>();
+            timeManip.SetInitialTime(
+                DateTimeOffset.FromUnixTimeMilliseconds(nakamaService.ServerTimeMillis).UtcDateTime);
+            DevLog.Log($"[GameInstaller] 서버 시간 동기화 완료: {nakamaService.ServerTimeMillis}");
 
             MainInstaller.Bind<ISaveService>(_saveService);
 

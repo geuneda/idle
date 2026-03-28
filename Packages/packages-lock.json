@@ -57,17 +57,6 @@
       },
       "hash": "d59bf1f4695d6646bd8466ef000fcf62e2898f75"
     },
-    "com.geuneda.mcp-unity": {
-      "version": "https://github.com/geuneda/geuneda-mcp-unity.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {
-        "com.unity.nuget.newtonsoft-json": "3.2.1",
-        "com.unity.editorcoroutines": "1.0.0",
-        "com.unity.test-framework": "1.3.3"
-      },
-      "hash": "4e497cabbca0bf1824ec4b1f8cabfefed7bf0428"
-    },
     "com.geuneda.nativeui": {
       "version": "https://github.com/geuneda/geuneda-nativeui.git",
       "depth": 0,
@@ -111,6 +100,15 @@
         "com.cysharp.unitask": "2.5.10"
       },
       "hash": "93f174d0dc90addd103a5f32fc64bc601116fe1a"
+    },
+    "com.heroiclabs.nakama-unity": {
+      "version": "https://github.com/heroiclabs/nakama-unity.git?path=/Packages/Nakama#v3.21.1",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.modules.unitywebrequest": "1.0.0"
+      },
+      "hash": "81ca60235430d2ada404d8423a2e908b96101682"
     },
     "com.unity.2d.animation": {
       "version": "13.0.4",
@@ -264,13 +262,6 @@
         "com.unity.nuget.mono-cecil": "1.11.5",
         "com.unity.test-framework.performance": "3.0.3"
       },
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.editorcoroutines": {
-      "version": "1.0.1",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.ext.nunit": {

@@ -48,7 +48,8 @@ namespace IdleRPG.UI
 
         private void BindCurrency()
         {
-            _currencyService.Currencies.Observe(OnCurrencyChanged);
+            _currencyService.Currencies.Observe(CurrencyType.Gold, OnCurrencyChanged);
+            _currencyService.Currencies.Observe(CurrencyType.Gem, OnCurrencyChanged);
         }
 
         private void BindStage()
